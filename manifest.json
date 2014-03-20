@@ -13,6 +13,9 @@
 			"all_frames": true
 		}
 	],
+	"web_accessible_resources": [
+		"img/*"
+	],
 	"permissions": [
 		"storage",
 		"activeTab",

@@ -6,11 +6,12 @@
 	height: 100%;
 	left: 0;
 	top: 0;
-	font: 30px/1 Verdana, Geneva, Tahoma, sans-serif;
+	font: 30px/1.25 Verdana, Geneva, Tahoma, sans-serif;
 	color: #000;
 	background: #fff;
 	z-index: 1111111;
 	overflow: hidden;
+	cursor: default;
 }
 .e-FastReader-wrapper_serif {
 	font-family: "Times New Roman", Times, serif;
@@ -27,7 +28,7 @@
 .e-FastReader-panel {
 	position: absolute;
 	width: 100%;
-	height: 115px;
+	height: 72px;
 	left: 0;
 	background: #fafafa;
 }
@@ -38,20 +39,106 @@
 	bottom: 0;
 }
 
+.e-FastReader-adjuster {
+	position: absolute;
+	top: 0;
+	padding: 26px 72px;
+	font-size: 16px;
+	font-weight: bold;
+}
+.e-FastReader-adjuster_font {
+	margin: 0 0 0 -400px;
+	left: 50%;
+}
+.e-FastReader-adjuster_wpm {
+	margin: 0 -400px 0 0;
+	right: 50%;
+}
+.e-FastReader-adjuster > span {
+	display: block;
+	text-align: center;
+	opacity: .35;
+}
+.e-FastReader-adjuster_wpm {
+	width: 78px;
+}
+
+.e-FastReader-control {
+	position: absolute;
+	top: 0;
+	width: 72px;
+	height: 72px;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_controls.png");
+	opacity: .35;
+	cursor: pointer;
+	-webkit-transition: opacity 132ms;
+}
+.e-FastReader-control:hover {
+	opacity: .5;
+}
+.e-FastReader-control_plus {
+	right: 0;
+	background-position: 0 0;
+}
+.e-FastReader-control_minus {
+	left: 0;
+	background-position: -72px 0;
+}
+.e-FastReader-control_start {
+	margin: 0 0 0 -36px;
+	left: 50%;
+	background-position: -144px 0;
+}
+.e-FastReader-control_nextWord {
+	margin: 0 -157px 0 0;
+	right: 50%;
+	background-position: 0 -72px;
+}
+.e-FastReader-control_nextSentence {
+	margin: 0 -278px 0 0;
+	right: 50%;
+	background-position: -72px -72px;
+}
+.e-FastReader-control_gotoEnd {
+	margin: 0 -399px 0 0;
+	right: 50%;
+	background-position: -144px -72px;
+}
+.e-FastReader-control_prevWord {
+	margin: 0 0 0 -157px;
+	left: 50%;
+	background-position: 0 -144px;
+}
+.e-FastReader-control_prevSentence {
+	margin: 0 0 0 -278px;
+	left: 50%;
+	background-position: -72px -144px;
+}
+.e-FastReader-control_gotoStart {
+	margin: 0 0 0 -399px;
+	left: 50%;
+	background-position: -144px -144px;
+}
+
+.e-FastReader-contextWrap {
+	position: absolute;
+	
+}
 .e-FastReader-context {
 	position: absolute;
-	width: 100%;
-	left: 0;
-	font-size: 18px;
-	line-height: 18px;
+	margin: 0 0 0 -300px;
+	max-width: 600px;
+	left: 50%;
+	font-size: 16px;
+	text-align: justify;
 	opacity: .5;
 }
 .e-FastReader-context_before {
-	margin: 0 0 28px;
+	margin-bottom: 28px;
 	bottom: 50%;
 }
 .e-FastReader-context_after {
-	margin: 28px 0 0;
+	margin-top: 28px;
 	top: 50%;
 }
 

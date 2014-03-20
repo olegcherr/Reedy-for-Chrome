@@ -6,11 +6,16 @@
 		return (context || document).querySelector(selector);
 	}
 	
-	function createElement(tagName, className, appendTo) {
-		var elem = document.createElement(tagName);
-		className && (elem.className = className);
-		appendTo && appendTo.appendChild(elem)
-		return elem;
+	function createElement(tagName, className, $appendTo, html) {
+		var $elem = document.createElement(tagName);
+		className != null && ($elem.className = className);
+		$appendTo && $appendTo.appendChild($elem);
+		html != null && ($elem.innerHTML = html);
+		return $elem;
+	}
+	
+	function createTextNode(text) {
+		return document.createTextNode(text);
 	}
 	
 	function stopEvent(e) {
@@ -53,13 +58,19 @@
 	
 	function Reader(parser) {
 		
+		function createControl(modifiers, $appendTo, title) {
+			var $btn = createElement('div', cls.apply(null, ('control_'+modifiers.join(' control_')).split(' ').concat('control')), $appendTo);
+			title != null && $btn.setAttribute('title', title);
+			return $btn;
+		}
+		
 		function next() {
 			clearTimeout(timeout);
 			
 			if (!isRunning) return;
 			
 			if (data = parser.next()) {
-				wordElem.innerHTML = data.word;
+				$word.innerHTML = data.word;
 				timeout = setTimeout(next, 60000/WPM);
 			}
 		}
@@ -77,15 +88,34 @@
 		var api = this,
 			isRunning,
 			
-			wrapperElem = createElement('div', cls('wrapper'), bodyElem),
+			$wrapper            = createElement('div', cls('wrapper'), bodyElem),
 			
-			envirElem = createElement('div', cls('environment'), wrapperElem),
-			contextBeforeElem = createElement('div', cls('context', 'context_before'), wrapperElem),
-			contextAfterElem = createElement('div', cls('context', 'context_after'), wrapperElem),
-			wordElem = createElement('div', cls('word'), wrapperElem),
-			panelTopElem = createElement('div', cls('panel', 'panel_top'), envirElem),
-			panelBotElem = createElement('div', cls('panel', 'panel_bottom'), envirElem),
-			infoElem = createElement('div', cls('info'), wrapperElem),
+			$envir              = createElement('div', cls('environment'), $wrapper),
+			$contextBefore      = createElement('div', cls('context', 'context_before'), $envir),
+			$contextAfter       = createElement('div', cls('context', 'context_after'), $envir),
+			$word               = createElement('div', cls('word'), $wrapper),
+			
+			$panelTop           = createElement('div', cls('panel', 'panel_top'), $envir),
+			
+			$fontAdjust         = createElement('div', cls('adjuster', 'adjuster_font'), $panelTop, '<span>aA</span>'),
+			$ctrlDecFont        = createControl(['minus'], $fontAdjust),
+			$ctrlIncFont        = createControl(['plus'], $fontAdjust),
+			
+			$wpmAdjust          = createElement('div', cls('adjuster', 'adjuster_wpm'), $panelTop),
+			$wpmText            = createElement('span', null, $wpmAdjust, '200wpm'),
+			$ctrlDecWpm         = createControl(['minus'], $wpmAdjust),
+			$ctrlIncWpm         = createControl(['plus'], $wpmAdjust),
+			
+			$panelBot           = createElement('div', cls('panel', 'panel_bottom'), $envir),
+			$ctrlStart          = createControl(['start'], $panelBot),
+			$ctrlNextWord       = createControl(['nextWord'], $panelBot),
+			$ctrlNextSentence   = createControl(['nextSentence'], $panelBot),
+			$ctrlGotoEnd        = createControl(['gotoEnd'], $panelBot),
+			$ctrlPrevWord       = createControl(['prevWord'], $panelBot),
+			$ctrlPrevSentence   = createControl(['prevSentence'], $panelBot),
+			$ctrlGotoStart      = createControl(['gotoStart'], $panelBot),
+			
+			$info               = createElement('div', cls('info'), $wrapper, LNG_TAP_TO_START),
 			
 			bodyOverflowBefore = bodyElem.style.overflow,
 			
@@ -94,18 +124,13 @@
 		
 		bodyElem.style.overflow = "hidden";
 		
-		infoElem.innerHTML = LNG_TAP_TO_START;
-		
 		
 		api.start = function() {
 			if (isRunning) return;
 			isRunning = true;
 			
-			hide(infoElem);
-			hide(panelTopElem);
-			hide(panelBotElem);
-			hide(contextBeforeElem);
-			hide(contextAfterElem);
+			hide($info);
+			hide($envir);
 			
 			next();
 		}
@@ -114,13 +139,10 @@
 			if (!isRunning) return;
 			isRunning = false;
 			
-			show(panelTopElem);
-			show(panelBotElem);
-			show(contextBeforeElem);
-			show(contextAfterElem);
+			show($envir);
 			
-			contextBeforeElem.innerHTML = data.before;
-			contextAfterElem.innerHTML = data.after;
+			$contextBefore.innerHTML = data.before;
+			$contextAfter.innerHTML = data.after;
 		}
 		
 		api.isRunning = function() {
@@ -128,12 +150,12 @@
 		}
 		
 		api.destroy = function() {
-			bodyElem.removeChild(wrapperElem);
+			bodyElem.removeChild($wrapper);
 			bodyElem.style.overflow = bodyOverflowBefore;
 		}
 		
 		
-		on(wrapperElem, "click", onWrapperClick);
+		on($wrapper, "click", onWrapperClick);
 		
 	}
 	
