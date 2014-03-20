@@ -1,0 +1,223 @@
+
+
+(function(window, undefined) {
+	
+	function querySelector(selector, context) {
+		return (context || document).querySelector(selector);
+	}
+	
+	function createElement(tagName, className, appendTo) {
+		var elem = document.createElement(tagName);
+		className && (elem.className = className);
+		appendTo && appendTo.appendChild(elem)
+		return elem;
+	}
+	
+	function stopEvent(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
+	}
+	
+	
+	function show(elem) {
+		elem.style.display = "";
+	}
+	
+	function hide(elem) {
+		elem.style.display = "none";
+	}
+	
+	
+	function on(elem, event, fn) {
+		elem.addEventListener(event, fn);
+	}
+	
+	function off(elem, event, fn) {
+		elem.removeEventListener(event, fn);
+	}
+	
+	
+	function proxy(context, fnName) {
+		return function() {
+			return context[fnName]();
+		};
+	}
+	
+	function cls(className) {
+		for (var res = [], i = 0; i < arguments.length; i++) {
+			res.push(CLS_MAIN+'-'+arguments[i]);
+		}
+		return res.join(' ');
+	}
+	
+	
+	function Reader(parser) {
+		
+		function next() {
+			clearTimeout(timeout);
+			
+			if (!isRunning) return;
+			
+			if (data = parser.next()) {
+				wordElem.innerHTML = data.word;
+				timeout = setTimeout(next, 60000/WPM);
+			}
+		}
+		
+		function onWrapperClick() {
+			if (isRunning) {
+				api.stop();
+			}
+			else {
+				api.start();
+			}
+		}
+		
+		
+		var api = this,
+			isRunning,
+			
+			wrapperElem = createElement('div', cls('wrapper'), bodyElem),
+			
+			envirElem = createElement('div', cls('environment'), wrapperElem),
+			contextBeforeElem = createElement('div', cls('context', 'context_before'), wrapperElem),
+			contextAfterElem = createElement('div', cls('context', 'context_after'), wrapperElem),
+			wordElem = createElement('div', cls('word'), wrapperElem),
+			panelTopElem = createElement('div', cls('panel', 'panel_top'), envirElem),
+			panelBotElem = createElement('div', cls('panel', 'panel_bottom'), envirElem),
+			infoElem = createElement('div', cls('info'), wrapperElem),
+			
+			bodyOverflowBefore = bodyElem.style.overflow,
+			
+			data, timeout;
+		
+		
+		bodyElem.style.overflow = "hidden";
+		
+		infoElem.innerHTML = LNG_TAP_TO_START;
+		
+		
+		api.start = function() {
+			if (isRunning) return;
+			isRunning = true;
+			
+			hide(infoElem);
+			hide(panelTopElem);
+			hide(panelBotElem);
+			hide(contextBeforeElem);
+			hide(contextAfterElem);
+			
+			next();
+		}
+		
+		api.stop = function() {
+			if (!isRunning) return;
+			isRunning = false;
+			
+			show(panelTopElem);
+			show(panelBotElem);
+			show(contextBeforeElem);
+			show(contextAfterElem);
+			
+			contextBeforeElem.innerHTML = data.before;
+			contextAfterElem.innerHTML = data.after;
+		}
+		
+		api.isRunning = function() {
+			return isRunning;
+		}
+		
+		api.destroy = function() {
+			bodyElem.removeChild(wrapperElem);
+			bodyElem.style.overflow = bodyOverflowBefore;
+		}
+		
+		
+		on(wrapperElem, "click", onWrapperClick);
+		
+	}
+	
+	function Parser(text) {
+		var api = this,
+			data = text.split(/\s+/),
+			wid = -1;
+		
+		
+		api.next = function() {
+			if (++wid >= data.length)
+				return null;
+			
+			var before = data.slice(0, wid),
+				after = data.slice(wid+1),
+				word = data[wid];
+			
+			return {
+				before: before.join(" "),
+				after: after.join(" "),
+				word: word
+			};
+		}
+		
+	}
+	
+	
+	function onKeydown(e) {
+		if (!isStarted) return;
+		
+		switch (e.keyCode) {
+			case 27: // esc
+				reader.destroy();
+				reader = parser = null;
+				break;
+			
+			case 32: // space
+				reader.isRunning()
+					? reader.stop()
+					: reader.start();
+				break;
+		}
+	}
+	
+	
+	var CLS_MAIN = 'e-FastReader',
+		
+		LNG_TAP_TO_START = "Click the screen or press space bar to start.",
+		
+		WPM = 200,
+		
+		fastReader = window.fastReader = {},
+		isStarted,
+		
+		bodyElem = querySelector('body'),
+		
+		reader, parser;
+	
+	
+	
+	fastReader.start = function() {
+		isStarted && fastReader.stop();
+		isStarted = true;
+		
+		var text = window.getSelection().toString().replace(/\r|\n/gm, "").trim();
+		if (text.length > 0) {
+			parser = new Parser(text);
+			reader = new Reader(parser);
+			
+			on(window, "keydown", onKeydown);
+		}
+	}
+	
+	fastReader.stop = function() {
+		isStarted = false;
+		off(window, "keydown", onKeydown);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+})(window);

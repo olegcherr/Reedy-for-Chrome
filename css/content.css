@@ -1,0 +1,80 @@
+
+
+.e-FastReader-wrapper {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	font: 30px/1 Verdana, Geneva, Tahoma, sans-serif;
+	color: #000;
+	background: #fff;
+	z-index: 1111111;
+	overflow: hidden;
+}
+.e-FastReader-wrapper_serif {
+	font-family: "Times New Roman", Times, serif;
+}
+
+.e-FastReader-environment {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+}
+
+.e-FastReader-panel {
+	position: absolute;
+	width: 100%;
+	height: 115px;
+	left: 0;
+	background: #fafafa;
+}
+.e-FastReader-panel_top {
+	top: 0;
+}
+.e-FastReader-panel_bottom {
+	bottom: 0;
+}
+
+.e-FastReader-context {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	font-size: 18px;
+	line-height: 18px;
+	opacity: .5;
+}
+.e-FastReader-context_before {
+	margin: 0 0 28px;
+	bottom: 50%;
+}
+.e-FastReader-context_after {
+	margin: 28px 0 0;
+	top: 50%;
+}
+
+.e-FastReader-word {
+	position: absolute;
+	margin: -18px 0 0;
+	width: 100%;
+	left: 0;
+	top: 50%;
+	font-size: 36px;
+	line-height: 36px;
+	text-align: center;
+}
+
+.e-FastReader-info {
+	position: absolute;
+	margin: -14px 0 0;
+	width: 100%;
+	left: 0;
+	top: 50%;
+	font-size: 28px;
+	line-height: 28px;
+	text-align: center;
+	font-style: italic;
+	opacity: .5;
+}
