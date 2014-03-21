@@ -71,10 +71,9 @@
 	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_controls.png");
 	opacity: .35;
 	cursor: pointer;
-	-webkit-transition: opacity 132ms;
 }
 .e-FastReader-control:hover {
-	opacity: .5;
+	opacity: .44;
 }
 .e-FastReader-control_plus {
 	right: 0;
