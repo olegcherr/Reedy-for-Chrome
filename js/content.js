@@ -173,10 +173,6 @@
 			return isLetters(str) && str.toLowerCase() === str;
 		}
 		
-		function isPhoneNumber(str) {
-			
-		}
-		
 		
 		function testForName(text) {
 			var len = text.length,
@@ -222,6 +218,11 @@
 			}
 		}
 		
+		function testForDigitalEntity(text) {
+			var match = REX_DIGITAL_ENTITY.exec(text);
+			return match && match[0].trim();
+		}
+		
 		
 		function parse() {
 			var startPos, startChar,
@@ -254,6 +255,21 @@
 						continue;
 					}
 					
+					if (
+						(REX_CHAR_DIGIT.test(char) || (char === '+' || REX_CHAR_DASH.test(char)) && REX_CHAR_DIGIT.test(nextChar))
+						&& (temp = testForDigitalEntity(text.substring(position, position+20)))
+					) {
+						if (position !== startPos) {
+							if (prevChar === ':') {
+								break;
+							}
+						}
+						else {
+							position = startPos+temp.length-1;
+							continue;
+						}
+					}
+					
 					if (char === ' ') {
 						if (next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) {
 							position = position+2;
@@ -264,9 +280,10 @@
 				}
 				
 				data.push({
+					// TODO: leave only indexes, not full texts
 					before: text.substring(0, startPos),
 					after: text.substring(position),
-					word: text.substring(startPos, position-1),
+					word: text.substring(startPos, position).trim(),
 					type: ENTITY_WORD
 				});
 			}
@@ -316,7 +333,9 @@
 		REX_LETTERS_ONLY    = RegExp('^['+REX_LETTERS_STR+']+$'),
 		REX_FEW_LETTERS     = RegExp('['+REX_LETTERS_STR+']{2,}'),
 		REX_INITIALS        = RegExp('['+REX_LETTERS_STR+']\\. ?','g'),
-		REX_CHAR_DASH       = RegExp('^-|–|—$'),
+		REX_DIGITAL_ENTITY  = /^\+?\-?\d[\d\(\) \-]+/,
+		REX_CHAR_DASH       = /^-|–|—$/,
+		REX_CHAR_DIGIT      = /^\d$/,
 		
 		CLS_MAIN = 'e-FastReader',
 		
@@ -375,19 +394,21 @@
 			['третья неделя – это, конечно',                        ['третья','неделя –','это,','конечно']],
 			['третья неделя — это, конечно',                        ['третья','неделя —','это,','конечно']],
 			
-			['Quantity'],
+			['Digital entities'],
 			['был запущен в 30-е годы',                             ['был','запущен','в','30-е','годы']],
 			['так считают 36%, по-моему, уже',                      ['так','считают','36%,','по-моему,','уже']],
-			
-			['Digital entities & phone numbers'],
-			['имею в виду те 30-50 тысяч',                          ['имею','в','виду','те','30-50','тысяч']],
+			['значит те 30-50 тысяч',                               ['значит','те','30-50','тысяч']],
+			['значит те -30°C что',                                 ['значит','те','-30°C','что']],
+			['значит те -30*2 что',                                 ['значит','те','-30*2','что']],
+			['значит это:-30*2. Что',                               ['значит','это:','-30*2.','Что']],
+			['значит аи92. Что',                                    ['значит','аи92.','Что']],
 			['думает другое. +7 985 970-45-45. И, собственно',      ['думает','другое.','+7 985 970-45-45.','И,','собственно']],
 			['думает другое +7 985 970-45-45 И, собственно',        ['думает','другое','+7 985 970-45-45','И,','собственно']],
 			['думает другое:+7 (985) 970-45-45 И, собственно',      ['думает','другое:','+7 (985) 970-45-45','И,','собственно']],
 			['думает другое. 7 985 970-45-45. И, собственно',       ['думает','другое.','7 985 970-45-45.','И,','собственно']],
 			['думает другое. 7 (985) 970-45-45. И, собственно',     ['думает','другое.','7 (985) 970-45-45.','И,','собственно']],
-			['думает другое: 123-45-67. И, собственно',             ['думает','другое:','+7 985 970-45-45','И,','собственно']],
-			['думает другое:123-45-67. И, собственно',              ['думает','другое:','+7 985 970-45-45','И,','собственно']],
+			['думает другое: 123-45-67. И, собственно',             ['думает','другое:','123-45-67.','И,','собственно']],
+			['думает другое:123-45-67. И, собственно',              ['думает','другое:','123-45-67.','И,','собственно']],
 			
 			['Initials'],
 			['Добрый вечер. Ю. Латынина, «Код доступа»',            ['Добрый','вечер.','Ю. Латынина,','«Код','доступа»']],
@@ -448,14 +469,14 @@
 					res = false;
 				}
 				
-				console.log.apply(console, ['%c<'+(res ? 'OK ' : 'Fail')+'>%c '+test[0]+' >>> %c'+ words.join('%c, %c')+'%c'].concat(res ? STYLE_OK : STYLE_FAIL, '', consoleArgs));
+				console.log.apply(console, ['%c<'+(res ? ' OK ' : 'Fail')+'>%c '+test[0]+' >>> %c'+ words.join('%c, %c')+'%c'].concat(res ? STYLE_OK : STYLE_FAIL, '', consoleArgs));
 			}
 		}
 		
 		console.groupEnd();
 	}
 	
-	testParser();
+	//testParser();
 	
 	
 	
