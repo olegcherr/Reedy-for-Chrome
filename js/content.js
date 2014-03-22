@@ -2,34 +2,15 @@
 
 (function(window, undefined) {
 	
-	function querySelector(selector, context) {
-		return (context || document).querySelector(selector);
-	}
-	
-	function createElement(tagName, className, $appendTo, html) {
-		var $elem = document.createElement(tagName);
-		className != null && ($elem.className = className);
-		$appendTo && $appendTo.appendChild($elem);
-		html != null && ($elem.innerHTML = html);
-		return $elem;
-	}
-	
-	function createTextNode(text) {
-		return document.createTextNode(text);
-	}
-	
 	function stopEvent(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 	}
 	
-	
-	function dBlock(elem) {
-		elem.style.display = "block";
-	}
-	
-	function dNone(elem) {
-		elem.style.display = "none";
+	function proxy(context, fnName) {
+		return function() {
+			return context[fnName]();
+		};
 	}
 	
 	
@@ -42,21 +23,38 @@
 	}
 	
 	
-	function proxy(context, fnName) {
-		return function() {
-			return context[fnName]();
-		};
+	function Reader(parser) {
+		
+		function querySelector(selector, context) {
+		return (context || document).querySelector(selector);
 	}
-	
-	function cls(className) {
+		
+		function createElement(tagName, className, $appendTo, html) {
+			var $elem = document.createElement(tagName);
+			className != null && ($elem.className = className);
+			$appendTo && $appendTo.appendChild($elem);
+			html != null && ($elem.innerHTML = html);
+			return $elem;
+		}
+		
+		function createTextNode(text) {
+			return document.createTextNode(text);
+		}
+		
+		function dBlock(elem) {
+			elem.style.display = "block";
+		}
+		
+		function dNone(elem) {
+			elem.style.display = "none";
+		}
+		
+		function cls(className) {
 		for (var res = [], i = 0; i < arguments.length; i++) {
 			res.push(CLS_MAIN+'-'+arguments[i]);
 		}
 		return res.join(' ');
 	}
-	
-	
-	function Reader(parser) {
 		
 		function createControl(modifiers, $appendTo, title) {
 			var $btn = createElement('div', cls.apply(null, ('control_'+modifiers.join(' control_')).split(' ').concat('control')), $appendTo);
@@ -182,7 +180,9 @@
 		var api = this,
 			isRunning,
 			
-			$wrapper            = createElement('div', cls('wrapper'), bodyElem),
+			$body               = querySelector('body'),
+			
+			$wrapper            = createElement('div', cls('wrapper'), $body),
 			
 			$contextBefore      = createElement('div', cls('context', 'context_before'), $wrapper),
 			$contextAfter       = createElement('div', cls('context', 'context_after'), $wrapper),
@@ -212,12 +212,12 @@
 			$ctrlPrevSentence   = createControl(['prevSentence'], $panelBot),
 			$ctrlFirstWord      = createControl(['firstWord'], $panelBot),
 			
-			bodyOverflowBefore = bodyElem.style.overflow,
+			bodyOverflowBefore = $body.style.overflow,
 			
 			data, timeout;
 		
 		
-		bodyElem.style.overflow = "hidden";
+		$body.style.overflow = "hidden";
 		
 		
 		api.start = function() {
@@ -252,8 +252,8 @@
 		}
 		
 		api.destroy = function() {
-			bodyElem.removeChild($wrapper);
-			bodyElem.style.overflow = bodyOverflowBefore;
+			$body.removeChild($wrapper);
+			$body.style.overflow = bodyOverflowBefore;
 		}
 		
 		
@@ -481,11 +481,13 @@
 		
 		switch (e.keyCode) {
 			case 27: // esc
+				stopEvent(e);
 				reader.destroy();
 				reader = parser = null;
 				break;
 			
 			case 32: // space
+				stopEvent(e);
 				reader.isRunning()
 					? reader.stop()
 					: reader.start();
@@ -512,8 +514,6 @@
 		
 		fastReader = window.fastReader = {},
 		isStarted,
-		
-		bodyElem = querySelector('body'),
 		
 		reader, parser;
 	
