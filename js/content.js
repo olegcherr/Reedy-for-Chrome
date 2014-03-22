@@ -223,59 +223,70 @@
 		}
 		
 		
+		function parse() {
+			var startPos, startChar,
+				char, prevChar, nextChar, next2Char, partAfter, temp;
+			
+			while (position < textLen) {
+				startPos = position;
+				startChar = text[position];
+				
+				for (;position <= textLen; position++) {
+					char = text[position];
+					prevChar = text[position-1];
+					nextChar = text[position+1];
+					next2Char = text[position+2];
+					partAfter = text.substring(position+1);
+					
+					if (char === undefined) {
+						position++;
+						break;
+					}
+					
+					if (
+						(position === startPos
+							? nextChar === '.' && isUpperLetters(char) // `У.Б. Йитс теперь`
+							: char === ' ' && next2Char === '.' && isUpperLetters(startChar) && isUpperLetters(nextChar)) // `Йитс У.Б. теперь`
+						&& (temp = testForName(text.substring(startPos, startPos+30))) !== undefined
+						&& temp.toUpperCase() !== temp
+					) {
+						position = startPos+temp.length-1;
+						continue;
+					}
+					
+					if (char === ' ') {
+						if (next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) {
+							position = position+2;
+						}
+						position++;
+						break;
+					}
+				}
+				
+				data.push({
+					before: text.substring(0, startPos),
+					after: text.substring(position),
+					word: text.substring(startPos, position-1),
+					type: ENTITY_WORD
+				});
+			}
+		}
+		
+		
 		var api = this,
 			text = raw.replace(/\r|\n/gm, ' ').replace(/\s+/g, ' '),
 			textLen = text.length,
-			position = 0;
+			position = 0,
+			data = [],
+			wid = 0;
 		
 		
 		api.next = function() {
-			if (position >= textLen)
-				return null;
-			
-			var startPos = position,
-				startChar = text[position],
-				char, prevChar, nextChar, next2Char, partAfter, temp;
-			
-			for (;position <= textLen; position++) {
-				char = text[position];
-				prevChar = text[position-1];
-				nextChar = text[position+1];
-				next2Char = text[position+2];
-				partAfter = text.substring(position+1);
-				
-				if (char === undefined) {
-					position++;
-					break;
-				}
-				
-				if (
-					(position === startPos
-						? nextChar === '.' && isUpperLetters(char) // `У.Б. Йитс теперь`
-						: char === ' ' && next2Char === '.' && isUpperLetters(startChar) && isUpperLetters(nextChar)) // `Йитс У.Б. теперь`
-					&& (temp = testForName(text.substring(startPos, startPos+30))) !== undefined
-					&& temp.toUpperCase() !== temp
-				) {
-					position = startPos+temp.length-1;
-					continue;
-				}
-				
-				if (char === ' ') {
-					if (next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) {
-						position = position+2;
-					}
-					position++;
-					break;
-				}
-			}
-			
-			return {
-				before: text.substring(0, startPos),
-				after: text.substring(position),
-				word: text.substring(startPos, position-1),
-				type: ENTITY_WORD
-			}
+			return data[wid++];
 		}
+		
+		
+		parse();
 		
 	}
 	
