@@ -17,7 +17,52 @@
 	font-family: "Times New Roman", Times, serif;
 }
 
-.e-FastReader-environment {
+.e-FastReader-contextWrap {
+	position: absolute;
+	
+}
+.e-FastReader-context {
+	position: absolute;
+	margin: 0 0 0 -300px;
+	max-width: 600px;
+	left: 50%;
+	font-size: 16px;
+	text-align: justify;
+	opacity: .5;
+}
+.e-FastReader-context_before {
+	margin-bottom: 28px;
+	bottom: 50%;
+}
+.e-FastReader-context_after {
+	margin-top: 28px;
+	top: 50%;
+}
+
+.e-FastReader-word {
+	position: absolute;
+	margin: -18px 0 0;
+	width: 100%;
+	left: 0;
+	top: 50%;
+	font-size: 36px;
+	line-height: 36px;
+	text-align: center;
+}
+.e-FastReader-info {
+	position: absolute;
+	margin: -14px 0 0;
+	width: 100%;
+	left: 0;
+	top: 50%;
+	font-size: 28px;
+	line-height: 28px;
+	text-align: center;
+	font-style: italic;
+	opacity: .5;
+}
+
+.e-FastReader-sensor {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -27,10 +72,12 @@
 
 .e-FastReader-panel {
 	position: absolute;
+	display: none;
 	width: 100%;
 	height: 72px;
 	left: 0;
 	background: #fafafa;
+	-webkit-user-select: none;
 }
 .e-FastReader-panel_top {
 	top: 0;
@@ -75,6 +122,9 @@
 .e-FastReader-control:hover {
 	opacity: .44;
 }
+.e-FastReader-control:active {
+	opacity: .5;
+}
 .e-FastReader-control_plus {
 	right: 0;
 	background-position: 0 0;
@@ -98,7 +148,7 @@
 	right: 50%;
 	background-position: -72px -72px;
 }
-.e-FastReader-control_gotoEnd {
+.e-FastReader-control_lastWord {
 	margin: 0 -399px 0 0;
 	right: 50%;
 	background-position: -144px -72px;
@@ -113,54 +163,8 @@
 	left: 50%;
 	background-position: -72px -144px;
 }
-.e-FastReader-control_gotoStart {
+.e-FastReader-control_firstWord {
 	margin: 0 0 0 -399px;
 	left: 50%;
 	background-position: -144px -144px;
-}
-
-.e-FastReader-contextWrap {
-	position: absolute;
-	
-}
-.e-FastReader-context {
-	position: absolute;
-	margin: 0 0 0 -300px;
-	max-width: 600px;
-	left: 50%;
-	font-size: 16px;
-	text-align: justify;
-	opacity: .5;
-}
-.e-FastReader-context_before {
-	margin-bottom: 28px;
-	bottom: 50%;
-}
-.e-FastReader-context_after {
-	margin-top: 28px;
-	top: 50%;
-}
-
-.e-FastReader-word {
-	position: absolute;
-	margin: -18px 0 0;
-	width: 100%;
-	left: 0;
-	top: 50%;
-	font-size: 36px;
-	line-height: 36px;
-	text-align: center;
-}
-
-.e-FastReader-info {
-	position: absolute;
-	margin: -14px 0 0;
-	width: 100%;
-	left: 0;
-	top: 50%;
-	font-size: 28px;
-	line-height: 28px;
-	text-align: center;
-	font-style: italic;
-	opacity: .5;
 }

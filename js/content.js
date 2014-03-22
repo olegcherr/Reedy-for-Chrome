@@ -24,11 +24,11 @@
 	}
 	
 	
-	function show(elem) {
-		elem.style.display = "";
+	function dBlock(elem) {
+		elem.style.display = "block";
 	}
 	
-	function hide(elem) {
+	function dNone(elem) {
 		elem.style.display = "none";
 	}
 	
@@ -69,18 +69,112 @@
 			
 			if (!isRunning) return;
 			
-			if (data = parser.next()) {
-				$word.innerHTML = data.word;
+			var newData = parser.nextWord();
+			if (newData) {
+				data = newData;
+				updateWord();
 				timeout = setTimeout(next, (60000/WPM)*(data.isDelayed ? 2 : 1));
+			}
+			else {
+				api.stop();
 			}
 		}
 		
-		function onWrapperClick() {
+		function updateWord() {
+			data && ($word.innerHTML = data.word);
+		}
+		
+		function updateContext() {
+			if (data) {
+				$contextBefore.innerHTML = parser.text.substring(0, data.start);
+				$contextAfter.innerHTML = parser.text.substring(data.end);
+			}
+		}
+		
+		function onStartCtrl() {
 			if (isRunning) {
 				api.stop();
 			}
 			else {
 				api.start();
+			}
+		}
+		
+		function onNextWordCtrl() {
+			if (isRunning) return;
+			
+			dNone($info);
+			
+			var newData = parser.nextWord();
+			if (newData) {
+				data = newData;
+				updateWord();
+				updateContext();
+			}
+		}
+		
+		function onPrevWordCtrl() {
+			if (isRunning) return;
+			
+			dNone($info);
+			
+			var newData = parser.prevWord();
+			if (newData) {
+				data = newData;
+				updateWord();
+				updateContext();
+			}
+		}
+		
+		function onNextSentenceCtrl() {
+			if (isRunning) return;
+			
+			dNone($info);
+			
+			var newData = parser.nextSentense() || parser.lastWord();
+			if (newData) {
+				data = newData;
+				updateWord();
+				updateContext();
+			}
+		}
+		
+		function onPrevSentenceCtrl() {
+			if (isRunning) return;
+			
+			dNone($info);
+			
+			var newData = parser.prevSentense() || parser.firstWord();
+			if (newData) {
+				data = newData;
+				updateWord();
+				updateContext();
+			}
+		}
+		
+		function onLastWordCtrl() {
+			if (isRunning) return;
+			
+			dNone($info);
+			
+			var newData = parser.lastWord();
+			if (newData) {
+				data = newData;
+				updateWord();
+				updateContext();
+			}
+		}
+		
+		function onFirstWordCtrl() {
+			if (isRunning) return;
+			
+			dNone($info);
+			
+			var newData = parser.firstWord();
+			if (newData) {
+				data = newData;
+				updateWord();
+				updateContext();
 			}
 		}
 		
@@ -90,12 +184,15 @@
 			
 			$wrapper            = createElement('div', cls('wrapper'), bodyElem),
 			
-			$envir              = createElement('div', cls('environment'), $wrapper),
-			$contextBefore      = createElement('div', cls('context', 'context_before'), $envir),
-			$contextAfter       = createElement('div', cls('context', 'context_after'), $envir),
-			$word               = createElement('div', cls('word'), $wrapper),
+			$contextBefore      = createElement('div', cls('context', 'context_before'), $wrapper),
+			$contextAfter       = createElement('div', cls('context', 'context_after'), $wrapper),
 			
-			$panelTop           = createElement('div', cls('panel', 'panel_top'), $envir),
+			$word               = createElement('div', cls('word'), $wrapper),
+			$info               = createElement('div', cls('info'), $wrapper, LNG_LOADING),
+			
+			$sensor             = createElement('div', cls('sensor'), $wrapper),
+			
+			$panelTop           = createElement('div', cls('panel', 'panel_top'), $wrapper),
 			
 			$fontAdjust         = createElement('div', cls('adjuster', 'adjuster_font'), $panelTop, '<span>aA</span>'),
 			$ctrlDecFont        = createControl(['minus'], $fontAdjust),
@@ -106,16 +203,14 @@
 			$ctrlDecWpm         = createControl(['minus'], $wpmAdjust),
 			$ctrlIncWpm         = createControl(['plus'], $wpmAdjust),
 			
-			$panelBot           = createElement('div', cls('panel', 'panel_bottom'), $envir),
+			$panelBot           = createElement('div', cls('panel', 'panel_bottom'), $wrapper),
 			$ctrlStart          = createControl(['start'], $panelBot),
 			$ctrlNextWord       = createControl(['nextWord'], $panelBot),
 			$ctrlNextSentence   = createControl(['nextSentence'], $panelBot),
-			$ctrlGotoEnd        = createControl(['gotoEnd'], $panelBot),
+			$ctrlLastWord       = createControl(['lastWord'], $panelBot),
 			$ctrlPrevWord       = createControl(['prevWord'], $panelBot),
 			$ctrlPrevSentence   = createControl(['prevSentence'], $panelBot),
-			$ctrlGotoStart      = createControl(['gotoStart'], $panelBot),
-			
-			$info               = createElement('div', cls('info'), $wrapper, LNG_LOADING),
+			$ctrlFirstWord      = createControl(['firstWord'], $panelBot),
 			
 			bodyOverflowBefore = bodyElem.style.overflow,
 			
@@ -129,20 +224,27 @@
 			if (isRunning) return;
 			isRunning = true;
 			
-			hide($info);
-			hide($envir);
+			dNone($contextBefore);
+			dNone($contextAfter);
+			dNone($info);
+			dNone($panelTop);
+			dNone($panelBot);
 			
 			next();
 		}
 		
 		api.stop = function() {
+			clearTimeout(timeout);
+			
 			if (!isRunning) return;
 			isRunning = false;
 			
-			show($envir);
+			updateContext();
 			
-			$contextBefore.innerHTML = parser.text.substring(0, data.start);
-			$contextAfter.innerHTML = parser.text.substring(data.end);
+			dBlock($contextBefore);
+			dBlock($contextAfter);
+			dBlock($panelTop);
+			dBlock($panelBot);
 		}
 		
 		api.isRunning = function() {
@@ -156,10 +258,20 @@
 		
 		
 		parser.parse();
+		
 		$info.innerHTML = LNG_TAP_TO_START;
+		dBlock($panelTop);
+		dBlock($panelBot);
 		
 		
-		on($wrapper, "click", onWrapperClick);
+		on($sensor, "click", onStartCtrl);
+		on($ctrlStart, "click", onStartCtrl);
+		on($ctrlNextWord, "click", onNextWordCtrl);
+		on($ctrlNextSentence, "click", onNextSentenceCtrl);
+		on($ctrlLastWord, "click", onLastWordCtrl);
+		on($ctrlPrevWord, "click", onPrevWordCtrl);
+		on($ctrlPrevSentence, "click", onPrevSentenceCtrl);
+		on($ctrlFirstWord, "click", onFirstWordCtrl);
 		
 	}
 	
@@ -233,11 +345,51 @@
 			textLen = text.length,
 			position = 0,
 			data = [],
-			wid = 0;
+			wid = -1;
 		
 		
-		api.next = function() {
-			return data[wid++];
+		api.nextWord = function() {
+			if (++wid >= data.length) {
+				wid = data.length-1;
+				return null;
+			}
+			return data[wid];
+		}
+		
+		api.prevWord = function() {
+			if (--wid < 0) {
+				wid = 0;
+				return null;
+			}
+			return data[wid];
+		}
+		
+		api.nextSentense = function() {
+			while (++wid < data.length && !data[wid].isSentenceEnd) {}
+			if (++wid >= data.length) {
+				wid = data.length-1;
+				return null;
+			}
+			return data[wid];
+		}
+		
+		api.prevSentense = function() {
+			--wid;
+			while (--wid >= 0 && !data[wid].isSentenceEnd) {}
+			wid++;
+			if (wid < 0) {
+				wid = 0;
+				return null;
+			}
+			return data[wid];
+		}
+		
+		api.lastWord = function() {
+			return data[wid = data.length-1];
+		}
+		
+		api.firstWord = function() {
+			return data[wid = 0];
 		}
 		
 		api.parse = function() {
@@ -245,10 +397,11 @@
 			
 			var startPos, startChar,
 				char, prevChar, nextChar, next2Char, partAfter,
-				isDelayed, temp;
+				isDelayed, isSentenceEnd, temp;
 			
 			while (position < textLen) {
 				isDelayed = false;
+				isSentenceEnd = false;
 				
 				startPos = position;
 				startChar = text[position];
@@ -294,7 +447,10 @@
 					}
 					
 					if (char === ' ') {
-						if (next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) {
+						if (prevChar === '.') {
+							isSentenceEnd = true;
+						}
+						else if (next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) {
 							position = position+2;
 						}
 						
@@ -311,7 +467,8 @@
 					start: startPos,
 					end: position,
 					word: text.substring(startPos, position).trim(),
-					isDelayed: isDelayed
+					isDelayed: isDelayed,
+					isSentenceEnd: isSentenceEnd
 				});
 			}
 		}
@@ -463,7 +620,7 @@
 				words = [];
 				consoleArgs = [];
 				
-				for (k = 0; next = parser.next(); k++) {
+				for (k = 0; next = parser.nextWord(); k++) {
 					word = next.word;
 					
 					words.push(word);
