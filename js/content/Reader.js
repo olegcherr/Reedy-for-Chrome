@@ -48,7 +48,12 @@
 		LNG_LOADING         = "Loading ...",
 		LNG_TAP_TO_START    = "Click the screen or press space bar to start.",
 		
-		WPM = 200,
+		MIN_WPM     = 50,
+		MAX_WPM     = 2000,
+		WPM_STEP    = 50,
+		
+		MIN_FONT    = 1,
+		MAX_FONT    = 7,
 		
 		$body = querySelector('body');
 	
@@ -64,12 +69,13 @@
 			if (newData) {
 				data = newData;
 				updateWord();
-				timeout = setTimeout(next, (60000/WPM)*(data.isDelayed ? 2 : 1));
+				timeout = setTimeout(next, (60000/app.get('wpm'))*(data.isDelayed ? 2 : 1));
 			}
 			else {
 				api.stop();
 			}
 		}
+		
 		
 		function updateWord() {
 			data && ($word.innerHTML = data.word);
@@ -81,6 +87,15 @@
 				$contextAfter.innerHTML = parser.text.substring(data.end);
 			}
 		}
+		
+		function updateWpm() {
+			$wpmText.innerHTML = app.get('wpm')+'wpm';
+		}
+		
+		function updateFontSize() {
+			$wrapper.setAttribute('font-size', app.get('fontSize'));
+		}
+		
 		
 		function onStartCtrl() {
 			if (isRunning) {
@@ -170,6 +185,28 @@
 		}
 		
 		
+		function onIncreaseWpmCtrl() {
+			app.set('wpm', Math.min(app.get('wpm')+WPM_STEP, MAX_WPM));
+			updateWpm();
+		}
+		
+		function onDecreaseWpmCtrl() {
+			app.set('wpm', Math.max(app.get('wpm')-WPM_STEP, MIN_WPM));
+			updateWpm();
+		}
+		
+		
+		function onIncreaseFontCtrl() {
+			app.set('fontSize', Math.min(app.get('fontSize')+1, MAX_FONT));
+			updateFontSize();
+		}
+		
+		function onDecreaseFontCtrl() {
+			app.set('fontSize', Math.max(app.get('fontSize')-1, MIN_FONT));
+			updateFontSize();
+		}
+		
+		
 		var api = this,
 			isRunning,
 			
@@ -190,7 +227,7 @@
 			$ctrlIncFont        = createControl(['plus'], $fontAdjust),
 			
 			$wpmAdjust          = createElement('div', cls('adjuster', 'adjuster_wpm'), $panelTop),
-			$wpmText            = createElement('span', null, $wpmAdjust, '200wpm'),
+			$wpmText            = createElement('span', null, $wpmAdjust),
 			$ctrlDecWpm         = createControl(['minus'], $wpmAdjust),
 			$ctrlIncWpm         = createControl(['plus'], $wpmAdjust),
 			
@@ -250,12 +287,15 @@
 		
 		parser.parse();
 		
+		updateWpm();
+		updateFontSize();
 		$info.innerHTML = LNG_TAP_TO_START;
 		dBlock($panelTop);
 		dBlock($panelBot);
 		
 		
 		app.on($sensor, "click", onStartCtrl);
+		
 		app.on($ctrlStart, "click", onStartCtrl);
 		app.on($ctrlNextWord, "click", onNextWordCtrl);
 		app.on($ctrlNextSentence, "click", onNextSentenceCtrl);
@@ -263,6 +303,12 @@
 		app.on($ctrlPrevWord, "click", onPrevWordCtrl);
 		app.on($ctrlPrevSentence, "click", onPrevSentenceCtrl);
 		app.on($ctrlFirstWord, "click", onFirstWordCtrl);
+		
+		app.on($ctrlDecWpm, "click", onDecreaseWpmCtrl);
+		app.on($ctrlIncWpm, "click", onIncreaseWpmCtrl);
+		
+		app.on($ctrlDecFont, "click", onDecreaseFontCtrl);
+		app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
 		
 	};
 	

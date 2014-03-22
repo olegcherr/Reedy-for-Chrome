@@ -34,9 +34,45 @@
 	margin-bottom: 28px;
 	bottom: 50%;
 }
+.e-FastReader-wrapper[font-size="7"] .e-FastReader-context_before {
+	margin-bottom: 47px;
+}
+.e-FastReader-wrapper[font-size="6"] .e-FastReader-context_before {
+	margin-bottom: 40px;
+}
+.e-FastReader-wrapper[font-size="5"] .e-FastReader-context_before {
+	margin-bottom: 33px;
+}
+.e-FastReader-wrapper[font-size="3"] .e-FastReader-context_before {
+	margin-bottom: 24px;
+}
+.e-FastReader-wrapper[font-size="2"] .e-FastReader-context_before {
+	margin-bottom: 21px;
+}
+.e-FastReader-wrapper[font-size="1"] .e-FastReader-context_before {
+	margin-bottom: 18px;
+}
 .e-FastReader-context_after {
 	margin-top: 28px;
 	top: 50%;
+}
+.e-FastReader-wrapper[font-size="7"] .e-FastReader-context_after {
+	margin-top: 47px;
+}
+.e-FastReader-wrapper[font-size="6"] .e-FastReader-context_after {
+	margin-top: 40px;
+}
+.e-FastReader-wrapper[font-size="5"] .e-FastReader-context_after {
+	margin-top: 33px;
+}
+.e-FastReader-wrapper[font-size="3"] .e-FastReader-context_after {
+	margin-top: 24px;
+}
+.e-FastReader-wrapper[font-size="2"] .e-FastReader-context_after {
+	margin-top: 21px;
+}
+.e-FastReader-wrapper[font-size="1"] .e-FastReader-context_after {
+	margin-top: 18px;
 }
 
 .e-FastReader-word {
@@ -49,6 +85,37 @@
 	line-height: 36px;
 	text-align: center;
 }
+.e-FastReader-wrapper[font-size="7"] .e-FastReader-word {
+	margin: -37px 0 0;
+	font-size: 74px;
+	line-height: 74px;
+}
+.e-FastReader-wrapper[font-size="6"] .e-FastReader-word {
+	margin: -30px 0 0;
+	font-size: 60px;
+	line-height: 60px;
+}
+.e-FastReader-wrapper[font-size="5"] .e-FastReader-word {
+	margin: -23px 0 0;
+	font-size: 46px;
+	line-height: 46px;
+}
+.e-FastReader-wrapper[font-size="3"] .e-FastReader-word {
+	margin: -14px 0 0;
+	font-size: 28px;
+	line-height: 28px;
+}
+.e-FastReader-wrapper[font-size="2"] .e-FastReader-word {
+	margin: -11px 0 0;
+	font-size: 22px;
+	line-height: 22px;
+}
+.e-FastReader-wrapper[font-size="1"] .e-FastReader-word {
+	margin: -8px 0 0;
+	font-size: 16px;
+	line-height: 16px;
+}
+
 .e-FastReader-info {
 	position: absolute;
 	margin: -14px 0 0;

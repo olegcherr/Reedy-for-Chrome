@@ -2,14 +2,27 @@
 
 (function(window) {
 	
+	function init() {
+		if (!isInited) {
+			isInited = true;
+			
+			defaults = {
+				fontSize: 4, // 1-7
+				wpm: 200
+			};
+			
+			app.on(window, "keydown", onKeydown);
+		}
+	}
+	
 	function onKeydown(e) {
-		if (!isStarted) return;
+		if (!reader) return;
 		
 		switch (e.keyCode) {
 			case 27: // esc
 				app.stopEvent(e);
 				reader.destroy();
-				reader = parser = null;
+				reader = null;
 				break;
 			
 			case 32: // space
@@ -24,9 +37,9 @@
 	
 	
 	var app = window.fastReader = {},
-		isStarted,
-		
-		reader, parser;
+		defaults, settings,
+		isInited,
+		reader;
 	
 	
 	app.stopEvent = function(e) {
@@ -51,21 +64,30 @@
 	
 	
 	app.start = function() {
-		isStarted && app.stop();
-		isStarted = true;
+		init();
 		
-		var text = window.getSelection().toString().trim();
-		if (text.length > 0) {
-			parser = new app.Parser(text);
-			reader = new app.Reader(parser);
+		chrome.storage.sync.get(defaults, function(items) {
+			settings = items;
 			
-			app.on(window, "keydown", onKeydown);
-		}
+			reader && reader.destroy();
+			
+			var text = window.getSelection().toString().trim();
+			if (text.length > 0) {
+				reader = new app.Reader(
+					new app.Parser(text)
+				);
+			}
+		});
 	}
 	
-	app.stop = function() {
-		isStarted = false;
-		app.off(window, "keydown", onKeydown);
+	
+	app.get = function(key) {
+		return settings[key];
+	}
+	
+	app.set = function(key, value) {
+		settings[key] = value;
+		chrome.storage.sync.set(settings);
 	}
 	
 	
