@@ -9,7 +9,12 @@
 		{
 			"matches": ["http://*/*", "https://*/*", "file:///*"],
 			"css": ["css/content.css"],
-			"js": ["js/content.js"],
+			"js": [
+				"js/content/main.js",
+				"js/content/Parser.js",
+				"js/content/Reader.js",
+				"js/content/unittests.js"
+			],
 			"all_frames": true
 		}
 	],

@@ -14,7 +14,7 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(function (data) {
 	if (data.menuItemId == 'fastReaderMenu') {
 		chrome.tabs.executeScript(null, {
-			code: 'fastReader.start()'
+			code: 'window.fastReader && window.fastReader.start();'
 		});
 	}
 });
