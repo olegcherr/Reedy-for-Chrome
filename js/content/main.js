@@ -96,6 +96,7 @@
 			case 'popupSettings':
 				if (settings) {
 					settings[msg.key] = msg.value;
+					reader.onPopupSettings(msg.key, msg.value);
 				}
 				callback();
 				return;

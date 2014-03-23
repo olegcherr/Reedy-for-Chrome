@@ -10,10 +10,6 @@
 		return isLetters(str) && str.toUpperCase() === str;
 	}
 	
-	function isLowerLetters(str) {
-		return isLetters(str) && str.toLowerCase() === str;
-	}
-	
 	
 	function testForName(text) {
 		var len = text.length,
@@ -82,7 +78,6 @@
 		var api = this,
 			text = api.text = raw.replace(/\r|\n/gm, ' ').replace(/\s+/g, ' '),
 			textLen = text.length,
-			position = 0,
 			data = [],
 			wid = -1;
 		
@@ -131,12 +126,31 @@
 			return data[wid = 0];
 		}
 		
-		api.parse = function() {
-			if (data.length) return;
+		api.wordAtIndex = function(index) {
+			var sum = 0, i;
 			
-			var startPos, startChar,
-				char, prevChar, nextChar, next2Char, partAfter,
+			wid = data.length-1;
+			
+			for (i = 0; i < data.length; i++) {
+				sum += data[i].word.length+1;
+				
+				if (sum >= index) {
+					wid = i;
+					break;
+				}
+			}
+			
+			return data[wid];
+		}
+		
+		
+		api.parse = function() {
+			var entityAnalysis = app.get('entityAnalysis'),
+				startPos, position = 0,
+				startChar, char, prevChar, nextChar, next2Char, partAfter,
 				isDelayed, isSentenceEnd, temp;
+			
+			data = [];
 			
 			while (position < textLen) {
 				isDelayed = false;
@@ -158,7 +172,8 @@
 					}
 					
 					if (
-						(position === startPos
+						entityAnalysis
+						&& (position === startPos
 							? nextChar === '.' && isUpperLetters(char) // `У.Б. Йитс теперь`
 							: char === ' ' && next2Char === '.' && isUpperLetters(startChar) && isUpperLetters(nextChar)) // `Йитс У.Б. теперь`
 						&& (temp = testForName(text.substring(startPos, startPos+30))) !== undefined
@@ -170,7 +185,8 @@
 					}
 					
 					if (
-						(REX_CHAR_DIGIT.test(char) || (char === '+' || REX_CHAR_DASH.test(char)) && REX_CHAR_DIGIT.test(nextChar))
+						entityAnalysis
+						&& (REX_CHAR_DIGIT.test(char) || (char === '+' || REX_CHAR_DASH.test(char)) && REX_CHAR_DIGIT.test(nextChar))
 						&& (temp = testForDigitalEntity(text.substring(position, position+20)))
 					) {
 						if (position !== startPos) {
@@ -189,7 +205,7 @@
 						if (prevChar === '.') {
 							isSentenceEnd = true;
 						}
-						else if (next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) {
+						else if (entityAnalysis && next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) {
 							position = position+2;
 						}
 						

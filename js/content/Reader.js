@@ -65,7 +65,7 @@
 			if (newData) {
 				data = newData;
 				updateWord();
-				timeout = setTimeout(next, (60000/app.get('wpm'))*(data.isDelayed ? 2 : 1));
+				timeout = setTimeout(next, (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1));
 			}
 			else {
 				api.stop();
@@ -278,6 +278,18 @@
 		api.destroy = function() {
 			$body.removeChild($wrapper);
 			$body.style.overflow = bodyOverflowBefore;
+		}
+		
+		
+		api.onPopupSettings = function(key, value) {
+			switch (key) {
+				case 'entityAnalysis':
+					parser.parse();
+					data = parser.wordAtIndex(data.start+1);
+					updateWord();
+					updateContext();
+					break;
+			}
 		}
 		
 		
