@@ -218,9 +218,7 @@
 	border-width: 7px 0;
 }
 .e-FastReader-wrapper[focus-mode=false] .e-FastReader-focusLines,
-.e-FastReader-wrapper[focus-mode=false] .e-FastReader-focusDashes {
-	display: none;
-}
+.e-FastReader-wrapper[focus-mode=false] .e-FastReader-focusDashes,
 .e-FastReader-wrapper[is-running=false] .e-FastReader-focusLines,
 .e-FastReader-wrapper[is-running=false] .e-FastReader-focusDashes {
 	visibility: hidden;

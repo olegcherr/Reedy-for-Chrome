@@ -25,13 +25,6 @@
 				reader.destroy();
 				reader = null;
 				break;
-			
-			case 32: // space
-				app.stopEvent(e);
-				reader.isRunning()
-					? reader.stop()
-					: reader.start();
-				break;
 		}
 	}
 	

@@ -56,16 +56,16 @@
 	
 	app.Reader = function(parser) {
 		
-		function next() {
+		function next(justRun) {
 			clearTimeout(timeout);
 			
 			if (!isRunning) return;
 			
-			var newData = parser.nextWord();
+			var newData = justRun && data || parser.nextWord();
 			if (newData) {
 				data = newData;
 				updateWord();
-				timeout = setTimeout(next, (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1));
+				timeout = setTimeout(next, justRun ? 500 : (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1));
 			}
 			else {
 				api.stop();
@@ -114,16 +114,11 @@
 		
 		
 		function onStartCtrl() {
-			if (isRunning) {
-				api.stop();
-			}
-			else {
-				api.start();
-			}
+			isRunning ? api.stop() : api.start();
 		}
 		
 		function onNextWordCtrl() {
-			if (isRunning) return;
+			isRunning && api.stop();
 			
 			dNone($info);
 			
@@ -136,7 +131,7 @@
 		}
 		
 		function onPrevWordCtrl() {
-			if (isRunning) return;
+			isRunning && api.stop();
 			
 			dNone($info);
 			
@@ -149,7 +144,7 @@
 		}
 		
 		function onNextSentenceCtrl() {
-			if (isRunning) return;
+			isRunning && api.stop();
 			
 			dNone($info);
 			
@@ -162,7 +157,7 @@
 		}
 		
 		function onPrevSentenceCtrl() {
-			if (isRunning) return;
+			isRunning && api.stop();
 			
 			dNone($info);
 			
@@ -175,7 +170,7 @@
 		}
 		
 		function onLastWordCtrl() {
-			if (isRunning) return;
+			isRunning && api.stop();
 			
 			dNone($info);
 			
@@ -188,7 +183,7 @@
 		}
 		
 		function onFirstWordCtrl() {
-			if (isRunning) return;
+			isRunning && api.stop();
 			
 			dNone($info);
 			
@@ -229,6 +224,35 @@
 		
 		function onWindowResize() {
 			updateFocusPoint();
+		}
+		
+		function onKeydown(e) {
+			switch (e.keyCode) {
+				case 32: // space
+					app.stopEvent(e);
+					onStartCtrl();
+					break;
+				case 39: // right
+					app.stopEvent(e);
+					e.ctrlKey
+						? onNextSentenceCtrl()
+						: e.altKey ? onLastWordCtrl() : onNextWordCtrl();
+					break;
+				case 37: // left
+					app.stopEvent(e);
+					e.ctrlKey
+						? onPrevSentenceCtrl()
+						: e.altKey ? onFirstWordCtrl() : onPrevWordCtrl();
+					break;
+				case 38: // up
+					app.stopEvent(e);
+					e.ctrlKey ? onIncreaseFontCtrl() : onIncreaseWpmCtrl();
+					break;
+				case 40: // down
+					app.stopEvent(e);
+					e.ctrlKey ? onDecreaseFontCtrl() : onDecreaseWpmCtrl();
+					break;
+			}
 		}
 		
 		
@@ -289,9 +313,8 @@
 			dNone($panelBot);
 			
 			updateWrapper();
-			updateFocusPoint();
 			
-			next();
+			next(true);
 		}
 		
 		api.stop = function() {
@@ -309,11 +332,10 @@
 			dBlock($panelBot);
 		}
 		
-		api.isRunning = function() {
-			return isRunning;
-		}
-		
 		api.destroy = function() {
+			app.off(window, 'resize', onWindowResize);
+			app.off(window, "keydown", onKeydown);
+			
 			$body.removeChild($wrapper);
 			$body.style.overflow = bodyOverflowBefore;
 		}
@@ -338,11 +360,15 @@
 		
 		parser.parse();
 		
-		updatePanels();
+		
 		updateWrapper();
-		$info.innerHTML = LNG_TAP_TO_START;
+		updateFocusPoint();
+		
 		dBlock($panelTop);
 		dBlock($panelBot);
+		updatePanels();
+		
+		$info.innerHTML = LNG_TAP_TO_START;
 		
 		
 		app.on($sensor, "click", onStartCtrl);
@@ -362,6 +388,7 @@
 		app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
 		
 		app.on(window, 'resize', onWindowResize);
+		app.on(window, "keydown", onKeydown);
 		
 	};
 	
