@@ -30,7 +30,7 @@
 	}
 	
 	
-	function cls(className) {
+	function cls() {
 		for (var res = [], i = 0; i < arguments.length; i++) {
 			res.push(CLS_MAIN+'-'+arguments[i]);
 		}
@@ -78,6 +78,7 @@
 			$wrapper.setAttribute('dark-theme', app.get('darkTheme'));
 			$wrapper.setAttribute('font-size', app.get('fontSize'));
 			$wrapper.setAttribute('focus-mode', app.get('focusMode'));
+			$wrapper.setAttribute('v-position', app.get('vPosition'));
 		}
 		
 		function updatePanels() {
@@ -263,17 +264,17 @@
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
 			
-			$contextBefore      = createElement('div', cls('context', 'context_before'), $wrapper),
-			$contextAfter       = createElement('div', cls('context', 'context_after'), $wrapper),
+			$pane               = createElement('div', cls('pane'), $wrapper),
 			
-			$wordWrap           = createElement('div', cls('wordWrap'), $wrapper),
+			$contextBefore      = createElement('div', cls('context', 'context_before'), $pane),
+			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
+			
+			$wordWrap           = createElement('div', cls('wordWrap'), $pane),
 			$word               = createElement('div', cls('word'), $wordWrap),
 			$focusLines         = createElement('div', cls('focusLines'), $wordWrap),
 			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
 			
-			$info               = createElement('div', cls('info'), $wrapper, LNG_LOADING),
-			
-			$sensor             = createElement('div', cls('sensor'), $wrapper),
+			$info               = createElement('div', cls('info'), $pane, LNG_LOADING),
 			
 			$panelTop           = createElement('div', cls('panel', 'panel_top'), $wrapper),
 			
@@ -345,6 +346,7 @@
 		api.onPopupSettings = function(key, value) {
 			switch (key) {
 				case 'darkTheme':
+				case 'vPosition':
 					updateWrapper();
 					break;
 				case 'focusMode':
@@ -375,7 +377,7 @@
 		$info.innerHTML = LNG_TAP_TO_START;
 		
 		
-		app.on($sensor, "click", onStartCtrl);
+		app.on($pane, "click", onStartCtrl);
 		
 		app.on($ctrlStart, "click", onStartCtrl);
 		app.on($ctrlNextWord, "click", onNextWordCtrl);

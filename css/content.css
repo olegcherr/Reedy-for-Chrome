@@ -22,6 +22,28 @@
 	line-height: inherit;
 }
 
+.e-FastReader-pane {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+}
+.e-FastReader-wrapper[v-position="5"] .e-FastReader-pane {
+	top: -30%;
+}
+.e-FastReader-wrapper[v-position="4"] .e-FastReader-pane {
+	top: -15%;
+}
+.e-FastReader-wrapper[v-position="3"] .e-FastReader-pane {
+	top: 0;
+}
+.e-FastReader-wrapper[v-position="2"] .e-FastReader-pane {
+	top: 15%;
+}
+.e-FastReader-wrapper[v-position="1"] .e-FastReader-pane {
+	top: 30%;
+}
+
 .e-FastReader-contextWrap {
 	position: absolute;
 	
@@ -254,14 +276,6 @@
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-info {
 	color: #bfbfbf;
 	opacity: 1;
-}
-
-.e-FastReader-sensor {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	left: 0;
-	top: 0;
 }
 
 .e-FastReader-panel {

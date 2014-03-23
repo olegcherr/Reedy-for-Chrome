@@ -35,8 +35,9 @@ body {
 	color: #a3a3a3;
 }
 .p-item-right {
-	text-align: right;
-	width: 55px;
+	padding: 0 0 0 13px;
+	text-align: center;
+	width: 42px;
 	border-bottom: 1px solid #ededed;
 }
 
@@ -87,4 +88,31 @@ body {
 }
 .e-Checkbox-bg[checked=false] > .e-Checkbox-bar {
 	box-shadow: -2px 2px 0 rgba(0, 0, 0, .15);
+}
+
+
+.e-Range-wrapper {
+	display: inline-block;
+	width: 16px;
+}
+.e-Range-btn {
+	display: block;
+	width: 16px;
+	height: 13px;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite1.png");
+	cursor: pointer;
+}
+.e-Range-btn_up {
+	background-position: 0 0;
+}
+.e-Range-btn_dn {
+	background-position: 0 -13px;
+}
+.e-Range-text {
+	display: block;
+	height: 16px;
+	font-size: 11px;
+	line-height: 16px;
+	font-weight: bold;
+	text-align: center;
 }

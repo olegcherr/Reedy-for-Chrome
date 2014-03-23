@@ -19,6 +19,7 @@
 		fontSize: 4, // 1-7
 		wpm: 200,
 		darkTheme: false,
+		vPosition: 4,
 		focusMode: true,
 		smartSlowing: true,
 		entityAnalysis: true

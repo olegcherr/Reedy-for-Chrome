@@ -24,7 +24,7 @@
 			$bar.innerHTML = api.isChecked ? LNG_ON : LNG_OFF;
 			$checkbox.checked = api.isChecked;
 			
-			stateBefore !== $checkbox.checked && onChange(api, $checkbox);
+			stateBefore !== $checkbox.checked && onChange(api.isChecked, $checkbox, api);
 		}
 		
 		function toggle() {
