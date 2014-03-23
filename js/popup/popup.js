@@ -5,6 +5,10 @@
 	var app = window.fastReaderPopup = {};
 	
 	
+	app.each = function(arr, fn) {
+		for (var i = 0; i < arr.length && fn(arr[i]) !== false; i++) {}
+	}
+	
 	app.on = function(elem, event, fn) {
 		elem.addEventListener(event, fn);
 	}

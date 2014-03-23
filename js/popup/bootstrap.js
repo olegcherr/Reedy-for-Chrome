@@ -7,14 +7,20 @@
 		app.sendMessageToSelectedTab({type: 'popupSettings', key: $checkbox.name, value: $checkbox.checked});
 	}
 	
+	function onExternalLinkClick(e) {
+		window.open(e.target.href);
+	}
+	
 	
 	function init(settings) {
-		var $temp = document.querySelectorAll('.j-checkbox'), i;
+		app.each(document.querySelectorAll('.j-checkbox'), function($elem) {
+			$elem.checked = settings[$elem.name];
+			new app.Checkbox($elem, onCheckbox);
+		});
 		
-		for (i = 0; i < $temp.length; i++) {
-			$temp[i].checked = settings[$temp[i].name];
-			new app.Checkbox($temp[i], onCheckbox);
-		}
+		app.each(document.querySelectorAll('a[href^=http]'), function($elem) {
+			app.on($elem, 'click', onExternalLinkClick);
+		});
 	}
 	
 	
