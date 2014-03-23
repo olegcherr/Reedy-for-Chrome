@@ -75,6 +75,7 @@
 		
 		function updateWrapper() {
 			$wrapper.setAttribute('is-running', isRunning);
+			$wrapper.setAttribute('dark-theme', app.get('darkTheme'));
 			$wrapper.setAttribute('font-size', app.get('fontSize'));
 			$wrapper.setAttribute('focus-mode', app.get('focusMode'));
 		}
@@ -343,16 +344,19 @@
 		
 		api.onPopupSettings = function(key, value) {
 			switch (key) {
-				case 'entityAnalysis':
-					parser.parse();
-					data = parser.wordAtIndex(data.start+1);
-					updateWord();
-					updateContext();
+				case 'darkTheme':
+					updateWrapper();
 					break;
 				case 'focusMode':
 					updateWrapper();
 					updateFocusPoint();
 					updateWord();
+					break;
+				case 'entityAnalysis':
+					parser.parse();
+					data = parser.wordAtIndex(data.start+1);
+					updateWord();
+					updateContext();
 					break;
 			}
 		}
