@@ -37,7 +37,7 @@
 			"19": "icons/icon19.png",
 			"38": "icons/icon38.png"
 		},
-		"default_title": "Read with FastReader",
+		"default_title": "FastReader",
 		"default_popup": "popup.html"
 	},
 	"background": {

@@ -14,10 +14,6 @@
 		return $elem;
 	}
 	
-	function createTextNode(text) {
-		return document.createTextNode(text);
-	}
-	
 	function createControl(modifiers, $appendTo, title) {
 		var $btn = createElement('div', cls.apply(null, ('control_'+modifiers.join(' control_')).split(' ').concat('control')), $appendTo);
 		title != null && $btn.setAttribute('title', title);

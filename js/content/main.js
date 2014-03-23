@@ -2,16 +2,17 @@
 
 (function(window) {
 	
-	function init() {
-		if (!isInited) {
-			isInited = true;
-			
-			defaults = {
-				fontSize: 4, // 1-7
-				wpm: 200
-			};
-			
-			app.on(window, "keydown", onKeydown);
+	function init(callback) {
+		if (!settings) {
+			settings = {};
+			app.sendMessageToExtension({type: 'settingsGet'}, function(sett) {
+				settings = sett;
+				app.on(window, "keydown", onKeydown);
+				callback();
+			});
+		}
+		else {
+			callback();
 		}
 	}
 	
@@ -37,8 +38,7 @@
 	
 	
 	var app = window.fastReader = {},
-		defaults, settings,
-		isInited,
+		settings,
 		reader;
 	
 	
@@ -53,6 +53,10 @@
 		};
 	}
 	
+	app.sendMessageToExtension = function(data, callback) {
+		chrome.extension.sendMessage(data, callback);
+	}
+	
 	
 	app.on = function(elem, event, fn) {
 		elem.addEventListener(event, fn);
@@ -63,12 +67,18 @@
 	}
 	
 	
+	app.get = function(key) {
+		return settings[key];
+	}
+	
+	app.set = function(key, value) {
+		settings[key] = value;
+		app.sendMessageToExtension({type: 'settingsSet', key: key, value: value});
+	}
+	
+	
 	app.start = function() {
-		init();
-		
-		chrome.storage.sync.get(defaults, function(items) {
-			settings = items;
-			
+		init(function() {
 			reader && reader.destroy();
 			
 			var text = window.getSelection().toString().trim();
@@ -81,14 +91,16 @@
 	}
 	
 	
-	app.get = function(key) {
-		return settings[key];
-	}
-	
-	app.set = function(key, value) {
-		settings[key] = value;
-		chrome.storage.sync.set(settings);
-	}
+	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
+		switch (msg.type) {
+			case 'popupSettings':
+				if (settings) {
+					settings[msg.key] = msg.value;
+				}
+				callback();
+				return;
+		}
+	});
 	
 	
 })(this);
