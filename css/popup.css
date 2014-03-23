@@ -85,6 +85,6 @@ body {
 	border-radius: 2px;
 	box-shadow: 2px 2px 0 rgba(0, 0, 0, .15);
 }
-[checked=false] > .e-Checkbox-bar {
+.e-Checkbox-bg[checked=false] > .e-Checkbox-bar {
 	box-shadow: -2px 2px 0 rgba(0, 0, 0, .15);
 }
