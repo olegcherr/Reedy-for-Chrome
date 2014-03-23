@@ -73,8 +73,14 @@
 		}
 		
 		
-		function updateWord() {
-			data && ($word.innerHTML = data.word);
+		function updateWrapper() {
+			$wrapper.setAttribute('is-running', isRunning);
+			$wrapper.setAttribute('font-size', app.get('fontSize'));
+			$wrapper.setAttribute('focus-mode', app.get('focusMode'));
+		}
+		
+		function updatePanels() {
+			$wpmText.innerHTML = app.get('wpm')+'wpm';
 		}
 		
 		function updateContext() {
@@ -84,12 +90,26 @@
 			}
 		}
 		
-		function updateWpm() {
-			$wpmText.innerHTML = app.get('wpm')+'wpm';
+		function updateWord() {
+			var word = data.word;
+			
+			$word.style.left = '';
+			
+			if (app.get('focusMode')) {
+				var stop = Math.round((word.length+1)*0.4) - 1;
+				$word.innerHTML = word.substring(0, stop)+'<span>'+word[stop]+'</span>'+word.substring(stop+1);
+				
+				var letterRect = $word.querySelector('span').getBoundingClientRect();
+				$word.style.left = Math.round(focusPoint - letterRect.left - letterRect.width/2)+'px';
+			}
+			else {
+				$word.innerHTML = word;
+			}
 		}
 		
-		function updateFontSize() {
-			$wrapper.setAttribute('font-size', app.get('fontSize'));
+		function updateFocusPoint() {
+			var rect = $focusDashes.getBoundingClientRect();
+			focusPoint = Math.floor(rect.left + Math.floor(rect.width)/2);
 		}
 		
 		
@@ -183,35 +203,49 @@
 		
 		function onIncreaseWpmCtrl() {
 			app.set('wpm', Math.min(app.get('wpm')+WPM_STEP, MAX_WPM));
-			updateWpm();
+			updatePanels();
 		}
 		
 		function onDecreaseWpmCtrl() {
 			app.set('wpm', Math.max(app.get('wpm')-WPM_STEP, MIN_WPM));
-			updateWpm();
+			updatePanels();
 		}
 		
 		
 		function onIncreaseFontCtrl() {
 			app.set('fontSize', Math.min(app.get('fontSize')+1, MAX_FONT));
-			updateFontSize();
+			updateWrapper();
+			updateFocusPoint();
+			updateWord();
 		}
 		
 		function onDecreaseFontCtrl() {
 			app.set('fontSize', Math.max(app.get('fontSize')-1, MIN_FONT));
-			updateFontSize();
+			updateWrapper();
+			updateFocusPoint();
+			updateWord();
 		}
 		
 		
+		function onWindowResize() {
+			updateFocusPoint();
+		}
+		
+		
+		
 		var api = this,
-			isRunning,
+			isRunning = false,
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
 			
 			$contextBefore      = createElement('div', cls('context', 'context_before'), $wrapper),
 			$contextAfter       = createElement('div', cls('context', 'context_after'), $wrapper),
 			
-			$word               = createElement('div', cls('word'), $wrapper),
+			$wordWrap           = createElement('div', cls('wordWrap'), $wrapper),
+			$word               = createElement('div', cls('word'), $wordWrap),
+			$focusLines         = createElement('div', cls('focusLines'), $wordWrap),
+			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
+			
 			$info               = createElement('div', cls('info'), $wrapper, LNG_LOADING),
 			
 			$sensor             = createElement('div', cls('sensor'), $wrapper),
@@ -236,8 +270,8 @@
 			$ctrlPrevSentence   = createControl(['prevSentence'], $panelBot),
 			$ctrlFirstWord      = createControl(['firstWord'], $panelBot),
 			
+			focusPoint = 0,
 			bodyOverflowBefore = $body.style.overflow,
-			
 			data, timeout;
 		
 		
@@ -254,6 +288,9 @@
 			dNone($panelTop);
 			dNone($panelBot);
 			
+			updateWrapper();
+			updateFocusPoint();
+			
 			next();
 		}
 		
@@ -263,6 +300,7 @@
 			if (!isRunning) return;
 			isRunning = false;
 			
+			updateWrapper();
 			updateContext();
 			
 			dBlock($contextBefore);
@@ -289,14 +327,19 @@
 					updateWord();
 					updateContext();
 					break;
+				case 'focusMode':
+					updateWrapper();
+					updateFocusPoint();
+					updateWord();
+					break;
 			}
 		}
 		
 		
 		parser.parse();
 		
-		updateWpm();
-		updateFontSize();
+		updatePanels();
+		updateWrapper();
 		$info.innerHTML = LNG_TAP_TO_START;
 		dBlock($panelTop);
 		dBlock($panelBot);
@@ -317,6 +360,8 @@
 		
 		app.on($ctrlDecFont, "click", onDecreaseFontCtrl);
 		app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
+		
+		app.on(window, 'resize', onWindowResize);
 		
 	};
 	
