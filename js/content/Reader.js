@@ -316,6 +316,9 @@
 			
 			$info               = createElement('div', cls('info'), $pane, LNG_LOADING),
 			
+			$closingAreaLeft    = createElement('div', cls('closingArea','closingArea_left'), $wrapper),
+			$closingAreaRight   = createElement('div', cls('closingArea','closingArea_right'), $wrapper),
+			
 			// Top panel
 			$topPanel           = createElement('div', cls('panel', 'panel_top'), $wrapper),
 			
@@ -435,6 +438,9 @@
 		
 		
 		app.on($pane, "click", onPaneClick);
+		
+		app.on($closingAreaLeft, "click", onCloseCtrl);
+		app.on($closingAreaRight, "click", onCloseCtrl);
 		
 		app.on($ctrlStart, "click", onStartCtrl);
 		app.on($ctrlNextWord, "click", onNextWordCtrl);
