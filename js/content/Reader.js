@@ -52,8 +52,6 @@
 		MIN_FONT    = 1,
 		MAX_FONT    = 7,
 		
-		TPL_TOP_PANEL = '<div class="%-panel %-panel_top"><div class="%-adjust"><div class="%-adjustItem"><i></i><span>aA</span><b></b></div></div></div>',
-		
 		$body = querySelector('body');
 	
 	
