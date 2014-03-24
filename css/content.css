@@ -17,6 +17,12 @@
 .e-FastReader-wrapper[dark-theme=true] {
 	background: #1f1f1f;
 }
+.e-FastReader-wrapper[transparent-bg=true] {
+	background: rgba(230, 230, 230, .85);
+}
+.e-FastReader-wrapper[dark-theme=true][transparent-bg=true] {
+	background: rgba(31, 31, 31, .9);
+}
 .e-FastReader-wrapper * { /* fix for sites that apply styles directly on tags (i.e. lipsum.com) */
 	font: inherit;
 	line-height: inherit;
@@ -60,9 +66,16 @@
 	color: #8a8a8a;
 	font-size: 16px;
 	text-align: justify;
+	-webkit-transition: color 1s;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-context {
 	color: #6b6b6b;
+}
+.e-FastReader-wrapper[transparent-bg=true] .e-FastReader-context {
+	color: #575757;
+}
+.e-FastReader-wrapper[dark-theme=true][transparent-bg=true] .e-FastReader-context {
+	color: #878787;
 }
 .e-FastReader-context_before {
 	margin-bottom: 28px;
@@ -121,6 +134,12 @@
 	height: 100%;
 	text-align: center;
 	white-space: nowrap;
+}
+.e-FastReader-wrapper[is-running=true] .e-FastReader-wordWrap {
+	background: #e6e6e6;
+}
+.e-FastReader-wrapper[is-running=true][dark-theme=true] .e-FastReader-wordWrap {
+	background: #1f1f1f;
 }
 .e-FastReader-wrapper[font-size="7"] .e-FastReader-wordWrap {
 	margin: -105px 0 0 -513px;
@@ -282,10 +301,12 @@
 	line-height: 28px;
 	text-align: center;
 	font-style: italic;
+	text-shadow: 0 2px 0 rgba(0, 0, 0, .15);
 	opacity: .5;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-info {
 	color: #bfbfbf;
+	text-shadow: 0 3px 0 rgba(0, 0, 0, .35);
 	opacity: 1;
 }
 
@@ -413,16 +434,16 @@
 	background-position: -96px -144px;
 }
 .e-FastReader-topPanelBtn_background {
-	background-position: -128px -144px;
+	background-position: -160px -144px;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_close {
 	background-position: -352px -144px;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_theme {
-	background-position: -384px -144px;
+	background-position: -416px -144px;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_background {
-	background-position: -416px -144px;
+	background-position: -448px -144px;
 }
 
 

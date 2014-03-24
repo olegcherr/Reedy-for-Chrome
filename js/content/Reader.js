@@ -79,6 +79,7 @@
 		function updateWrapper() {
 			$wrapper.setAttribute('is-running', isRunning);
 			$wrapper.setAttribute('dark-theme', app.get('darkTheme'));
+			$wrapper.setAttribute('transparent-bg', app.get('transparentBg'));
 			$wrapper.setAttribute('font-size', app.get('fontSize'));
 			$wrapper.setAttribute('focus-mode', app.get('focusMode'));
 			$wrapper.setAttribute('v-position', app.get('vPosition'));
@@ -230,6 +231,17 @@
 		function onCloseCtrl() {
 			api.destroy();
 		}
+		
+		function onThemeCtrl() {
+			app.set('darkTheme', !app.get('darkTheme'));
+			updateWrapper();
+		}
+		
+		function onBackgroundCtrl() {
+			app.set('transparentBg', !app.get('transparentBg'));
+			updateWrapper();
+		}
+		
 		
 		function onWindowResize() {
 			updateFocusPoint();
@@ -415,6 +427,8 @@
 		app.on($ctrlDecFont, "click", onDecreaseFontCtrl);
 		app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
 		
+		app.on($menuBtnTheme, "click", onThemeCtrl);
+		app.on($menuBtnBackground, "click", onBackgroundCtrl);
 		app.on($menuBtnClose, "click", onCloseCtrl);
 		
 		app.on(window, "resize", onWindowResize);
