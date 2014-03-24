@@ -61,10 +61,6 @@
 
 /* === Context ===================== */
 
-.e-FastReader-contextWrap {
-	position: absolute;
-	
-}
 .e-FastReader-context {
 	position: absolute;
 	margin: 0 0 0 -300px;
@@ -552,4 +548,43 @@
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_firstWord {
 	background-position: -432px -72px;
+}
+
+
+
+@media screen and (max-width: 800px) {
+	.e-FastReader-topPanelLeft {
+		margin: 0;
+		left: 0;
+	}
+	.e-FastReader-topPanelRight {
+		margin: 0;
+		right: 0;
+	}
+	
+	.e-FastReader-control_nextWord {
+		margin: 0 -108px 0 0;
+	}
+	.e-FastReader-control_nextSentence {
+		margin: 0 -180px 0 0;
+	}
+	.e-FastReader-control_lastWord {
+		margin: 0 -252px 0 0;
+	}
+	.e-FastReader-control_prevWord {
+		margin: 0 0 0 -108px;
+	}
+	.e-FastReader-control_prevSentence {
+		margin: 0 0 0 -180px;
+	}
+	.e-FastReader-control_firstWord {
+		margin: 0 0 0 -252px;
+	}
+}
+@media screen and (max-width: 664px) {
+	.e-FastReader-context {
+		margin-left: 0;
+		left: 5%;
+		width: 90%;
+	}
 }
