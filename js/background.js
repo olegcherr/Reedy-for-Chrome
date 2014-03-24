@@ -16,15 +16,17 @@
 	
 	
 	var defaults = {
-		fontSize: 4, // 1-7
-		wpm: 200,
-		darkTheme: false,
-		transparentBg: false,
-		vPosition: 4,
-		focusMode: true,
-		smartSlowing: true,
-		entityAnalysis: true
-	};
+			fontSize: 4, // 1-7
+			wpm: 200,
+			darkTheme: false,
+			transparentBg: false,
+			vPosition: 4,
+			focusMode: true,
+			smartSlowing: true,
+			entityAnalysis: true
+		},
+		
+		isPopupOpen = false;
 	
 	
 	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
@@ -37,6 +39,20 @@
 					
 				});
 				break;
+			case 'isPopupOpen':
+				callback(isPopupOpen);
+				break;
+		}
+	});
+	
+	
+	
+	chrome.extension.onConnect.addListener(function(port) {
+		if (port.name === "Popup") {
+			isPopupOpen = true;
+			port.onDisconnect.addListener(function() {
+				isPopupOpen = false;
+			});
 		}
 	});
 	

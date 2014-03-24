@@ -33,8 +33,13 @@
 		};
 	}
 	
+	
 	app.sendMessageToExtension = function(data, callback) {
 		chrome.extension.sendMessage(data, callback);
+	}
+	
+	app.isPopupOpen = function(callback) {
+		app.sendMessageToExtension({type: "isPopupOpen"}, callback);
 	}
 	
 	

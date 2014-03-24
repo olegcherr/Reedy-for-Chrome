@@ -37,5 +37,7 @@
 	
 	app.sendMessageToExtension({type: 'settingsGet'}, init);
 	
+	chrome.extension.connect({name: "Popup"});
+	
 	
 })(window.fastReaderPopup);

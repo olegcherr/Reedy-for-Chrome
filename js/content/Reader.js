@@ -117,6 +117,13 @@
 		}
 		
 		
+		function onPaneClick() {
+			app.isPopupOpen(function(res) {
+				res || onStartCtrl();
+			});
+		}
+		
+		
 		function onStartCtrl() {
 			isRunning ? api.stop() : api.start();
 		}
@@ -408,7 +415,7 @@
 		$info.innerHTML = LNG_TAP_TO_START;
 		
 		
-		app.on($pane, "click", onStartCtrl);
+		app.on($pane, "click", onPaneClick);
 		
 		app.on($ctrlStart, "click", onStartCtrl);
 		app.on($ctrlNextWord, "click", onNextWordCtrl);
