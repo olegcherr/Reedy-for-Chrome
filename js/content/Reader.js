@@ -372,10 +372,15 @@
 		}
 		
 		api.destroy = function() {
-			app.off(window, 'resize', onWindowResize);
+			app.off(window, "resize", onWindowResize);
 			app.off(window, "keydown", onKeydown);
 			
-			$body.removeChild($wrapper);
+			$wrapper.setAttribute("is-closing", "true");
+			
+			setTimeout(function() {
+				$body.removeChild($wrapper);
+			}, 500);
+			
 			$body.style.overflow = bodyOverflowBefore;
 			
 			app.onReaderDestroy();
@@ -413,6 +418,8 @@
 		updatePanels();
 		
 		$info.innerHTML = LNG_TAP_TO_START;
+		
+		$wrapper.setAttribute("is-closing", "false");
 		
 		
 		app.on($pane, "click", onPaneClick);

@@ -11,8 +11,15 @@
 	background: #e6e6e6;
 	z-index: 1111111;
 	overflow: hidden;
+	opacity: 0;
 	cursor: default;
-	-webkit-transition: background-color 1s;
+	-webkit-transition: background-color 1s, opacity 500ms;
+}
+.e-FastReader-wrapper[is-closing=false] {
+	opacity: 1;
+}
+.e-FastReader-wrapper[is-closing=true] {
+	opacity: 0;
 }
 .e-FastReader-wrapper[dark-theme=true] {
 	background: #1f1f1f;
