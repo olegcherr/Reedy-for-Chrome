@@ -86,52 +86,40 @@
 		
 		
 		api.word = function() {
-			if (wid >= data.length) {
-				wid = data.length-1;
-				return null;
-			}
-			return data[wid];
+			return data[wid = Math.max(Math.min(wid, data.length-1), 0)];
 		}
 		
 		api.nextWord = function() {
-			++wid;
+			wid++;
 			return api.word();
 		}
 		
 		api.prevWord = function() {
-			if (--wid < 0) {
-				wid = 0;
-				return null;
-			}
-			return data[wid];
+			wid--;
+			return api.word();
 		}
 		
 		api.nextSentense = function() {
 			while (++wid < data.length && !data[wid].isSentenceEnd) {}
-			if (++wid >= data.length) {
-				wid = data.length-1;
-				return null;
-			}
-			return data[wid];
+			wid++;
+			return api.word();
 		}
 		
 		api.prevSentense = function() {
-			--wid;
+			wid--;
 			while (--wid >= 0 && !data[wid].isSentenceEnd) {}
 			wid++;
-			if (wid < 0) {
-				wid = 0;
-				return null;
-			}
-			return data[wid];
+			return api.word();
 		}
 		
 		api.lastWord = function() {
-			return data[wid = data.length-1];
+			wid = data.length-1;
+			return api.word();
 		}
 		
 		api.firstWord = function() {
-			return data[wid = 0];
+			wid = 0;
+			return api.word();
 		}
 		
 		api.wordAtIndex = function(index) {
@@ -148,7 +136,7 @@
 				}
 			}
 			
-			return data[wid];
+			return api.word();
 		}
 		
 		

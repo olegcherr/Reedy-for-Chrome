@@ -142,6 +142,12 @@
 			});
 		}
 		
+		function onPaneWheel(e) {
+			e.deltaY < 0
+				? onPrevWordCtrl()
+				: onNextWordCtrl();
+		}
+		
 		
 		function onStartCtrl() {
 			isRunning ? api.stop() : api.start();
@@ -150,79 +156,61 @@
 		function onNextWordCtrl() {
 			isRunning && api.stop();
 			
-			dNone($info);
+			data = parser.nextWord();
 			
-			var newData = parser.nextWord();
-			if (newData) {
-				data = newData;
-				updateWord();
-				updateContext();
-			}
+			dNone($info);
+			updateWord();
+			updateContext();
 		}
 		
 		function onPrevWordCtrl() {
 			isRunning && api.stop();
 			
-			dNone($info);
+			data = parser.prevWord();
 			
-			var newData = parser.prevWord();
-			if (newData) {
-				data = newData;
-				updateWord();
-				updateContext();
-			}
+			dNone($info);
+			updateWord();
+			updateContext();
 		}
 		
 		function onNextSentenceCtrl() {
 			isRunning && api.stop();
 			
-			dNone($info);
+			data = parser.nextSentense();
 			
-			var newData = parser.nextSentense() || parser.lastWord();
-			if (newData) {
-				data = newData;
-				updateWord();
-				updateContext();
-			}
+			dNone($info);
+			updateWord();
+			updateContext();
 		}
 		
 		function onPrevSentenceCtrl() {
 			isRunning && api.stop();
 			
+			data = parser.prevSentense();
+				
 			dNone($info);
-			
-			var newData = parser.prevSentense() || parser.firstWord();
-			if (newData) {
-				data = newData;
-				updateWord();
-				updateContext();
-			}
+			updateWord();
+			updateContext();
 		}
 		
 		function onLastWordCtrl() {
 			isRunning && api.stop();
 			
+			data = parser.lastWord();
+				
 			dNone($info);
-			
-			var newData = parser.lastWord();
-			if (newData) {
-				data = newData;
-				updateWord();
-				updateContext();
-			}
+			updateWord();
+			updateContext();
 		}
 		
 		function onFirstWordCtrl() {
 			isRunning && api.stop();
 			
-			dNone($info);
+			data = parser.firstWord();
 			
-			var newData = parser.firstWord();
-			if (newData) {
-				data = newData;
-				updateWord();
-				updateContext();
-			}
+			dNone($info);
+			updateWord();
+			updateContext();
 		}
 		
 		
@@ -432,6 +420,7 @@
 		
 		
 		app.on($pane, "click", onPaneClick);
+		app.on($pane, "wheel", onPaneWheel);
 		
 		app.on($closingAreaLeft, "click", onCloseCtrl);
 		app.on($closingAreaRight, "click", onCloseCtrl);
