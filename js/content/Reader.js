@@ -69,7 +69,9 @@
 				timeout = setTimeout(next, justRun ? 500 : (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1));
 			}
 			else {
-				api.stop();
+				setTimeout(function() {
+					api.stop();
+				}, 500);
 			}
 		}
 		
