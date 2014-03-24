@@ -66,7 +66,13 @@
 			if (newData) {
 				data = newData;
 				updateWord();
-				timeout = setTimeout(next, justRun ? 500 : (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1));
+				timeout = setTimeout(
+					next,
+					wasRun
+						? (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1)
+						: 500
+				);
+				wasRun = true;
 			}
 			else {
 				setTimeout(function() {
@@ -291,6 +297,7 @@
 		
 		var api = this,
 			isRunning = false,
+			wasRun = false,
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
 			
