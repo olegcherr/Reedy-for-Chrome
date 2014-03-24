@@ -35,9 +35,7 @@
 				settingsGet(msg.key, callback);
 				return true;
 			case 'settingsSet':
-				settingsSet(msg.key, msg.value, function() {
-					
-				});
+				settingsSet(msg.key, msg.value, callback);
 				break;
 			case 'isPopupOpen':
 				callback(isPopupOpen);
