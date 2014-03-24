@@ -127,6 +127,16 @@
 		
 		
 		function onPaneClick() {
+			var selection = window.getSelection(),
+				$node = selection.anchorNode;
+			
+			if (selection.toString().length && $node) {
+				while (($node = $node.parentNode) && $node !== $pane) {}
+				if ($node === $pane) {
+					return;
+				}
+			}
+			
 			app.isPopupOpen(function(res) {
 				res || onStartCtrl();
 			});
@@ -307,12 +317,11 @@
 			$pane               = createElement('div', cls('pane'), $wrapper),
 			
 			$contextBefore      = createElement('div', cls('context', 'context_before'), $pane),
-			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
-			
 			$wordWrap           = createElement('div', cls('wordWrap'), $pane),
 			$word               = createElement('div', cls('word'), $wordWrap),
 			$focusLines         = createElement('div', cls('focusLines'), $wordWrap),
 			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
+			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
 			
 			$info               = createElement('div', cls('info'), $pane, LNG_LOADING),
 			
