@@ -15,6 +15,17 @@
 		}
 	}
 	
+	function onKeyDown(e) {
+		switch (e.keyCode) {
+				case 83: // S
+					if (e.altKey) {
+						app.stopEvent(e);
+						app.start();
+					}
+					break;
+			}
+	}
+	
 	
 	
 	var app = window.fastReader = {},
@@ -87,11 +98,20 @@
 					settings[msg.key] = msg.value;
 					reader.onPopupSettings(msg.key, msg.value);
 				}
-				
 				callback();
-				return;
+				break;
+			case 'getSelection':
+				callback(window.getSelection().toString().trim());
+				break;
+			case 'startReading':
+				app.start();
+				callback();
+				break;
 		}
 	});
+	
+	
+	app.on(window, "keydown", onKeyDown);
 	
 	
 })(this);

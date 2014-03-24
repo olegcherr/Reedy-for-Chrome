@@ -8,7 +8,6 @@
 	}
 	
 	function onRange(value, $input, api) {
-		console.log(arguments);
 		app.sendMessageToExtension({type: 'settingsSet', key: $input.name, value: value});
 		app.sendMessageToSelectedTab({type: 'popupSettings', key: $input.name, value: value});
 	}
@@ -17,8 +16,15 @@
 		window.open(e.target.href);
 	}
 	
+	function onStartReadingClick() {
+		window.close();
+		app.sendMessageToSelectedTab({type: 'startReading'});
+	}
+	
 	
 	function init(settings) {
+		var $elem;
+		
 		app.each(document.querySelectorAll('.j-checkbox'), function($elem) {
 			$elem.checked = settings[$elem.name];
 			new app.Checkbox($elem, onCheckbox);
@@ -32,6 +38,13 @@
 		app.each(document.querySelectorAll('a[href^=http]'), function($elem) {
 			app.on($elem, 'click', onExternalLinkClick);
 		});
+		
+		$elem = document.querySelector('.j-startReadingBtnWrapper');
+		app.sendMessageToSelectedTab({type: 'getSelection'}, function(sel) {
+			sel.length && ($elem.style.display = "block");
+		});
+		app.on($elem, "click", onStartReadingClick);
+		
 	}
 	
 	
