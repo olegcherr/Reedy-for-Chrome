@@ -5,8 +5,8 @@
 	padding: 0;
 }
 body {
-	width: 320px;
-	font: 14px/1.143 MyriadPro, "Myriad Pro", MyriadPro-Regular, "Myriad Pro Regular", Calibri, Candara, Helvetica, Arial, sans-serif;
+	width: 300px;
+	font: 12px/1.334 Tahoma, Geneva, Verdana, sans-serif;
 	color: #303030;
 	cursor: default;
 }
@@ -21,7 +21,7 @@ body {
 
 .p-block {
 	margin: 0 15px;
-	padding: 11px 0;
+	padding: 11px 0 12px;
 	border-bottom: 1px solid #ededed;
 }
 .p-block-btnWrapper {
@@ -34,11 +34,12 @@ body {
 	width: 100%;
 }
 .p-item-left {
-	padding: 5px 0 7px;
+	padding: 9px 0;
 	border-bottom: 1px solid #ededed;
 }
 .p-item-left > b {
 	display: block;
+	margin: 0 0 -1px;
 }
 .p-item-left > span {
 	color: #a3a3a3;
@@ -53,7 +54,7 @@ body {
 .p-footer {
 	padding: 10px 15px 9px;
 	color: #a3a3a3;
-	font-size: 12px;
+	font-size: 11px;
 }
 .p-footer-right {
 	float: right;
@@ -86,8 +87,8 @@ body {
 }
 .e-Checkbox-bar {
 	display: block;
-	padding: 3px 0 2px;
-	height: 11px;
+	padding: 2px 0 0;
+	height: 14px;
 	font-size: 11px;
 	line-height: 11px;
 	font-weight: bold;
