@@ -9,7 +9,7 @@
 	font: 16px/1.25 Verdana, Geneva, Tahoma, sans-serif;
 	color: #303030;
 	background: #e6e6e6;
-	z-index: 1111111;
+	z-index: 2147483647;
 	overflow: hidden;
 	opacity: 0;
 	cursor: default;
