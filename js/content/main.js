@@ -76,7 +76,7 @@
 	}
 	
 	app.onReaderDestroy = function() {
-		reader = null;
+		reader = settings = null;
 	}
 	
 	
@@ -87,6 +87,7 @@
 					settings[msg.key] = msg.value;
 					reader.onPopupSettings(msg.key, msg.value);
 				}
+				
 				callback();
 				return;
 		}
