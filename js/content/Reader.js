@@ -242,6 +242,7 @@
 		
 		
 		function onCloseCtrl() {
+			api.stop();
 			api.destroy();
 		}
 		
