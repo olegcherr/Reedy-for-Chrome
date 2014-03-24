@@ -97,8 +97,9 @@
 		
 		function updateContext() {
 			if (data) {
-				$contextBefore.innerHTML = parser.text.substring(0, data.start);
-				$contextAfter.innerHTML = parser.text.substring(data.end);
+				var context = parser.getContext();
+				$contextBefore.innerHTML = context.before.replace(/\n/g, "<br/>");
+				$contextAfter.innerHTML = context.after.replace(/\n/g, "<br/>");
 			}
 		}
 		
