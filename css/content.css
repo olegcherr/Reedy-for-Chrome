@@ -6,9 +6,9 @@
 	height: 100%;
 	left: 0;
 	top: 0;
-	font: 30px/1.25 Verdana, Geneva, Tahoma, sans-serif;
-	color: #000;
-	background: #fff;
+	font: 16px/1.25 Verdana, Geneva, Tahoma, sans-serif;
+	color: #303030;
+	background: #e6e6e6;
 	z-index: 1111111;
 	overflow: hidden;
 	cursor: default;
@@ -44,6 +44,10 @@
 	top: 30%;
 }
 
+
+
+/* === Context ===================== */
+
 .e-FastReader-contextWrap {
 	position: absolute;
 	
@@ -53,13 +57,12 @@
 	margin: 0 0 0 -300px;
 	max-width: 600px;
 	left: 50%;
+	color: #8a8a8a;
 	font-size: 16px;
 	text-align: justify;
-	opacity: .5;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-context {
 	color: #6b6b6b;
-	opacity: 1;
 }
 .e-FastReader-context_before {
 	margin-bottom: 28px;
@@ -105,6 +108,10 @@
 .e-FastReader-wrapper[font-size="1"] .e-FastReader-context_after {
 	margin-top: 18px;
 }
+
+
+
+/* === Focus ===================== */
 
 .e-FastReader-wordWrap {
 	box-sizing: border-box;
@@ -175,7 +182,7 @@
 	position: relative;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-word {
-	color: #bfbfbf;
+	color: #9f9f9f;
 }
 .e-FastReader-word > span {
 	color: #f00;
@@ -261,6 +268,10 @@
 	border-color: #575757;
 }
 
+
+
+/* === Info ===================== */
+
 .e-FastReader-info {
 	position: absolute;
 	margin: -14px 0 0;
@@ -278,14 +289,17 @@
 	opacity: 1;
 }
 
+
+
+/* === Panels ===================== */
+
 .e-FastReader-panel {
 	position: absolute;
 	display: none;
 	width: 100%;
-	height: 72px;
 	left: 0;
-	background: #fafafa;
-	-webkit-user-select: none;
+	color: #8a8a8a;
+	background: #dbdbdb;
 	-webkit-transition: background-color 1s;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-panel {
@@ -293,43 +307,134 @@
 }
 .e-FastReader-panel_top {
 	top: 0;
+	height: 50px;
+	box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-panel_top {
+	box-shadow: 0 2px 0 rgba(0, 0, 0, .15);
 }
 .e-FastReader-panel_bottom {
 	bottom: 0;
+	height: 72px;
 }
 
-.e-FastReader-adjuster {
+.e-FastReader-topPanelLeft {
 	position: absolute;
-	top: 0;
-	padding: 26px 72px;
-	font-size: 16px;
-	font-weight: bold;
-}
-.e-FastReader-adjuster_font {
 	margin: 0 0 0 -400px;
 	left: 50%;
+	top: 0;
+	border-left: 1px solid #c5c5c5;
 }
-.e-FastReader-adjuster_wpm {
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelLeft {
+	border-left-color: #262626;
+}
+.e-FastReader-topPanelRight {
+	position: absolute;
 	margin: 0 -400px 0 0;
 	right: 50%;
-	width: 78px;
+	top: 0;
 }
-.e-FastReader-adjuster > span {
-	display: block;
-	text-align: center;
+.e-FastReader-topPanelBtn {
+	width: 32px;
+	height: 32px;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_content1.png");
 	opacity: .35;
+	cursor: pointer;
 }
-.e-FastReader-wrapper[dark-theme=true] .e-FastReader-adjuster > span {
-	color: #404040;
-	opacity: 1;
+.e-FastReader-topPanelBtn:hover {
+	opacity: .5;
 }
+.e-FastReader-topPanelBtn:active {
+	opacity: .65;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn {
+	opacity: .5;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn:hover {
+	opacity: .65;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn:active {
+	opacity: .5;
+}
+.e-FastReader-adjust {
+	position: relative;
+	float: left;
+	padding: 17px 45px 18px;
+	border-right: 1px solid #c5c5c5;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-adjust {
+	border-right-color: #262626;
+}
+.e-FastReader-adjust > span {
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+}
+.e-FastReader-adjust_wpm > span {
+	width: 70px;
+}
+.e-FastReader-topPanelBtn_adjust {
+	position: absolute;
+	top: 9px;
+}
+.e-FastReader-topPanelBtn_minus {
+	left: 10px;
+	background-position: 0 -144px;
+}
+.e-FastReader-topPanelBtn_plus {
+	right: 10px;
+	background-position: -32px -144px;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_minus {
+	background-position: -288px -144px;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_plus {
+	background-position: -320px -144px;
+}
+.e-FastReader-menuGroup {
+	float: right;
+	margin: 0 0 0 10px;
+	padding: 9px 0 9px 10px;
+	border: solid #c5c5c5;
+	border-width: 0 1px;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-menuGroup {
+	border-color: #262626;
+}
+.e-FastReader-topPanelBtn_menu {
+	float: left;
+	margin: 0 10px 0 0;
+}
+.e-FastReader-topPanelBtn_close {
+	background-position: -64px -144px;
+}
+.e-FastReader-topPanelBtn_theme {
+	background-position: -96px -144px;
+}
+.e-FastReader-topPanelBtn_background {
+	background-position: -128px -144px;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_close {
+	background-position: -352px -144px;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_theme {
+	background-position: -384px -144px;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelBtn_background {
+	background-position: -416px -144px;
+}
+
+
+
+/* === Controls ===================== */
 
 .e-FastReader-control {
 	position: absolute;
 	top: 0;
 	width: 72px;
 	height: 72px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_controls.png");
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_content1.png");
 	opacity: .35;
 	cursor: pointer;
 }
@@ -340,13 +445,13 @@
 	opacity: .5;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control {
-	opacity: .2;
-}
-.e-FastReader-wrapper[dark-theme=true] .e-FastReader-control:hover {
 	opacity: .3;
 }
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-control:hover {
+	opacity: .4;
+}
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control:active {
-	opacity: .2;
+	opacity: .3;
 }
 .e-FastReader-control_plus {
 	right: 0;
@@ -356,40 +461,40 @@
 	left: 0;
 	background-position: -72px 0;
 }
-.e-FastReader-control_start {
-	margin: 0 0 0 -36px;
-	left: 50%;
-	background-position: -144px 0;
-}
 .e-FastReader-control_nextWord {
 	margin: 0 -157px 0 0;
 	right: 50%;
-	background-position: 0 -72px;
+	background-position: 0 0;
 }
 .e-FastReader-control_nextSentence {
 	margin: 0 -278px 0 0;
 	right: 50%;
-	background-position: -72px -72px;
+	background-position: -72px 0;
 }
 .e-FastReader-control_lastWord {
 	margin: 0 -399px 0 0;
 	right: 50%;
-	background-position: -144px -72px;
+	background-position: -144px 0;
+}
+.e-FastReader-control_start {
+	margin: 0 0 0 -36px;
+	left: 50%;
+	background-position: -216px 0;
 }
 .e-FastReader-control_prevWord {
 	margin: 0 0 0 -157px;
 	left: 50%;
-	background-position: 0 -144px;
+	background-position: 0 -72px;
 }
 .e-FastReader-control_prevSentence {
 	margin: 0 0 0 -278px;
 	left: 50%;
-	background-position: -72px -144px;
+	background-position: -72px -72px;
 }
 .e-FastReader-control_firstWord {
 	margin: 0 0 0 -399px;
 	left: 50%;
-	background-position: -144px -144px;
+	background-position: -144px -72px;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_plus {
 	background-position: -216px 0;
@@ -397,24 +502,24 @@
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_minus {
 	background-position: -288px 0;
 }
-.e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_start {
-	background-position: -360px 0;
-}
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_nextWord {
-	background-position: -216px -72px;
+	background-position: -288px 0;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_nextSentence {
-	background-position: -288px -72px;
+	background-position: -360px 0;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_lastWord {
-	background-position: -360px -72px;
+	background-position: -432px 0;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_start {
+	background-position: -504px 0;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_prevWord {
-	background-position: -216px -144px;
+	background-position: -288px -72px;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_prevSentence {
-	background-position: -288px -144px;
+	background-position: -360px -72px;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-control_firstWord {
-	background-position: -360px -144px;
+	background-position: -432px -72px;
 }

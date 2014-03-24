@@ -7,24 +7,11 @@
 			settings = {};
 			app.sendMessageToExtension({type: 'settingsGet'}, function(sett) {
 				settings = sett;
-				app.on(window, "keydown", onKeydown);
 				callback();
 			});
 		}
 		else {
 			callback();
-		}
-	}
-	
-	function onKeydown(e) {
-		if (!reader) return;
-		
-		switch (e.keyCode) {
-			case 27: // esc
-				app.stopEvent(e);
-				reader.destroy();
-				reader = null;
-				break;
 		}
 	}
 	
@@ -81,6 +68,10 @@
 				);
 			}
 		});
+	}
+	
+	app.onReaderDestroy = function() {
+		reader = null;
 	}
 	
 	

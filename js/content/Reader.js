@@ -6,11 +6,12 @@
 		return ($context || document).querySelector(selector);
 	}
 	
-	function createElement(tagName, className, $appendTo, html) {
+	function createElement(tagName, className, $appendTo, html, title) {
 		var $elem = document.createElement(tagName);
 		className != null && ($elem.className = className);
 		$appendTo && $appendTo.appendChild($elem);
 		html != null && ($elem.innerHTML = html);
+		title != null && ($elem.title = title);
 		return $elem;
 	}
 	
@@ -50,6 +51,8 @@
 		
 		MIN_FONT    = 1,
 		MAX_FONT    = 7,
+		
+		TPL_TOP_PANEL = '<div class="%-panel %-panel_top"><div class="%-adjust"><div class="%-adjustItem"><i></i><span>aA</span><b></b></div></div></div>',
 		
 		$body = querySelector('body');
 	
@@ -224,12 +227,20 @@
 		}
 		
 		
+		function onCloseCtrl() {
+			api.destroy();
+		}
+		
 		function onWindowResize() {
 			updateFocusPoint();
 		}
 		
 		function onKeydown(e) {
 			switch (e.keyCode) {
+				case 27: // esc
+					app.stopEvent(e);
+					onCloseCtrl();
+					break;
 				case 32: // space
 					app.stopEvent(e);
 					onStartCtrl();
@@ -276,25 +287,34 @@
 			
 			$info               = createElement('div', cls('info'), $pane, LNG_LOADING),
 			
-			$panelTop           = createElement('div', cls('panel', 'panel_top'), $wrapper),
+			// Top panel
+			$topPanel           = createElement('div', cls('panel', 'panel_top'), $wrapper),
 			
-			$fontAdjust         = createElement('div', cls('adjuster', 'adjuster_font'), $panelTop, '<span>aA</span>'),
-			$ctrlDecFont        = createControl(['minus'], $fontAdjust),
-			$ctrlIncFont        = createControl(['plus'], $fontAdjust),
-			
-			$wpmAdjust          = createElement('div', cls('adjuster', 'adjuster_wpm'), $panelTop),
+			$topPanelLeft       = createElement('div', cls('topPanelLeft'), $topPanel),
+			$fontAdjust         = createElement('div', cls('adjust','adjust_font'), $topPanelLeft, '<span>aA</span>'),
+			$ctrlDecFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $fontAdjust, null, 'Smaller font [ctrl+down]'),
+			$ctrlIncFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $fontAdjust, null, 'Larger font [ctrl+up]'),
+			$wpmAdjust          = createElement('div', cls('adjust','adjust_wpm'), $topPanelLeft),
 			$wpmText            = createElement('span', null, $wpmAdjust),
-			$ctrlDecWpm         = createControl(['minus'], $wpmAdjust),
-			$ctrlIncWpm         = createControl(['plus'], $wpmAdjust),
+			$ctrlDecWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $wpmAdjust, null, 'Decrease speed [down]'),
+			$ctrlIncWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $wpmAdjust, null, 'Increase speed [up]'),
 			
-			$panelBot           = createElement('div', cls('panel', 'panel_bottom'), $wrapper),
-			$ctrlStart          = createControl(['start'], $panelBot),
-			$ctrlNextWord       = createControl(['nextWord'], $panelBot),
-			$ctrlNextSentence   = createControl(['nextSentence'], $panelBot),
-			$ctrlLastWord       = createControl(['lastWord'], $panelBot),
-			$ctrlPrevWord       = createControl(['prevWord'], $panelBot),
-			$ctrlPrevSentence   = createControl(['prevSentence'], $panelBot),
-			$ctrlFirstWord      = createControl(['firstWord'], $panelBot),
+			$topPanelRight      = createElement('div', cls('topPanelRight'), $topPanel),
+			$menuGroup1         = createElement('div', cls('menuGroup'), $topPanelRight),
+			$menuBtnClose       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_close'), $menuGroup1, null, 'Close FastReader [esc]'),
+			$menuGroup2         = createElement('div', cls('menuGroup'), $topPanelRight),
+			$menuBtnTheme       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_theme'), $menuGroup2, null, 'Switch theme'),
+			$menuBtnBackground  = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_background'), $menuGroup2, null, 'Background transparency'),
+			
+			// Bottom panel
+			$botPanel           = createElement('div', cls('panel', 'panel_bottom'), $wrapper),
+			$ctrlStart          = createControl(['start'], $botPanel, 'Play/pause [space]'),
+			$ctrlNextWord       = createControl(['nextWord'], $botPanel, 'Next word [right]'),
+			$ctrlNextSentence   = createControl(['nextSentence'], $botPanel, 'Next sentence [ctrl+right]'),
+			$ctrlLastWord       = createControl(['lastWord'], $botPanel, 'Last word [alt+right]'),
+			$ctrlPrevWord       = createControl(['prevWord'], $botPanel, 'Previous word [left]'),
+			$ctrlPrevSentence   = createControl(['prevSentence'], $botPanel, 'Previous sentence [ctrl+left]'),
+			$ctrlFirstWord      = createControl(['firstWord'], $botPanel, 'First word [alt+left]'),
 			
 			focusPoint = 0,
 			bodyOverflowBefore = $body.style.overflow,
@@ -311,8 +331,8 @@
 			dNone($contextBefore);
 			dNone($contextAfter);
 			dNone($info);
-			dNone($panelTop);
-			dNone($panelBot);
+			dNone($topPanel);
+			dNone($botPanel);
 			
 			updateWrapper();
 			
@@ -330,8 +350,8 @@
 			
 			dBlock($contextBefore);
 			dBlock($contextAfter);
-			dBlock($panelTop);
-			dBlock($panelBot);
+			dBlock($topPanel);
+			dBlock($botPanel);
 		}
 		
 		api.destroy = function() {
@@ -340,6 +360,8 @@
 			
 			$body.removeChild($wrapper);
 			$body.style.overflow = bodyOverflowBefore;
+			
+			app.onReaderDestroy();
 		}
 		
 		
@@ -370,8 +392,8 @@
 		updateWrapper();
 		updateFocusPoint();
 		
-		dBlock($panelTop);
-		dBlock($panelBot);
+		dBlock($topPanel);
+		dBlock($botPanel);
 		updatePanels();
 		
 		$info.innerHTML = LNG_TAP_TO_START;
@@ -393,7 +415,9 @@
 		app.on($ctrlDecFont, "click", onDecreaseFontCtrl);
 		app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
 		
-		app.on(window, 'resize', onWindowResize);
+		app.on($menuBtnClose, "click", onCloseCtrl);
+		
+		app.on(window, "resize", onWindowResize);
 		app.on(window, "keydown", onKeydown);
 		
 	};
