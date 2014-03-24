@@ -401,7 +401,6 @@
 			app.onReaderDestroy();
 		}
 		
-		
 		api.onPopupSettings = function(key, value) {
 			switch (key) {
 				case 'vPosition':
@@ -421,20 +420,6 @@
 			}
 		}
 		
-		
-		parser.parse();
-		
-		
-		updateWrapper();
-		updateFocusPoint();
-		
-		dBlock($topPanel);
-		dBlock($botPanel);
-		updatePanels();
-		
-		$info.innerHTML = LNG_TAP_TO_START;
-		
-		$wrapper.setAttribute("is-closing", "false");
 		
 		
 		app.on($pane, "click", onPaneClick);
@@ -462,6 +447,30 @@
 		
 		app.on(window, "resize", onWindowResize);
 		app.on(window, "keydown", onKeydown);
+		
+		
+		
+		parser.parse();
+		
+		updateWrapper();
+		updateFocusPoint();
+		updatePanels();
+		
+		if (app.get('autostart')) {
+			dNone($info);
+			
+			setTimeout(function() {
+				api.start();
+			}, 500);
+		}
+		else {
+			dBlock($topPanel);
+			dBlock($botPanel);
+			
+			$info.innerHTML = LNG_TAP_TO_START;
+		}
+		
+		$wrapper.setAttribute("is-closing", "false");
 		
 	};
 	

@@ -18,6 +18,7 @@
 	var defaults = {
 			fontSize: 4, // 1-7
 			wpm: 200,
+			autostart: false,
 			darkTheme: false,
 			transparentBg: false,
 			vPosition: 4,
