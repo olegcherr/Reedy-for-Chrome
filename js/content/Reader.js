@@ -379,7 +379,6 @@
 		
 		api.onPopupSettings = function(key, value) {
 			switch (key) {
-				case 'darkTheme':
 				case 'vPosition':
 					updateWrapper();
 					break;
