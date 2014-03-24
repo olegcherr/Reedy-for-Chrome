@@ -268,6 +268,7 @@
 					onCloseCtrl();
 					break;
 				case 32: // space
+				case 13: // enter
 					app.stopEvent(e);
 					onStartCtrl();
 					break;
