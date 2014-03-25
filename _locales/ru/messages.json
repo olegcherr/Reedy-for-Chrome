@@ -57,7 +57,7 @@
 		"message": "Загрузка ..."
 	},
 	"clickToStart": {
-		"message": "Кликните по экрану или нажмите пробел."
+		"message": "Кликните по экрану или нажмите пробел.<span>← клик вне области чтения закроет FastReader →</span>"
 	},
 	"ctrl_smallerFont": {
 		"message": "Уменьшить шрифт [ctrl+down]"

@@ -306,12 +306,18 @@
 	top: 50%;
 	color: #8a8a8a;
 	font-size: 28px;
-	line-height: 28px;
+	line-height: 1;
 	text-align: center;
 	font-style: italic;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-info {
 	color: #bfbfbf;
+}
+.e-FastReader-info > span {
+	display: block;
+	padding: 15px 0;
+	font-size: 14px;
+	text-align: center;
 }
 
 

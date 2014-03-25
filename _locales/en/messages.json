@@ -57,7 +57,7 @@
 		"message": "Loading ..."
 	},
 	"clickToStart": {
-		"message": "Click the screen or press the spacebar."
+		"message": "Click the screen or press the spacebar.<span>← the click outside the reading area closes FastReader →</span>"
 	},
 	"ctrl_smallerFont": {
 		"message": "Smaller font [ctrl+down]"
