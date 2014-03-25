@@ -290,6 +290,16 @@
 					app.stopEvent(e);
 					e.ctrlKey ? onDecreaseFontCtrl() : onDecreaseWpmCtrl();
 					break;
+				case 107: // numpad +
+				case 187: // +
+					app.stopEvent(e);
+					onIncreaseFontCtrl();
+					break;
+				case 109: // numpad -
+				case 189: // -
+					app.stopEvent(e);
+					onDecreaseFontCtrl();
+					break;
 			}
 		}
 		
