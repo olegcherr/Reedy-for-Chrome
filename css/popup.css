@@ -34,15 +34,14 @@ body {
 	width: 100%;
 }
 .p-item-left {
-	padding: 9px 0;
+	padding: 7px 0 9px;
 	border-bottom: 1px solid #ededed;
 }
-.p-item-left > b {
-	display: block;
-	margin: 0 0 -1px;
-}
 .p-item-left > span {
+	display: block;
+	padding: 0 0 0 1px;
 	color: #a3a3a3;
+	font-size: 11px;
 }
 .p-item-right {
 	padding: 0 0 0 13px;
