@@ -42,19 +42,23 @@
 	left: 0;
 }
 .e-FastReader-wrapper[v-position="5"] .e-FastReader-pane {
-	top: -30%;
+	bottom: 0;
+	height: 160%;
 }
 .e-FastReader-wrapper[v-position="4"] .e-FastReader-pane {
-	top: -15%;
+	bottom: 0;
+	height: 130%;
 }
 .e-FastReader-wrapper[v-position="3"] .e-FastReader-pane {
 	top: 0;
 }
 .e-FastReader-wrapper[v-position="2"] .e-FastReader-pane {
-	top: 15%;
+	top: 0;
+	height: 130%;
 }
 .e-FastReader-wrapper[v-position="1"] .e-FastReader-pane {
-	top: 30%;
+	top: 0;
+	height: 160%;
 }
 
 
