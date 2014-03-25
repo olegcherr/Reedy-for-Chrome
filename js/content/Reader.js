@@ -143,8 +143,8 @@
 		
 		function onPaneWheel(e) {
 			e.deltaY < 0
-				? onPrevWordCtrl()
-				: onNextWordCtrl();
+				? onPrevSentenceCtrl()
+				: onNextSentenceCtrl();
 		}
 		
 		
