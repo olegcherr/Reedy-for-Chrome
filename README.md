@@ -1,6 +1,6 @@
 # FastReader
 
-** Read all you want faster with FastReader for Google Chrome! **
+**Read all you want faster with FastReader for Google Chrome!**
 
 FastReader is an advanced implementation of speed reading. Words are shown fast one after another on the same place of the screen which increases the speed of perception of every single word. You spend no more time on moving your eyes along the lines.
 
