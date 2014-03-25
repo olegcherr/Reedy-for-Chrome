@@ -1,0 +1,104 @@
+{
+	"contextMenu": {
+		"message": "Запустить FastReader"
+	},
+	
+	
+	
+	
+	
+	"startReadingInfo": {
+		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите FastReader. Вы также можете использовать сочетание клавиш <b>Alt+S</b>."
+	},
+	"startReadingBtn": {
+		"message": "Запустить FastReader"
+	},
+	
+	"autostart": {
+		"message": "Автостарт"
+	},
+	"autostartDescr": {
+		"message": "Запускать чтение сразу после открытия FastReader."
+	},
+	
+	"focusMode": {
+		"message": "Режим фокуса"
+	},
+	"focusModeDescr": {
+		"message": "Точка фокусировки будет смещена ближе к началу слова и выделена красным."
+	},
+	
+	"vPosition": {
+		"message": "Вертикальное положение"
+	},
+	"vPositionDescr": {
+		"message": "Установите положение области чтения по вертикали (1&nbsp;-&nbsp;самое низкое; 5&nbsp;-&nbsp;самое высокое)."
+	},
+	
+	"smartSlowing": {
+		"message": "Умное замедление"
+	},
+	"smartSlowingDescr": {
+		"message": "Увеличивать время отображения на пунктуации."
+	},
+	
+	"entityAnalysis": {
+		"message": "Анализатор сущностей"
+	},
+	"entityAnalysisDescr": {
+		"message": "Позволяет отображать распространённые конструкции (номера телефонов, инициалы и&nbsp;пр.) как одно слово."
+	},
+	
+	
+	
+	
+	
+	"loading": {
+		"message": "Загрузка ..."
+	},
+	"clickToStart": {
+		"message": "Кликните по экрану или нажмите пробел."
+	},
+	"ctrl_smallerFont": {
+		"message": "Уменьшить шрифт [ctrl+down]"
+	},
+	"ctrl_largerFont": {
+		"message": "Увеличить шрифт [ctrl+up]"
+	},
+	"ctrl_decSpeed": {
+		"message": "Уменьшить скорость [down]"
+	},
+	"ctrl_incSpeed": {
+		"message": "Увеличить скорость [up]"
+	},
+	"ctrl_close": {
+		"message": "Закрыть FastReader [esc]"
+	},
+	"ctrl_switchTheme": {
+		"message": "Переключить тему"
+	},
+	"ctrl_bgTransparency": {
+		"message": "Прозрачный фон"
+	},
+	"ctrl_playPause": {
+		"message": "Play/pause [space]"
+	},
+	"ctrl_nextWord": {
+		"message": "Следующее слово [right]"
+	},
+	"ctrl_nextSentence": {
+		"message": "Следующее предложение [ctrl+right]"
+	},
+	"ctrl_lastWord": {
+		"message": "В конец [alt+right]"
+	},
+	"ctrl_prevWord": {
+		"message": "Предыдущее слово [left]"
+	},
+	"ctrl_prevSentence": {
+		"message": "Предыдущее предложение [ctrl+left]"
+	},
+	"ctrl_firstWord": {
+		"message": "В начало [alt+left]"
+	}
+}

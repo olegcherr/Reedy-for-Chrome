@@ -53,6 +53,10 @@
 		app.sendMessageToExtension({type: "isPopupOpen"}, callback);
 	}
 	
+	app.t = function() {
+		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
+	}
+	
 	
 	app.on = function(elem, event, fn) {
 		elem.addEventListener(event, fn);

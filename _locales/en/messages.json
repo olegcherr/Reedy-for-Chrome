@@ -1,0 +1,104 @@
+{
+	"contextMenu": {
+		"message": "Read this with FastReader"
+	},
+	
+	
+	
+	
+	
+	"startReadingInfo": {
+		"message": "To start reading select the text on the page, click the right button and choose FastReader.<br/>You can also use the shortcut <b>Alt+S</b> while the text is selected."
+	},
+	"startReadingBtn": {
+		"message": "Launch FastReader"
+	},
+	
+	"autostart": {
+		"message": "Autostart"
+	},
+	"autostartDescr": {
+		"message": "Start reading right after FastReading is launched."
+	},
+	
+	"focusMode": {
+		"message": "Focus mode"
+	},
+	"focusModeDescr": {
+		"message": "The focus point is shifted closer to the beginning of a word."
+	},
+	
+	"vPosition": {
+		"message": "Vertical position"
+	},
+	"vPositionDescr": {
+		"message": "Set the vertical position of the reading area (1&nbsp;-&nbsp;lowes; 5&nbsp;–&nbsp;highest)."
+	},
+	
+	"smartSlowing": {
+		"message": "Smart slowing"
+	},
+	"smartSlowingDescr": {
+		"message": "Slow down the speed at a punctuation mark."
+	},
+	
+	"entityAnalysis": {
+		"message": "Entity analysis"
+	},
+	"entityAnalysisDescr": {
+		"message": "Display general entities (i.e. phone numbers and initials) as a single word."
+	},
+	
+	
+	
+	
+	
+	"loading": {
+		"message": "Loading ..."
+	},
+	"clickToStart": {
+		"message": "Click the screen or press the spacebar."
+	},
+	"ctrl_smallerFont": {
+		"message": "Smaller font [ctrl+down]"
+	},
+	"ctrl_largerFont": {
+		"message": "Larger font [ctrl+up]"
+	},
+	"ctrl_decSpeed": {
+		"message": "Decrease speed [down]"
+	},
+	"ctrl_incSpeed": {
+		"message": "Increase speed [up]"
+	},
+	"ctrl_close": {
+		"message": "Close FastReader [esc]"
+	},
+	"ctrl_switchTheme": {
+		"message": "Switch theme"
+	},
+	"ctrl_bgTransparency": {
+		"message": "Background transparency"
+	},
+	"ctrl_playPause": {
+		"message": "Play/pause [space]"
+	},
+	"ctrl_nextWord": {
+		"message": "Next word [right]"
+	},
+	"ctrl_nextSentence": {
+		"message": "Next sentence [ctrl+right]"
+	},
+	"ctrl_lastWord": {
+		"message": "Last word [alt+right]"
+	},
+	"ctrl_prevWord": {
+		"message": "Previous word [left]"
+	},
+	"ctrl_prevSentence": {
+		"message": "Previous sentence [ctrl+left]"
+	},
+	"ctrl_firstWord": {
+		"message": "First word [alt+left]"
+	}
+}

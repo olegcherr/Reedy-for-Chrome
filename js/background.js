@@ -45,7 +45,6 @@
 	});
 	
 	
-	
 	chrome.extension.onConnect.addListener(function(port) {
 		if (port.name === "Popup") {
 			isPopupOpen = true;
@@ -56,17 +55,9 @@
 	});
 	
 	
-	
-	chrome.browserAction.onClicked.addListener(function (tab) {
-		console.log(tab.url);
-		/*chrome.tabs.executeScript(null, {
-			code: 'window.jetzt.select()'
-		});*/
-	});
-	
 	chrome.contextMenus.create({
 		id: "fastReaderMenu",
-		title: "Read this with FastReader",
+		title: chrome.i18n.getMessage("contextMenu"),
 		contexts: ["selection"]
 	});
 	

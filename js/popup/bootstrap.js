@@ -45,6 +45,9 @@
 		});
 		app.on($elem, "click", onStartReadingClick);
 		
+		app.each(document.querySelectorAll('[i18n]'), function($elem) {
+			$elem.innerHTML = app.t($elem.getAttribute('i18n'));
+		});
 	}
 	
 	

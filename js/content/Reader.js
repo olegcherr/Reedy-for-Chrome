@@ -42,9 +42,6 @@
 	
 	var CLS_MAIN = 'e-FastReader',
 		
-		LNG_LOADING         = "Loading ...",
-		LNG_TAP_TO_START    = "Click the screen or press space bar to start.",
-		
 		MIN_WPM     = 50,
 		MAX_WPM     = 2000,
 		WPM_STEP    = 50,
@@ -313,7 +310,7 @@
 			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
 			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
 			
-			$info               = createElement('div', cls('info'), $pane, LNG_LOADING),
+			$info               = createElement('div', cls('info'), $pane, app.t('loading')),
 			
 			$closingAreaLeft    = createElement('div', cls('closingArea','closingArea_left'), $wrapper),
 			$closingAreaRight   = createElement('div', cls('closingArea','closingArea_right'), $wrapper),
@@ -323,29 +320,29 @@
 			
 			$topPanelLeft       = createElement('div', cls('topPanelLeft'), $topPanel),
 			$fontAdjust         = createElement('div', cls('adjust','adjust_font'), $topPanelLeft, '<span>aA</span>'),
-			$ctrlDecFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $fontAdjust, null, 'Smaller font [ctrl+down]'),
-			$ctrlIncFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $fontAdjust, null, 'Larger font [ctrl+up]'),
+			$ctrlDecFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $fontAdjust, null, app.t('ctrl_smallerFont')),
+			$ctrlIncFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $fontAdjust, null, app.t('ctrl_largerFont')),
 			$wpmAdjust          = createElement('div', cls('adjust','adjust_wpm'), $topPanelLeft),
 			$wpmText            = createElement('span', null, $wpmAdjust),
-			$ctrlDecWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $wpmAdjust, null, 'Decrease speed [down]'),
-			$ctrlIncWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $wpmAdjust, null, 'Increase speed [up]'),
+			$ctrlDecWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $wpmAdjust, null, app.t('ctrl_decSpeed')),
+			$ctrlIncWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $wpmAdjust, null, app.t('ctrl_incSpeed')),
 			
 			$topPanelRight      = createElement('div', cls('topPanelRight'), $topPanel),
 			$menuGroup1         = createElement('div', cls('menuGroup'), $topPanelRight),
-			$menuBtnClose       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_close'), $menuGroup1, null, 'Close FastReader [esc]'),
+			$menuBtnClose       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_close'), $menuGroup1, null, app.t('ctrl_close')),
 			$menuGroup2         = createElement('div', cls('menuGroup'), $topPanelRight),
-			$menuBtnTheme       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_theme'), $menuGroup2, null, 'Switch theme'),
-			$menuBtnBackground  = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_background'), $menuGroup2, null, 'Background transparency'),
+			$menuBtnTheme       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_theme'), $menuGroup2, null, app.t('ctrl_switchTheme')),
+			$menuBtnBackground  = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_background'), $menuGroup2, null, app.t('ctrl_bgTransparency')),
 			
 			// Bottom panel
 			$botPanel           = createElement('div', cls('panel', 'panel_bottom'), $wrapper),
-			$ctrlStart          = createControl(['start'], $botPanel, 'Play/pause [space]'),
-			$ctrlNextWord       = createControl(['nextWord'], $botPanel, 'Next word [right]'),
-			$ctrlNextSentence   = createControl(['nextSentence'], $botPanel, 'Next sentence [ctrl+right]'),
-			$ctrlLastWord       = createControl(['lastWord'], $botPanel, 'Last word [alt+right]'),
-			$ctrlPrevWord       = createControl(['prevWord'], $botPanel, 'Previous word [left]'),
-			$ctrlPrevSentence   = createControl(['prevSentence'], $botPanel, 'Previous sentence [ctrl+left]'),
-			$ctrlFirstWord      = createControl(['firstWord'], $botPanel, 'First word [alt+left]'),
+			$ctrlStart          = createControl(['start'], $botPanel, app.t('ctrl_playPause')),
+			$ctrlNextWord       = createControl(['nextWord'], $botPanel, app.t('ctrl_nextWord')),
+			$ctrlNextSentence   = createControl(['nextSentence'], $botPanel, app.t('ctrl_nextSentence')),
+			$ctrlLastWord       = createControl(['lastWord'], $botPanel, app.t('ctrl_lastWord')),
+			$ctrlPrevWord       = createControl(['prevWord'], $botPanel, app.t('ctrl_prevWord')),
+			$ctrlPrevSentence   = createControl(['prevSentence'], $botPanel, app.t('ctrl_prevSentence')),
+			$ctrlFirstWord      = createControl(['firstWord'], $botPanel, app.t('ctrl_firstWord')),
 			
 			focusPoint = 0,
 			bodyOverflowBefore = $body.style.overflow,
@@ -467,7 +464,7 @@
 			dBlock($topPanel);
 			dBlock($botPanel);
 			
-			$info.innerHTML = LNG_TAP_TO_START;
+			$info.innerHTML = app.t('clickToStart');
 		}
 		
 		$wrapper.setAttribute("is-closing", "false");

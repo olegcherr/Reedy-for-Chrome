@@ -34,5 +34,9 @@
 		app.sendMessageToExtension({type: 'popupSettings', key: key, value: value});
 	}
 	
+	app.t = function() {
+		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
+	}
+	
 	
 })();
