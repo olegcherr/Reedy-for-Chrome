@@ -578,6 +578,12 @@
 
 
 
+@media screen and (max-width: 1000px) {
+	.e-FastReader-closingArea,
+	.e-FastReader-info > span {
+		display: none;
+	}
+}
 @media screen and (max-width: 800px) {
 	.e-FastReader-topPanelLeft {
 		margin: 0;
