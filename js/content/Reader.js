@@ -62,22 +62,24 @@
 			
 			if (!isRunning) return;
 			
-			var newData = justRun && data || parser.nextWord();
-			if (newData) {
-				data = newData;
+			if (parser.isLastWord()) {
+				setTimeout(function() {
+					api.stop();
+				}, 500);
+			}
+			else {
+				data = justRun && data || parser.nextWord();
+				
 				updateWord();
+				
 				timeout = setTimeout(
 					next,
 					wasRun
 						? (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1)
 						: 500
 				);
+				
 				wasRun = true;
-			}
-			else {
-				setTimeout(function() {
-					api.stop();
-				}, 500);
 			}
 		}
 		

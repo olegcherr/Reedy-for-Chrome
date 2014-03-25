@@ -140,6 +140,15 @@
 		}
 		
 		
+		api.isLastWord = function() {
+			return wid >= data.length-1;
+		}
+		
+		api.isFirstWord = function() {
+			return wid <= 0;
+		}
+		
+		
 		api.getContext = function() {
 			var word = api.word();
 			return {
@@ -210,6 +219,7 @@
 					if (REX_CHAR_BOUND.test(char)) {
 						if (REX_CHAR_SENTENCE_END.test(prevChar) || REX_CHAR_CLOSING_QUOTE.test(prevChar) && REX_CHAR_SENTENCE_END.test(prev2Char)) { // `понятно.` или `понятно.»`
 							isSentenceEnd = true;
+							isDelayed = true;
 						}
 						else if (entityAnalysis && next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) { // `понятно —`
 							position = position+2;
