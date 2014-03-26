@@ -147,6 +147,12 @@
 				: onNextSentenceCtrl();
 		}
 		
+		function onClosingAreaClick() {
+			app.isPopupOpen(function(res) {
+				res || onCloseCtrl();
+			});
+		}
+		
 		
 		function onStartCtrl() {
 			isRunning ? api.stop() : api.start();
@@ -431,8 +437,8 @@
 		app.on($pane, "click", onPaneClick);
 		app.on($pane, "wheel", onPaneWheel);
 		
-		app.on($closingAreaLeft, "click", onCloseCtrl);
-		app.on($closingAreaRight, "click", onCloseCtrl);
+		app.on($closingAreaLeft, "click", onClosingAreaClick);
+		app.on($closingAreaRight, "click", onClosingAreaClick);
 		
 		app.on($ctrlStart, "click", onStartCtrl);
 		app.on($ctrlNextWord, "click", onNextWordCtrl);
