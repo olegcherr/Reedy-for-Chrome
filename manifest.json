@@ -26,8 +26,7 @@
 	"permissions": [
 		"storage",
 		"activeTab",
-		"contextMenus",
-		"fontSettings"
+		"contextMenus"
 	],
 	"icons": {
 		"16": "icons/icon16.png",
