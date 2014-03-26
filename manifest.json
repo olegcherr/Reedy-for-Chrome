@@ -3,7 +3,7 @@
 	
 	"name": "FastReader",
 	"description": "Read all you want faster with FastReader for Google Chrome!",
-	"version": "1.0",
+	"version": "1.0.1",
 	
 	"default_locale": "en",
 	
@@ -27,7 +27,7 @@
 		"storage",
 		"tabs",
 		"contextMenus",
-		"*://*/*", "file:///*"
+		"*://*/*"
 	],
 	"icons": {
 		"16": "icons/icon16.png",

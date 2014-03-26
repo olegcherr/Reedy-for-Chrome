@@ -4,7 +4,11 @@
 
 FastReader is an advanced implementation of speed reading. Words are shown fast one after another on the same place of the screen which increases the speed of perception of every single word. You spend no more time on moving your eyes along the lines.
 
+![](screenshot.png)
+
 Now you’ll be able to read twice, three or even four times faster than you used to read. Reading from left to right, and up and down has become hopelessly outdated. Now you can read being entirely absorbed into the text. Rolling and moving along the lines won’t distract you anymore.
+
+Chrome Web Store: https://chrome.google.com/webstore/detail/fastreader/ihbdojmggkmjbhfflnchljfkgdhokffj
 
 ### How to use FastReader
 
