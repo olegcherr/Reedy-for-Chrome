@@ -246,7 +246,6 @@
 		
 		
 		function onCloseCtrl() {
-			api.stop();
 			api.destroy();
 		}
 		
@@ -399,6 +398,8 @@
 		}
 		
 		api.destroy = function() {
+			api.stop();
+			
 			app.off(window, "resize", onWindowResize);
 			app.off(window, "keydown", onKeydown);
 			
@@ -460,6 +461,7 @@
 		
 		app.on(window, "resize", onWindowResize);
 		app.on(window, "keydown", onKeydown);
+		app.on(window, "popstate", onCloseCtrl);
 		
 		
 		
