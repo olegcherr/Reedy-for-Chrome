@@ -9,7 +9,7 @@
 	
 	"content_scripts": [
 		{
-			"matches": ["http://*/*", "https://*/*", "file:///*"],
+			"matches": ["*://*/*", "file:///*"],
 			"css": ["css/content.css"],
 			"js": [
 				"js/content/main.js",
@@ -25,8 +25,9 @@
 	],
 	"permissions": [
 		"storage",
-		"activeTab",
-		"contextMenus"
+		"tabs",
+		"contextMenus",
+		"*://*/*", "file:///*"
 	],
 	"icons": {
 		"16": "icons/icon16.png",
