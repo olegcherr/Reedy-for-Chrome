@@ -153,6 +153,10 @@
 			});
 		}
 		
+		function onInputBlur() {
+			$input.focus();
+		}
+		
 		
 		function onStartCtrl() {
 			isRunning ? api.stop() : api.start();
@@ -315,6 +319,7 @@
 			wasRun = false,
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
+			$input              = createElement('input', null, $wrapper),
 			
 			$pane               = createElement('div', cls('pane'), $wrapper),
 			
@@ -401,7 +406,9 @@
 			api.stop();
 			
 			app.off(window, "resize", onWindowResize);
-			app.off(window, "keydown", onKeydown);
+			
+			app.off($input, "keydown", onKeydown);
+			app.off($input, "blur", onInputBlur);
 			
 			$wrapper.setAttribute("is-closing", "true");
 			
@@ -435,6 +442,9 @@
 		
 		
 		
+		app.on($input, "keydown", onKeydown);
+		app.on($input, "blur", onInputBlur);
+		
 		app.on($pane, "click", onPaneClick);
 		app.on($pane, "wheel", onPaneWheel);
 		
@@ -460,7 +470,6 @@
 		app.on($menuBtnClose, "click", onCloseCtrl);
 		
 		app.on(window, "resize", onWindowResize);
-		app.on(window, "keydown", onKeydown);
 		app.on(window, "popstate", onCloseCtrl);
 		
 		
@@ -486,6 +495,8 @@
 		}
 		
 		$wrapper.setAttribute("is-closing", "false");
+		
+		$input.focus();
 		
 	};
 	

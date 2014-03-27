@@ -35,6 +35,12 @@
 	line-height: inherit;
 }
 
+.e-FastReader-wrapper > input {
+	position: absolute;
+	clip: rect(0,0,0,0);
+	opacity: 0;
+}
+
 .e-FastReader-pane {
 	position: absolute;
 	width: 100%;
