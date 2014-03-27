@@ -92,7 +92,7 @@
 		REX_CHAR_CLOSING_QUOTE  = /^»|“|”|’|"$/,
 		REX_CHAR_OPENING_BRK    = /^\(|\[$/,
 		REX_CHAR_CLOSING_BRK    = /^\)|\]$/,
-		REX_ORDERED_LIST        = new RegExp('^\\d+\\.?\\)? ?['+REX_LETTERS_STR+']');
+		REX_ORDERED_LIST        = new RegExp('^\\d+[.)]{1,2} ?['+REX_LETTERS_STR+']');
 	
 	
 	fastReader.Parser = function(raw, app) {
