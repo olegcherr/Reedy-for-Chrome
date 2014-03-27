@@ -71,9 +71,9 @@
 				
 				timeout = setTimeout(
 					next,
-					wasRun
-						? (60000/app.get('wpm'))*(data.isDelayed && app.get('smartSlowing') ? 2 : 1)
-						: 500
+					(60000/app.get('wpm')) * (wasRun
+						? data.isDelayed && app.get('smartSlowing') ? 2 : 1
+						: 2)
 				);
 				
 				wasRun = true;
