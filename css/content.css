@@ -75,11 +75,11 @@
 	text-align: justify;
 	-webkit-transition: color 1s;
 }
-.e-FastReader-wrapper[dark-theme=true] .e-FastReader-context {
-	color: #6b6b6b;
-}
 .e-FastReader-wrapper[transparent-bg=true] .e-FastReader-context {
 	color: #575757;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-context {
+	color: #6b6b6b;
 }
 .e-FastReader-wrapper[dark-theme=true][transparent-bg=true] .e-FastReader-context {
 	color: #878787;
@@ -309,6 +309,10 @@
 	line-height: 1;
 	text-align: center;
 	font-style: italic;
+	-webkit-transition: color 500ms;
+}
+.e-FastReader-wrapper[transparent-bg=true] .e-FastReader-info {
+	color: #575757;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-info {
 	color: #bfbfbf;
