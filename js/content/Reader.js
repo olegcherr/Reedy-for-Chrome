@@ -153,10 +153,6 @@
 			});
 		}
 		
-		function onInputBlur() {
-			$input.focus();
-		}
-		
 		
 		function onStartCtrl() {
 			isRunning ? api.stop() : api.start();
@@ -319,7 +315,6 @@
 			wasRun = false,
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
-			$input              = createElement('input', null, $wrapper),
 			
 			$pane               = createElement('div', cls('pane'), $wrapper),
 			
@@ -371,6 +366,8 @@
 		
 		$body.style.overflow = "hidden";
 		
+		$wrapper.tabIndex = 1;
+		
 		
 		api.start = function() {
 			if (isRunning) return;
@@ -407,8 +404,7 @@
 			
 			app.off(window, "resize", onWindowResize);
 			
-			app.off($input, "keydown", onKeydown);
-			app.off($input, "blur", onInputBlur);
+			app.off($wrapper, "keydown", onKeydown);
 			
 			$wrapper.setAttribute("is-closing", "true");
 			
@@ -450,8 +446,7 @@
 		
 		
 		
-		app.on($input, "keydown", onKeydown);
-		app.on($input, "blur", onInputBlur);
+		app.on($wrapper, "keydown", onKeydown);
 		
 		app.on($pane, "click", onPaneClick);
 		app.on($pane, "wheel", onPaneWheel);
@@ -504,7 +499,7 @@
 		
 		$wrapper.setAttribute("is-closing", "false");
 		
-		$input.focus();
+		$wrapper.focus();
 		
 	};
 	
