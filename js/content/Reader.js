@@ -30,12 +30,20 @@
 		$elem.style.display = "none";
 	}
 	
-	
 	function cls() {
 		for (var res = [], i = 0; i < arguments.length; i++) {
 			res.push(CLS_MAIN+'-'+arguments[i]);
 		}
 		return res.join(' ');
+	}
+	
+	
+	function calcPivotPoint(len) {
+		if (len < 2)  return 0;
+		if (len < 6)  return 1;
+		if (len < 10) return 2;
+		if (len < 14) return 3;
+		return 4;
 	}
 	
 	
@@ -108,8 +116,8 @@
 			$word.style.left = '';
 			
 			if (app.get('focusMode')) {
-				var stop = Math.round((word.length+1)*0.4) - 1;
-				$word.innerHTML = word.substring(0, stop)+'<span>'+word[stop]+'</span>'+word.substring(stop+1);
+				var pivot = calcPivotPoint(word.length);
+				$word.innerHTML = word.substr(0, pivot)+'<span>'+word[pivot]+'</span>'+word.substr(pivot+1);
 				
 				var letterRect = $word.querySelector('span').getBoundingClientRect();
 				$word.style.left = Math.round(focusPoint - letterRect.left - letterRect.width/2)+'px';
