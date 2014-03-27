@@ -413,10 +413,18 @@
 			$wrapper.setAttribute("is-closing", "true");
 			
 			setTimeout(function() {
-				$body.removeChild($wrapper);
+				try {
+					$body.removeChild($wrapper);
+				}
+				catch(e) { }
 			}, 500);
 			
-			$body.style.overflow = bodyOverflowBefore;
+			// avoiding possible issues
+			// (especially on sites that use History API and modal windows with custom scrolling area;
+			// like vk.com)
+			if (bodyOverflowBefore !== "hidden") {
+				$body.style.overflow = bodyOverflowBefore;
+			}
 			
 			app.onReaderDestroy();
 		}
