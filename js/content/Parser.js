@@ -5,8 +5,12 @@
 	function cleanUpText(raw) {
 		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
 		return raw
+			.trim()
 			.replace(/\n|\r/gm, sign)
 			.replace(/\s+/g, ' ')
+			.replace(/ ([([]) /g, ' $1')                            // `сюжет ( видео`
+			.replace(/ ([)\]]) /g, '$1 ')                           // `вставка ) отличный`
+			.replace(/([!?]{3})[!?]+/g, '$1')                       // `неужели!!!!!???!!?!?`
 			.replace(/\.{4,}/g, '...')                              // `.......`
 			.replace(/–|—|―/g, '—')                               // there are 4 dash types. after the cleaning only 2 will remain: `-` and `—`
 			.replace(/[-|—]{2,}/g, '—')                            // `--` | `------`
@@ -100,7 +104,6 @@
 		
 		var api = this,
 			text = api.text = cleanUpText(raw),
-			textLen = text.length,
 			data = [],
 			wid = -1;
 		
@@ -180,139 +183,155 @@
 		
 		api.parse = function() {
 			var entityAnalysis = app.get('entityAnalysis'),
-				startPos, position = 0,
-				startChar, char, prevChar, prev2Char, nextChar, next2Char, partAfter, partAfter_inc20,
-				isDelayed, isSentenceEnd, temp, temp2, word, len, i;
+				paragraphs = text.split('\n'), parLen = -1,
+				parag, startPos, position, prevTextLen = 0,
+				startChar, char, prevChar, prev2Char, nextChar, next2Char,
+				partAfter, partAfter_inc20,
+				isSentenceStart, isSentenceEnd, isDelayed,
+				temp, temp2, word, len, i, k;
 			
 			data = [];
 			
-			while (position < textLen) {
-				isDelayed = false;
-				isSentenceEnd = false;
+			for (i = 0; i < paragraphs.length; i++) {
+				prevTextLen += parLen > -1 ? parLen+1 : 0;
+				parag = paragraphs[i];
+				parLen = parag.length;
+				position = 0;
 				
-				startPos = position;
-				startChar = text[position];
-				
-				for (;position <= textLen; position++) {
-					char = text[position];
-					prevChar = text[position-1];
-					prev2Char = text[position-2];
-					nextChar = text[position+1];
-					next2Char = text[position+2];
-					partAfter = text.substring(position+1);
-					partAfter_inc20 = char + partAfter.substring(0, 30);
+				while (position < parLen) {
+					isSentenceStart = !position;
+					isSentenceEnd = false;
+					isDelayed = false;
 					
-					if (char === '\n' || char === undefined) {
-						position++;
-						break;
-					}
+					startPos = position;
+					startChar = parag[position];
 					
-					if (
-						entityAnalysis
-						&& position === startPos
-						&& (temp = REX_ORDERED_LIST.exec(partAfter_inc20))
-					) {
-						position += temp[0].length-1;
-						continue;
-					}
-					
-					if (
-						entityAnalysis
-						&& (position === startPos
-							? nextChar === '.' && isUpperLetters(char) // `У.Б. Йитс теперь`
-							: char === ' ' && next2Char === '.' && isUpperLetters(startChar) && isUpperLetters(nextChar)) // `Йитс У.Б. теперь`
-						&& (temp = testForName(text.substring(startPos, startPos+30))) !== undefined
-						&& temp.toUpperCase() !== temp
-					) {
-						position = startPos+temp.length-1;
-						continue;
-					}
-					
-					if (
-						entityAnalysis
-						&& position === startPos
-						&& (REX_CHAR_DIGIT.test(char) || (char === '+' || char === '-') && REX_CHAR_DIGIT.test(nextChar))
-						&& (temp = testForDigitalEntity(partAfter_inc20))
-					) {
-						position = startPos+temp.length-1;
-						continue;
-					}
-					
-					if (
-						entityAnalysis
-						&& position === startPos
-						&& !isReadable(char)
-					) {
-						if (!isReadable(nextChar)) {
-							while (!isReadable(text[++position])) {}
-							position--;
+					for (;position < parLen; position++) {
+						char = parag[position];
+						prevChar = parag[position-1];
+						prev2Char = parag[position-2];
+						nextChar = parag[position+1];
+						next2Char = parag[position+2];
+						partAfter = parag.substring(position+1);
+						partAfter_inc20 = char + partAfter.substring(0, 30);
+						
+						if (
+							entityAnalysis
+							&& position === startPos
+							&& (temp = REX_ORDERED_LIST.exec(partAfter_inc20))
+						) {
+							position += temp[0].length-1;
+							continue;
 						}
-						continue;
-					}
-					
-					if (REX_CHAR_SENTENCE_END.test(char) && !isReadable(nextChar)) {
-						temp2 = false; // did a quote meet?
-						while ((temp = text[++position]) && (REX_CHAR_SENTENCE_END.test(temp) || temp === ' ' || (!temp2 && (temp2 = REX_CHAR_QUOTE.test(temp)) && !isReadable(text[position+1])))) {}
-						isSentenceEnd = true;
-						break;
-					}
-					else if (char === ':') {
-						temp2 = REX_CHAR_DIGIT.test(prevChar);
-						while ((temp = text[++position]) && (temp === ' ' || temp === ':' || (temp2 && REX_CHAR_DIGIT.test(temp)))) {}
-						break;
-					}
-					else if (char === ' ') {
-						if (nextChar === '.' && next2Char === '.') { // `понятно ..` | `понятно ... | `понятно ...»` | `понятно ...»—`
-							while ((temp = text[++position]) && temp !== ' ' && !isLetters(temp)) {}
-							temp === ' ' && position++;
+						
+						if (
+							entityAnalysis
+							&& (position === startPos
+								? nextChar === '.' && isUpperLetters(char) // `У.Б. Йитс теперь`
+								: char === ' ' && next2Char === '.' && isUpperLetters(startChar) && isUpperLetters(nextChar)) // `Йитс У.Б. теперь`
+							&& (temp = testForName(parag.substring(startPos, startPos+30))) !== undefined
+							&& temp.toUpperCase() !== temp
+						) {
+							position = startPos+temp.length-1;
+							continue;
+						}
+						
+						if (
+							entityAnalysis
+							&& position === startPos
+							&& (REX_CHAR_DIGIT.test(char) || (char === '+' || char === '-') && REX_CHAR_DIGIT.test(nextChar))
+							&& (temp = testForDigitalEntity(partAfter_inc20))
+						) {
+							position = startPos+temp.length-1;
+							continue;
+						}
+						
+						if ( // Any symbols in the beginning of a word
+							entityAnalysis
+							&& position === startPos
+							&& !isReadable(char)
+						) {
+							if (!isReadable(nextChar)) {
+								while (!isReadable(parag[++position])) {}
+								position--;
+							}
+							continue;
+						}
+						
+						if (REX_CHAR_SENTENCE_END.test(char) && !isReadable(nextChar)) {
+							temp2 = false; // did a quote meet?
+							while ((temp = parag[++position]) && (REX_CHAR_SENTENCE_END.test(temp) || temp === ' ' || (!temp2 && (temp2 = REX_CHAR_QUOTE.test(temp)) && !isReadable(parag[position+1])))) {}
 							isSentenceEnd = true;
 							break;
 						}
-						else if ( // `понятно.` | `понятно.»`
-							REX_CHAR_SENTENCE_END.test(prevChar) && !isUpperLetters(prev2Char) // FIXME: using isUpperLetters - that is a pretty stupid fix for initials
-							|| REX_CHAR_CLOSING_QUOTE.test(prevChar) && REX_CHAR_SENTENCE_END.test(prev2Char)
-						) {
-							isSentenceEnd = true;
+						else if (char === ':') {
+							temp2 = REX_CHAR_DIGIT.test(prevChar);
+							while ((temp = parag[++position]) && (temp === ' ' || temp === ':' || (temp2 && REX_CHAR_DIGIT.test(temp)))) {}
+							break;
 						}
-						else if (entityAnalysis && next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) { // `понятно —`
-							position = position+2;
-						}
-						
-						while (text[++position] === ' ') {}
-						break;
-					}
-				}
-				
-				word = text.substring(startPos, position).trim();
-				
-				if (len = word.length) {
-					nextChar = text[position];
-					
-					if (nextChar === '\n' || text[position-1] === '\n') {
-						isDelayed = true;
-						isSentenceEnd = true;
-					}
-					else {
-						for (i = 0; i < len; i++) {
-							char = word[i];
-							if (
-								!isReadable(char)
-								&& (i || !REX_CHAR_DASH.test(char) && !REX_CHAR_QUOTE.test(char) && !REX_CHAR_OPENING_BRK.test(char))
-								&& (i !== 1 || char !== ' ' || !REX_CHAR_DASH.test(word[0]))
-								&& (i < len-1 || !REX_CHAR_QUOTE.test(char) && !REX_CHAR_CLOSING_BRK.test(char))
+						else if (char === ' ') {
+							if (nextChar === '.' && next2Char === '.') { // `понятно ..` | `понятно ... | `понятно ...»` | `понятно ...»—`
+								while ((temp = parag[++position]) && temp !== ' ' && !isLetters(temp)) {}
+								temp === ' ' && position++;
+								isSentenceEnd = true;
+								break;
+							}
+							else if ( // `понятно.` | `понятно.»`
+								REX_CHAR_SENTENCE_END.test(prevChar) && !isUpperLetters(prev2Char) // FIXME: using isUpperLetters - that is a pretty stupid fix for initials
+								|| REX_CHAR_CLOSING_QUOTE.test(prevChar) && REX_CHAR_SENTENCE_END.test(prev2Char)
 							) {
-								isDelayed = true;
+								isSentenceEnd = true;
+							}
+							else if (entityAnalysis && next2Char === ' ' && REX_CHAR_DASH.test(nextChar)) { // `понятно —`
+								position = position+2;
+							}
+							
+							while (parag[++position] === ' ') {}
+							break;
+						}
+					}
+					
+					word = parag.substring(startPos, position).trim();
+					
+					if (len = word.length) {
+						if (position === parLen) {
+							isSentenceEnd = true;
+							isDelayed = true;
+						}
+						else {
+							for (k = 0; k < len; k++) {
+								char = word[k];
+								if (
+									!isReadable(char)
+									&& (k || !REX_CHAR_DASH.test(char) && !REX_CHAR_QUOTE.test(char) && !REX_CHAR_OPENING_BRK.test(char))
+									&& (k !== 1 || char !== ' ' || !REX_CHAR_DASH.test(word[0]))
+									&& (k < len-1 || !REX_CHAR_QUOTE.test(char) && !REX_CHAR_CLOSING_BRK.test(char))
+								) {
+									isDelayed = true;
+								}
 							}
 						}
+						
+						data.push({
+							start: prevTextLen+startPos,
+							end: prevTextLen+position,
+							word: word,
+							isDelayed: isDelayed,
+							isSentenceStart: isSentenceStart,
+							isSentenceEnd: isSentenceEnd
+						});
 					}
-					
-					data.push({
-						start: startPos,
-						end: position,
-						word: word,
-						isDelayed: isDelayed,
-						isSentenceEnd: isSentenceEnd
-					});
+				}
+			}
+			
+			for (i = 0; i < data.length; i++) {
+				temp = data[i];
+				temp2 = data[i-1];
+				if (temp.isSentenceStart) {
+					temp2 && (temp2.isSentenceEnd = temp2.isDelayed = true);
+				}
+				else if (temp.isSentenceEnd) {
+					data[i+1] && (data[i+1].isSentenceStart = true);
 				}
 			}
 		}
