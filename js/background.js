@@ -58,7 +58,8 @@
 			vPosition: 4,
 			focusMode: true,
 			smartSlowing: true,
-			entityAnalysis: true
+			entityAnalysis: true,
+			emptySentenceEnd: true
 		},
 		
 		isPopupOpen = false;

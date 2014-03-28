@@ -75,14 +75,23 @@
 			else {
 				data = justRun && data || parser.nextWord();
 				
-				updateWord();
+				function doUpdate() {
+					updateWord();
+					timeout = setTimeout(
+						next,
+						(60000/app.get('wpm')) * (wasRun
+							? data.isDelayed && app.get('smartSlowing') ? 2 : 1
+							: 2)
+					);
+				}
 				
-				timeout = setTimeout(
-					next,
-					(60000/app.get('wpm')) * (wasRun
-						? data.isDelayed && app.get('smartSlowing') ? 2 : 1
-						: 2)
-				);
+				if (!justRun && app.get('emptySentenceEnd') && data.isSentenceStart && !parser.isFirstWord()) {
+					updateWord(true);
+					timeout = setTimeout(doUpdate, 60000/app.get('wpm')*2);
+				}
+				else {
+					doUpdate();
+				}
 				
 				wasRun = true;
 			}
@@ -110,7 +119,12 @@
 			}
 		}
 		
-		function updateWord() {
+		function updateWord(needEmpty) {
+			if (needEmpty) {
+				$word.innerHTML = '';
+				return;
+			}
+			
 			var word = data.word;
 			
 			$word.style.left = '';
@@ -400,6 +414,7 @@
 			
 			updateWrapper();
 			updateContext();
+			updateWord(); // update is needed if paused on an "empty word" at the end of a sentence
 			
 			dBlock($contextBefore);
 			dBlock($contextAfter);
