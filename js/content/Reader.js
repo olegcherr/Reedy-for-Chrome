@@ -80,12 +80,12 @@
 					timeout = setTimeout(
 						next,
 						(60000/app.get('wpm')) * (wasRun
-							? data.isDelayed && app.get('smartSlowing') ? 2 : 1
+							? parser.isDelayed() && app.get('smartSlowing') ? 2 : 1
 							: 2)
 					);
 				}
 				
-				if (!justRun && app.get('emptySentenceEnd') && data.isSentenceStart && !parser.isFirstWord()) {
+				if (!justRun && app.get('emptySentenceEnd') && parser.isSentenceStart() && !parser.isFirstWord()) {
 					updateWord(true);
 					timeout = setTimeout(doUpdate, 60000/app.get('wpm')*2);
 				}
@@ -125,7 +125,7 @@
 				return;
 			}
 			
-			var word = data.word;
+			var word = data.toString();
 			
 			$word.style.left = '';
 			

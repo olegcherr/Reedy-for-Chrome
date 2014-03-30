@@ -44,6 +44,12 @@
 		};
 	}
 	
+	app.zeroPad = function(num, len) {
+		return (num = num+'').length < len
+			? (new Array(len).join('0') + num).slice(-len)
+			: num;
+	}
+	
 	
 	app.sendMessageToExtension = function(data, callback) {
 		chrome.extension.sendMessage(data, callback);
