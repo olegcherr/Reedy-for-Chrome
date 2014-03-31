@@ -11,6 +11,7 @@
 	background: #e6e6e6;
 	z-index: 2147483647;
 	overflow: hidden;
+	outline: 0;
 	opacity: 0;
 	cursor: default;
 	-webkit-transition: background-color 1s, opacity 500ms;
