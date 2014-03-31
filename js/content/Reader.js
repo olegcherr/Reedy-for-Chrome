@@ -506,10 +506,12 @@
 			app.on($wrapper, "keydown", onKeydown);
 			
 			app.on($pane, "click", onPaneClick);
-			app.on($pane, "wheel", onPaneWheel);
-			
 			app.on($closingAreaLeft, "click", onClosingAreaClick);
 			app.on($closingAreaRight, "click", onClosingAreaClick);
+			
+			app.on($pane, "wheel", onPaneWheel);
+			app.on($closingAreaLeft, "wheel", onPaneWheel);
+			app.on($closingAreaRight, "wheel", onPaneWheel);
 			
 			app.on($ctrlStart, "click", onStartCtrl);
 			app.on($ctrlNextWord, "click", onNextWordCtrl);
