@@ -14,15 +14,7 @@
 			"js": [
 				"js/content/main.js",
 				"js/content/Parser.js",
-				"js/content/Reader.js",
-				
-				"js/content/unittests.js",
-				"js/content/tests/parser1.js",
-				"js/content/tests/parser2.js",
-				"js/content/tests/parser3.js",
-				"js/content/tests/parser4.js",
-				"js/content/tests/parser4-sentenceEnd.js",
-				"js/content/tests/time.js"
+				"js/content/Reader.js"
 			],
 			"all_frames": true
 		}
