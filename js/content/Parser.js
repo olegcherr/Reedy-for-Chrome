@@ -50,7 +50,7 @@
 		return /\d/.test(str);
 	}
 	
-	function onlyDigits(str) {
+	function isDigits(str) {
 		return /^\d+$/.test(str);
 	}
 	
@@ -166,21 +166,22 @@
 			
 			api.textLength = api.endIndex - api.startIndex;
 			
-			api.total = 0;
-			for (var i = 0; i < api._childs.length; i++) {
+			api.total = api.value ? 1 : 0;
+			for (var i = 0; i < api.length; i++) {
 				api.total += api._childs[i].total;
 			}
 		}
 		
 		
-		var api = this, i;
+		var api = this;
 		
 		api.length = 0;
-		api.total = 0;
 		api._childs = [];
 		
 		api.value = '';
 		api.type = null;
+		
+		api.total = 0;
 		
 		api.startIndex =
 		api.endIndex = 0;
@@ -192,6 +193,13 @@
 		api.hasNewLineBefore = false;
 		
 		api.isSentenceEnd = false;
+		
+		
+		api.setValue = function(value, type) {
+			api.value = value;
+			api.type = type;
+			api.total++;
+		}
 		
 		
 		api.get = function(index) {
@@ -230,6 +238,13 @@
 				}
 			}
 			
+			return true;
+		}
+		
+		api.checkChildren = function(callback) {
+			for (var i = 0; i < api.length; i++) {
+				if (callback(i, api._childs[i]) === false) return false;
+			}
 			return true;
 		}
 		
@@ -286,8 +301,9 @@
 	 * Notes
 	 * Doesn't match english single quotes (‘...’) because the closing quote equals to the apostrophe char.
 	 */
-	var REX_CHARS = /^(\.|…)|(,)|(;)|(:)|(!|\?)|(\-|—)|(\(|\[|\{)|(\)|\]|\})|(«|»|‹|›|"|„|“|”)|(’|')|(\/|\\)|(.)$/,
+	var REX_CHARS = /^(\.|…)|(,)|(;)|(:)|(!|\?)|(\-|—)|(\(|\[|\{)|(\)|\]|\})|(«|»|‹|›|"|„|“|”)|(\/|\\)|(\+)|(.)$/,
 		REX_SENTENCE_END = /(?:\.|…|!|\?|;)([^.…!?;]*)$/,
+		REX_PHONE = /^\+?(?:\d+ ?)?(?:\(\d+(?: \d+)?\)|\d+)? ?[\d\-]+$/,
 		
 		CHAR_DOT        = 1,
 		CHAR_COMMA      = 2,
@@ -298,8 +314,8 @@
 		CHAR_O_BRACKET  = 7,
 		CHAR_C_BRACKET  = 8,
 		CHAR_QUOTE      = 9,
-		CHAR_APOSTR     = 10,
-		CHAR_SLASH      = 11,
+		CHAR_SLASH      = 10,
+		CHAR_PLUS       = 11,
 		CHAR_COMMON     = 12,
 		
 		CHAR_TYPES      = [ // the order matters!!!
@@ -312,25 +328,39 @@
 			CHAR_O_BRACKET,
 			CHAR_C_BRACKET,
 			CHAR_QUOTE,
-			CHAR_APOSTR,
 			CHAR_SLASH,
+			CHAR_PLUS,
 			CHAR_COMMON
 		],
 		
-		CHARS_INTO_WORD = [CHAR_DASH, CHAR_DOT, CHAR_APOSTR],
+		CHARS_INTO_WORD = [CHAR_DASH, CHAR_DOT],
 		
 		RES_FALSE       = 0,
 		RES_NEED_MORE   = 1,
 		RES_MATCH       = 2,
 		
 		patterns_level2 = [
-			// `что-то` | `Préchac’а`
+			// `что-то` | `Préchac’а` | `30-е` | `15-20` | `S.T.A.L.K.E.R`
 			function(i, token, tokenStr) {
-				if (!i && isLowerLetter(tokenStr[tokenStr.length-1]) && token.checkMask('.0.0') && token.checkContents([CHAR_COMMON])) return RES_NEED_MORE;
-				if (i%2 && tokenStr.length === 1 && token.checkMask('.0.0') && token.checkContents(CHARS_INTO_WORD)) return RES_NEED_MORE;
-				if (i && !(i%2) && token.checkContents([CHAR_COMMON])) {
-					if (token.checkMask('0.0.')) return RES_MATCH;
-					if (token.checkMask('0000')) return RES_NEED_MORE;
+				if (!i && token.type === CHAR_COMMON && token.checkMask('.0.0')) return RES_NEED_MORE;
+				if (i%2 && tokenStr.length === 1 && has(token.type, CHARS_INTO_WORD) && token.checkMask('0000')) return RES_NEED_MORE;
+				if (!(i%2) && token.type === CHAR_COMMON && token.checkMask('0.0.')) return RES_MATCH;
+				return RES_FALSE;
+			},
+			
+			// `-30°C` | `+30*2` | `+100500`
+			function(i, token, tokenStr) {
+				if (!i && tokenStr.length === 1 && token.checkContents([CHAR_PLUS, CHAR_DASH]) && token.checkMask('.0.0')) return RES_NEED_MORE;
+				if (i === 1 && token.type === CHAR_COMMON && isDigits(tokenStr[0])) return RES_MATCH;
+				return RES_FALSE;
+			},
+			
+			// `+7 (985) 970-45-45` | `7 985 970-45-45` | `7(985)970-45-45` | `(815 2) 400600` | `+850 (2) 3813031`
+			function(i, token, tokenStr, stack, stackStr) {
+				if (!i && (token.type === CHAR_PLUS || isDigits(tokenStr))) return RES_NEED_MORE;
+				if (i) {
+					if (stackStr.length > 7 && REX_PHONE.test(stackStr)) return RES_MATCH;
+					if (isDigits(tokenStr) || tokenStr === '(' || tokenStr === ')') return RES_NEED_MORE;
 				}
 				return RES_FALSE;
 			},
@@ -361,35 +391,53 @@
 		],
 		
 		patterns_level3 = [
-			// `A. Préchac’а` | `У. Б. Йитс` | `Й.К.Л. Прильвиц`
+			// `A. Préchac’а` | `У. Б. Йитс`
 			function(i, token, tokenStr, stack, stackStr) {
+				if (i%2) return tokenStr === '.' && token.hasSpaceAfter && !token.hasSpaceBefore ? RES_NEED_MORE : RES_FALSE;
 				
-				if (!i && tokenStr.length === 1 && isUpperLetter(tokenStr) && token.checkMask('.0.0')) return RES_NEED_MORE;
-				if (i === 1 && tokenStr === '.' && token.checkMask('0.0.')) return RES_NEED_MORE;
+				if (tokenStr.length === 1 && !token.hasSpaceAfter && !token.hasNewLineAfter && isUpperLetter(tokenStr)) return RES_NEED_MORE;
 				
-				if (i > 1) {
-					if (tokenStr.length === 1 && (tokenStr === '.' || isUpperLetter(tokenStr))) return RES_NEED_MORE;
-					if (tokenStr.length > 1 && isUpperLetter(tokenStr[0])) return RES_MATCH;
-				}
+				if (i && tokenStr.length > 1 && isUpperLetter(tokenStr[0])) return RES_MATCH;
 				
 				return RES_FALSE;
 			},
 			
+			// `Й.К. Прильвиц` | `Й.К.Л. Прильвиц`
+			function(i, token, tokenStr) {
+				if (!i)
+					return token.length > 2 && token.checkChildren(function(i, tkn) {
+						var str = tkn.toString();
+						return i%2 ? str === '.' : isUpperLetter(str);
+					}) ? RES_NEED_MORE : RES_FALSE;
+				
+				if (i === 1) return token.hasSpaceAfter && token.toString() === '.' ? RES_NEED_MORE : RES_MATCH;
+				
+				return tokenStr.length > 1 && isUpperLetter(tokenStr[0]) ? RES_MATCH : RES_FALSE;
+			},
+			
 			// `Команда А` | `Глава 1` | `Глава 1.1` | `Préchac’а A.` | `Йитс У. Б.` | `Прильвиц Й.К.Л.`
 			function(i, token, tokenStr, stack, stackStr) {
-				var types;
+				if (!i)
+					return token.hasSpaceAfter
+						&& isUpperLetter(tokenStr[0])
+						&& only([CHAR_DASH, CHAR_COMMON], token.getTypes())
+					? RES_NEED_MORE : RES_FALSE;
 				
-				if (
-					!i
-					&& isUpperLetter(tokenStr[0])
-					&& token.checkMask('.1.0')
-					&& (types = token.getTypes())
-					&& (types.length === 1 || only(CHARS_INTO_WORD.concat(CHAR_COMMON), types))
-				) return RES_NEED_MORE;
+				if (i%2) {
+					if (token.total === 1) return tokenStr.length === 1 && isUpperLetter(tokenStr) || isDigits(tokenStr) ? RES_MATCH : RES_FALSE;
+					return token.total > 2 && token.checkChildren(function(i, tkn) {
+						var str = tkn.toString();
+						return i%2 ? str === '.' : isUpperLetter(str) || isDigits(str);
+					}) ? RES_MATCH : RES_FALSE;
+				}
 				
-				if (i > 0 && i%2 && (tokenStr.length === 1 && isUpperLetter(tokenStr) || onlyDigits(tokenStr))) return RES_MATCH;
-				if (i > 1 && !(i%2) && tokenStr === '.') return RES_MATCH;
-				
+				return tokenStr === '.' ? RES_MATCH : RES_FALSE;
+			},
+			
+			// `25 марта` | `2014 года`
+			function(i, token, tokenStr) {
+				if (!i) return (token.hasSpaceBefore || token.hasNewLineBefore) && token.hasSpaceAfter && isDigits(tokenStr) ? RES_NEED_MORE : RES_FALSE;
+				if (i === 1 && isLetter(tokenStr[0])) return RES_MATCH;
 				return RES_FALSE;
 			}
 		];
@@ -423,8 +471,7 @@
 				
 				if (char && !isSpace && !isNewLine) {
 					token = new Token();
-					token.value = char;
-					token.type = charType;
+					token.setValue(char, charType);
 					token.startIndex = i;
 					token.hasSpaceBefore = prevChar === ' ';
 					token.hasNewLineBefore = !i || prevChar === '\n';
@@ -471,7 +518,7 @@
 		
 		
 		var tokens3 = app.parse3(raw),
-			token3, types, type,
+			token3, types, type, str,
 			nextToken3, nextTypes, nextType,
 			prevToken3, prevTypes, prevType,
 			hasBreakBefore, hasBreakAfter,
@@ -485,6 +532,7 @@
 			token3 = nextToken3 || tokens3[i];
 			types = nextTypes || token3.getTypes();
 			type = nextType || types[0];
+			str = token3.toString();
 			
 			nextToken3 = tokens3[i+1];
 			nextTypes = nextToken3 && nextToken3.getTypes();
@@ -494,7 +542,7 @@
 			hasBreakAfter = token3.hasSpaceAfter || token3.hasNewLineAfter;
 			
 			if (types.length > 1 || type === CHAR_COMMON) {
-				hasBreakBefore && (!token4 || token4.length > 1 || token4.getTypes()[0] === CHAR_COMMON)
+				hasBreakBefore && (!token4 || token4.total > 1 || token4.getTypes()[0] === CHAR_COMMON)
 					? create()
 					: push();
 				
@@ -536,8 +584,7 @@
 					
 					token = new Token();
 					
-					token.value = words[k];
-					token.type = CHAR_COMMON;
+					token.setValue(words[k], CHAR_COMMON);
 					
 					token.startIndex = index;
 					token.endIndex = index+wlen;

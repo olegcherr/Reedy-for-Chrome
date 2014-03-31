@@ -2,6 +2,7 @@
 
 var colors          = require('colors'),
 	argv            = process.argv,
+	test2run        = argv[2],
 	
 	tests = [
 		'parser1',
@@ -48,5 +49,5 @@ window = (function() {
 
 
 tests.forEach(function(name) {
-	name && require('./tests/'+name+'.js');
+	name && (!test2run || test2run === name) && require('./tests/'+name+'.js');
 });
