@@ -36,7 +36,7 @@ Chrome Web Store: https://chrome.google.com/webstore/detail/fastreader/ihbdojmgg
 * Space (or Enter) – play/pause;
 * Right/Left – next/previous word;
 * Ctrl+Right/Left – next/previous sentence (you can also use the mouse wheel);
-* Alt+Right/Left – go to the end/beginning;
+* End/Home – go to the end/beginning;
 * Up/Down – increase/decrease the speed;
 * +/- – larger/smaller font size;
 * Esc – close FastReader.

@@ -299,15 +299,19 @@
 					break;
 				case 39: // right
 					app.stopEvent(e);
-					e.ctrlKey
-						? onNextSentenceCtrl()
-						: e.altKey ? onLastWordCtrl() : onNextWordCtrl();
+					e.ctrlKey ? onNextSentenceCtrl() : onNextWordCtrl();
 					break;
 				case 37: // left
 					app.stopEvent(e);
-					e.ctrlKey
-						? onPrevSentenceCtrl()
-						: e.altKey ? onFirstWordCtrl() : onPrevWordCtrl();
+					e.ctrlKey ? onPrevSentenceCtrl() : onPrevWordCtrl();
+					break;
+				case 35: // end
+					app.stopEvent(e);
+					onLastWordCtrl();
+					break;
+				case 36: // home
+					app.stopEvent(e);
+					onFirstWordCtrl();
 					break;
 				case 38: // up
 					app.stopEvent(e);
