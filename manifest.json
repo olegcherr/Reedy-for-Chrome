@@ -21,6 +21,7 @@
 				"js/content/tests/parser2.js",
 				"js/content/tests/parser3.js",
 				"js/content/tests/parser4.js",
+				"js/content/tests/parser4-sentenceEnd.js",
 				"js/content/tests/time.js"
 			],
 			"all_frames": true

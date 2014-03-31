@@ -54,6 +54,11 @@
 		return /^\d+$/.test(str);
 	}
 	
+	function isSentenceEnd(str) {
+		var m = REX_SENTENCE_END.exec(str);
+		return m && !hasLetters(m[1]) && !hasDigits(m[1]);
+	}
+	
 	
 	function has(elem, array) {
 		return array.indexOf(elem) > -1;
@@ -186,6 +191,8 @@
 		api.hasNewLineAfter =
 		api.hasNewLineBefore = false;
 		
+		api.isSentenceEnd = false;
+		
 		
 		api.get = function(index) {
 			return api._childs[index];
@@ -280,6 +287,7 @@
 	 * Doesn't match english single quotes (‘...’) because the closing quote equals to the apostrophe char.
 	 */
 	var REX_CHARS = /^(\.|…)|(,)|(;)|(:)|(!|\?)|(\-|—)|(\(|\[|\{)|(\)|\]|\})|(«|»|‹|›|"|„|“|”)|(’|')|(\/|\\)|(.)$/,
+		REX_SENTENCE_END = /(?:\.|…|!|\?|;)([^.…!?;]*)$/,
 		
 		CHAR_DOT        = 1,
 		CHAR_COMMA      = 2,
@@ -489,6 +497,9 @@
 				hasBreakBefore && (!token4 || token4.length > 1 || token4.getTypes()[0] === CHAR_COMMON)
 					? create()
 					: push();
+				
+				// any common char should reset the flag
+				token4.isSentenceEnd = false;
 			}
 			else if (has(type, [CHAR_DASH, CHAR_DOT]) && !has(prevType, [CHAR_DASH, CHAR_DOT]) && !token3.hasNewLineBefore && (hasBreakAfter || nextType !== CHAR_COMMON)) {
 				push();
@@ -497,6 +508,10 @@
 				hasBreakBefore && !token3.hasNewLineAfter
 					? create()
 					: push();
+			}
+			
+			if (token3.hasNewLineAfter || types.length === 1 && has(type, [CHAR_DOT, CHAR_SEMICOLON, CHAR_MARK])) {
+				token4.isSentenceEnd = true;
 			}
 		}
 		
@@ -520,10 +535,15 @@
 					wlen = words[k].length;
 					
 					token = new Token();
+					
 					token.value = words[k];
 					token.type = CHAR_COMMON;
+					
 					token.startIndex = index;
 					token.endIndex = index+wlen;
+					
+					token.isSentenceEnd = k >= words.length-1 || isSentenceEnd(token.toString());
+					
 					data.push(token);
 					
 					index = token.endIndex;
@@ -536,14 +556,6 @@
 	
 	
 	app.Parser = function(raw) {
-		
-		function isSentenceEnd(word) {
-			if (word.hasNewLineAfter) return true;
-			
-			var m = /(?:\.|…|!|\?|;)([^.…!?;]*)$/.exec(word.toString());
-			return m && !hasLetters(m[1]) && !hasDigits(m[1]);
-		}
-		
 		
 		var api = this,
 			data = [],
@@ -568,14 +580,14 @@
 		}
 		
 		api.nextSentense = function() {
-			while (++wid < data.length && !isSentenceEnd(data[wid])) {}
+			while (++wid < data.length && !data[wid].isSentenceEnd) {}
 			wid++;
 			return api.word();
 		}
 		
 		api.prevSentense = function() {
 			wid--;
-			while (--wid >= 0 && !isSentenceEnd(data[wid])) {}
+			while (--wid >= 0 && !data[wid].isSentenceEnd) {}
 			wid++;
 			return api.word();
 		}
@@ -613,11 +625,11 @@
 		}
 		
 		api.isSentenceStart = function() {
-			return !wid || isSentenceEnd(data[wid-1]);
+			return !wid || data[wid-1].isSentenceEnd;
 		}
 		
 		api.isSentenceEnd = function() {
-			return isSentenceEnd(data[wid]);
+			return data[wid].isSentenceEnd;
 		}
 		
 		api.isDelayed = function() {
