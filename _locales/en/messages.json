@@ -3,6 +3,10 @@
 		"message": "Read this with FastReader"
 	},
 	
+	"cantParse": {
+		"message": "FastReader cannot handle the text you selected."
+	},
+	
 	
 	
 	
@@ -46,7 +50,7 @@
 		"message": "Entity analysis"
 	},
 	"entityAnalysisDescr": {
-		"message": "Display general entities (i.e. phone numbers and initials) as a single word."
+		"message": "Allows to display common entities as a single word. Performs the analysis of the punctuation. Corrects the basic design of the text."
 	},
 	
 	

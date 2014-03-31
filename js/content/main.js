@@ -29,8 +29,7 @@
 	
 	
 	var app = window.fastReader = {},
-		settings,
-		reader;
+		settings, reader;
 	
 	
 	app.stopEvent = function(e) {
@@ -84,27 +83,24 @@
 	
 	
 	app.start = function() {
-		init(function() {
-			reader && reader.destroy();
-			
-			var text = window.getSelection().toString().trim();
-			if (text.length > 0) {
-				reader = new app.Reader(
-					new app.Parser(text)
-				);
-			}
+		reader && reader.destroy();
+		var text = window.getSelection().toString().trim();
+		text.length && init(function() {
+			reader = new app.Reader(
+				new app.Parser(text)
+			);
 		});
 	}
 	
 	app.onReaderDestroy = function() {
-		reader = settings = null;
+		settings = reader = null;
 	}
 	
 	
 	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
 		switch (msg.type) {
 			case 'popupSettings':
-				if (settings) {
+				if (settings && reader) {
 					settings[msg.key] = msg.value;
 					reader.onPopupSettings(msg.key, msg.value);
 				}

@@ -73,7 +73,7 @@
 				}, 500);
 			}
 			else {
-				data = justRun && data || parser.nextWord();
+				token = justRun && token || parser.nextWord();
 				
 				function doUpdate() {
 					updateWord();
@@ -112,7 +112,7 @@
 		}
 		
 		function updateContext() {
-			if (data) {
+			if (token) {
 				var context = parser.getContext();
 				$contextBefore.innerHTML = context.before.replace(/\n/g, "<br/>");
 				$contextAfter.innerHTML = context.after.replace(/\n/g, "<br/>");
@@ -125,7 +125,7 @@
 				return;
 			}
 			
-			var word = data.toString();
+			var word = token.toString();
 			
 			$word.style.left = '';
 			
@@ -183,7 +183,7 @@
 		function onNextWordCtrl() {
 			isRunning && api.stop();
 			
-			data = parser.nextWord();
+			token = parser.nextWord();
 			
 			dNone($info);
 			updateWord();
@@ -193,7 +193,7 @@
 		function onPrevWordCtrl() {
 			isRunning && api.stop();
 			
-			data = parser.prevWord();
+			token = parser.prevWord();
 			
 			dNone($info);
 			updateWord();
@@ -203,7 +203,7 @@
 		function onNextSentenceCtrl() {
 			isRunning && api.stop();
 			
-			data = parser.nextSentense();
+			token = parser.nextSentense();
 			
 			dNone($info);
 			updateWord();
@@ -213,7 +213,7 @@
 		function onPrevSentenceCtrl() {
 			isRunning && api.stop();
 			
-			data = parser.prevSentense();
+			token = parser.prevSentense();
 				
 			dNone($info);
 			updateWord();
@@ -223,7 +223,7 @@
 		function onLastWordCtrl() {
 			isRunning && api.stop();
 			
-			data = parser.lastWord();
+			token = parser.lastWord();
 				
 			dNone($info);
 			updateWord();
@@ -233,7 +233,7 @@
 		function onFirstWordCtrl() {
 			isRunning && api.stop();
 			
-			data = parser.firstWord();
+			token = parser.firstWord();
 			
 			dNone($info);
 			updateWord();
@@ -383,12 +383,8 @@
 			
 			focusPoint = 0,
 			bodyOverflowBefore = $body.style.overflow,
-			data, timeout;
+			token, timeout;
 		
-		
-		$body.style.overflow = "hidden";
-		
-		$wrapper.tabIndex = 1;
 		
 		
 		api.start = function() {
@@ -460,70 +456,82 @@
 					break;
 				case 'entityAnalysis':
 					parser.parse();
-					data = parser.wordAtIndex(data.start+1);
-					updateWord();
-					updateContext();
+					if (wasRun) {
+						token = parser.wordAtIndex(token.startIndex+1);
+						updateWord();
+						updateContext();
+					}
 					break;
 			}
 		}
 		
 		
 		
-		app.on($wrapper, "keydown", onKeydown);
-		
-		app.on($pane, "click", onPaneClick);
-		app.on($pane, "wheel", onPaneWheel);
-		
-		app.on($closingAreaLeft, "click", onClosingAreaClick);
-		app.on($closingAreaRight, "click", onClosingAreaClick);
-		
-		app.on($ctrlStart, "click", onStartCtrl);
-		app.on($ctrlNextWord, "click", onNextWordCtrl);
-		app.on($ctrlNextSentence, "click", onNextSentenceCtrl);
-		app.on($ctrlLastWord, "click", onLastWordCtrl);
-		app.on($ctrlPrevWord, "click", onPrevWordCtrl);
-		app.on($ctrlPrevSentence, "click", onPrevSentenceCtrl);
-		app.on($ctrlFirstWord, "click", onFirstWordCtrl);
-		
-		app.on($ctrlDecWpm, "click", onDecreaseWpmCtrl);
-		app.on($ctrlIncWpm, "click", onIncreaseWpmCtrl);
-		
-		app.on($ctrlDecFont, "click", onDecreaseFontCtrl);
-		app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
-		
-		app.on($menuBtnTheme, "click", onThemeCtrl);
-		app.on($menuBtnBackground, "click", onBackgroundCtrl);
-		app.on($menuBtnClose, "click", onCloseCtrl);
-		
-		app.on(window, "resize", onWindowResize);
-		app.on(window, "popstate", onCloseCtrl);
-		
-		
-		
 		parser.parse();
-		
-		updateWrapper();
-		updateFocusPoint();
-		updatePanels();
-		
-		if (app.get('autostart')) {
-			dNone($info);
-			
+		if (!parser.length) {
+			alert(app.t('cantParse'));
+			// The destroy should be called after the reader is created and saved in the app (into main.js)
 			setTimeout(function() {
-				api.start();
-			}, 500);
+				api.destroy();
+			}, 100);
 		}
 		else {
-			dBlock($topPanel);
-			dBlock($botPanel);
+			$body.style.overflow = "hidden";
 			
-			$info.innerHTML = app.t('clickToStart');
+			$wrapper.tabIndex = 1;
+			
+			updateWrapper();
+			updateFocusPoint();
+			updatePanels();
+			
+			if (app.get('autostart')) {
+				dNone($info);
+				
+				setTimeout(function() {
+					api.start();
+				}, 500);
+			}
+			else {
+				dBlock($topPanel);
+				dBlock($botPanel);
+				
+				$info.innerHTML = app.t('clickToStart');
+			}
+			
+			$wrapper.setAttribute("is-closing", "false");
+			$wrapper.focus();
+			
+			
+			
+			app.on($wrapper, "keydown", onKeydown);
+			
+			app.on($pane, "click", onPaneClick);
+			app.on($pane, "wheel", onPaneWheel);
+			
+			app.on($closingAreaLeft, "click", onClosingAreaClick);
+			app.on($closingAreaRight, "click", onClosingAreaClick);
+			
+			app.on($ctrlStart, "click", onStartCtrl);
+			app.on($ctrlNextWord, "click", onNextWordCtrl);
+			app.on($ctrlNextSentence, "click", onNextSentenceCtrl);
+			app.on($ctrlLastWord, "click", onLastWordCtrl);
+			app.on($ctrlPrevWord, "click", onPrevWordCtrl);
+			app.on($ctrlPrevSentence, "click", onPrevSentenceCtrl);
+			app.on($ctrlFirstWord, "click", onFirstWordCtrl);
+			
+			app.on($ctrlDecWpm, "click", onDecreaseWpmCtrl);
+			app.on($ctrlIncWpm, "click", onIncreaseWpmCtrl);
+			
+			app.on($ctrlDecFont, "click", onDecreaseFontCtrl);
+			app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
+			
+			app.on($menuBtnTheme, "click", onThemeCtrl);
+			app.on($menuBtnBackground, "click", onBackgroundCtrl);
+			app.on($menuBtnClose, "click", onCloseCtrl);
+			
+			app.on(window, "resize", onWindowResize);
+			app.on(window, "popstate", onCloseCtrl);
 		}
-		
-		$wrapper.setAttribute("is-closing", "false");
-		
-		$wrapper.focus();
-		
 	};
 	
 	
