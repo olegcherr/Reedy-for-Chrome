@@ -19,6 +19,16 @@
 			.replace(new RegExp(sign, 'g'), '\n');
 	}
 	
+	function cleanUpTextSimple(raw) {
+		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
+		return raw
+			.trim()
+			.replace(/\n|\r/gm, sign)
+			.replace(/\s+/g, ' ')
+			.replace(new RegExp('\\s*'+sign+'\\s*', 'g'), sign)     // `      \n    `
+			.replace(new RegExp(sign, 'g'), '\n');
+	}
+	
 	
 	function isUpperLetter(char) {
 		return char.toLowerCase() !== char;
@@ -133,7 +143,7 @@
 	}
 	
 	
-	function Token(childs) {
+	function Token() {
 		
 		function update() {
 			api.length = api._childs.length;
@@ -259,13 +269,6 @@
 			}
 			
 			return api.value;
-		}
-		
-		
-		if (childs) {
-			for (i = 0; i < childs.length; i++) {
-				api.push(childs[i]);
-			}
 		}
 		
 	}
@@ -501,6 +504,37 @@
 	}
 	
 	
+	app.simpleParser = function(raw) {
+		var paragraphs = raw.split('\n'),
+			data = [], index = 0,
+			words, wlen, token, i, k;
+		
+		for (i = 0; i < paragraphs.length; i++) {
+			i && index++; // nl
+			
+			if (paragraphs[i].length) {
+				words = paragraphs[i].split(' ');
+				
+				for (k = 0; k < words.length; k++) {
+					k && index++; // space
+					wlen = words[k].length;
+					
+					token = new Token();
+					token.value = words[k];
+					token.type = CHAR_COMMON;
+					token.startIndex = index;
+					token.endIndex = index+wlen;
+					data.push(token);
+					
+					index = token.endIndex;
+				}
+			}
+		}
+		
+		return data;
+	}
+	
+	
 	app.Parser = function(raw) {
 		
 		function isSentenceEnd(word) {
@@ -512,9 +546,11 @@
 		
 		
 		var api = this,
-			text = api.text = cleanUpText(raw),
 			data = [],
 			wid = -1;
+		
+		
+		api.length = 0;
 		
 		
 		api.word = function() {
@@ -595,14 +631,23 @@
 		api.getContext = function() {
 			var token = api.word();
 			return {
-				before: text.substring(0, token.startIndex),
-				after: text.substring(token.endIndex)
+				before: api.text.substring(0, token.startIndex),
+				after: api.text.substring(token.endIndex)
 			};
 		}
 		
 		
 		api.parse = function() {
-			data = app.parse4(text);
+			if (app.get('entityAnalysis')) {
+				api.text = cleanUpText(raw);
+				data = app.parse4(api.text);
+			}
+			else {
+				api.text = cleanUpTextSimple(raw);
+				data = app.simpleParser(api.text);
+			}
+			
+			api.length = data.length;
 		}
 		
 	}
