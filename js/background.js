@@ -113,7 +113,6 @@
 					chrome.tabs.executeScript(tid, {file: 'js/content/main.js'});
 					chrome.tabs.executeScript(tid, {file: 'js/content/Parser.js'});
 					chrome.tabs.executeScript(tid, {file: 'js/content/Reader.js'});
-					chrome.tabs.executeScript(tid, {file: 'js/content/unittests.js'});
 				}
 			});
 		}
