@@ -2,14 +2,6 @@
 
 exports = (function() {
 	
-	function test(raw, expected) {
-		var parser = new window.fastReader.Parser(raw);
-		parser.parse();
-		var hephenated = parser.nextWord().toHyphenated();
-		assert.equalArray(hephenated, expected, raw);
-	}
-	
-	
 	var assert = require('../assert.js');
 	
 	require('../../js/content/Parser.js');
@@ -24,12 +16,16 @@ exports = (function() {
 	/////////////////////////////////////////////////////
 	
 	token = new Token();
+	assert.equal(token.length, 0);
 	assert.equal(token.total, 0);
 	
 	/////////////////////////////////////////////////////
 	
 	token = new Token();
+	
 	token.push(new Token());
+	
+	assert.equal(token.length, 1);
 	assert.equal(token.total, 0);
 	
 	/////////////////////////////////////////////////////
@@ -38,9 +34,13 @@ exports = (function() {
 	token2 = new Token();
 	token3 = new PlainToken();
 	token3.value = 'yes';
+	
 	token2.push(token3);
 	token.push(token2);
+	
+	assert.equal(token.length, 1);
 	assert.equal(token.total, 1);
+	assert.equal(token2.total, 1);
 	assert.equal(token2.total, 1);
 	
 	/////////////////////////////////////////////////////
@@ -52,16 +52,27 @@ exports = (function() {
 	token5 = new PlainToken();
 	
 	token3.value = 'yes';
-	token5.value = 'yo';
+	token3.type = 111;
+	token5.value = '!';
+	token5.type = 222;
 	
 	token4.push(token5);
 	token2.push(token3);
 	token2.push(token4);
 	token.push(token2);
 	
+	assert.equal(token.length, 1);
 	assert.equal(token.total, 2);
 	assert.equal(token2.total, 2);
+	assert.equal(token2.total, 2);
+	assert.equal(token4.length, 1);
 	assert.equal(token4.total, 1);
+	
+	assert.equalArray(token.getTypes(), [111,222]);
+	assert.equalArray(token2.getTypes(), [111,222]);
+	assert.equalArray(token4.getTypes(), [222]);
+	
+	assert.equal(token.toString(), 'yes!');
 	
 	/////////////////////////////////////////////////////
 	

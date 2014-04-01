@@ -10,6 +10,7 @@ var colors          = require('colors'),
 		'parser3',
 		'parser4',
 		'parser4-sentenceEnd',
+		'simpleParser',
 		'hyphens',
 		'token',
 		''
