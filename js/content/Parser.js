@@ -431,14 +431,14 @@
 				}
 				
 				return tokenStr === '.' ? RES_MATCH : RES_FALSE;
-			},
+			}
 			
 			// `25 марта` | `2014 года`
-			function(i, token, tokenStr) {
-				if (!i) return (token.hasSpaceBefore || token.hasNewLineBefore) && token.hasSpaceAfter && isDigits(tokenStr) ? RES_NEED_MORE : RES_FALSE;
-				if (i === 1 && isLetter(tokenStr[0])) return RES_MATCH;
-				return RES_FALSE;
-			}
+//			function(i, token, tokenStr) {
+//				if (!i) return (token.hasSpaceBefore || token.hasNewLineBefore) && token.hasSpaceAfter && isDigits(tokenStr) ? RES_NEED_MORE : RES_FALSE;
+//				if (i === 1 && isLetter(tokenStr[0])) return RES_MATCH;
+//				return RES_FALSE;
+//			}
 		];
 	
 	
@@ -681,7 +681,7 @@
 			var token = api.word(),
 				types = token.getTypes();
 			
-			return types.length > 1 || types[0] !== CHAR_COMMON;
+			return token.total > 1 || types[0] !== CHAR_COMMON || isDigits(token.toString());
 		}
 		
 		
