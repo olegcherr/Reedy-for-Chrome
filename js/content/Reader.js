@@ -50,6 +50,8 @@
 	
 	var CLS_MAIN = 'e-FastReader',
 		
+		CONTEXT_CHARS_LIMIT = 2000,
+		
 		MIN_WPM     = 50,
 		MAX_WPM     = 2000,
 		WPM_STEP    = 50,
@@ -113,7 +115,7 @@
 		
 		function updateContext() {
 			if (token) {
-				var context = parser.getContext();
+				var context = parser.getContext(CONTEXT_CHARS_LIMIT);
 				$contextBefore.innerHTML = context.before.replace(/\n/g, "<br/>");
 				$contextAfter.innerHTML = context.after.replace(/\n/g, "<br/>");
 			}

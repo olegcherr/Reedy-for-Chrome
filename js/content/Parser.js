@@ -685,11 +685,11 @@
 		}
 		
 		
-		api.getContext = function() {
+		api.getContext = function(charsLimit) {
 			var token = api.word();
 			return {
-				before: api.text.substring(0, token.startIndex),
-				after: api.text.substring(token.endIndex)
+				before: api.text.substring(charsLimit ? Math.max(token.startIndex-charsLimit, 0) : 0, token.startIndex),
+				after: api.text.substring(token.endIndex, charsLimit ? Math.min(token.endIndex+charsLimit, api.text.length) : api.text.length)
 			};
 		}
 		
