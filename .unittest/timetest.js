@@ -1,61 +1,179 @@
 
 
-var ITERATIONS = 1E5,
+var ITERATIONS = 1e5,
 	TIME_LIMIT = 10000,
-	TESTS_COUNT = 10;
+	TESTS_COUNT = 10,
+	fn = function() {};
 
 
-//ITERATIONS = 1E6;
-//var REX1 = /(\d+( \d+)(\d+)(.+)?)/,
-//	REX2 = /(?:\d+(?: \d+)(?:\d+)(?:.+)?)/;
-//function fn() {
-//	REX1.test('7(985)970-45-45');
-//	REX1.test('7(985)970-45-45');
-//}
-
-//function fn() {
-//	if (true)
-//		for (var i = 0; i < 1; i++) {
-//			
-//		}
-//}
-
-
-
-
-
-// ==============================================
-
-var totalTime = 0,
-	testNum = 0;
-
-function go() {
-	testNum || console.log('-> go');
+window = (function() {
 	
-	//////////////////////////////////////////////////////////////
+	var settings = {
+		fontSize: 4, // 1-7
+		wpm: 200,
+		autostart: false,
+		darkTheme: false,
+		transparentBg: false,
+		vPosition: 4,
+		focusMode: true,
+		smartSlowing: true,
+		entityAnalysis: true,
+		emptySentenceEnd: true
+	};
 	
-	var timeStart = +(new Date()),
-		time, i;
+	return {
+		fastReader: {
+			get: function(key) {
+				return settings[key];
+			}
+		}
+	};
 	
-	for (i = 0; i < ITERATIONS && fn() !== false; i++) { }
+})();
+
+
+/*ITERATIONS = 1e3;
+TESTS_COUNT = 5;
+require('../js/content/Parser.js');
+var str = "Странный всё-таки праздник Восьмое марта, очень странный. Вроде бы должен быть радостным, солнечным, ведь на календаре первый весенний месяц и сама мысль о скором тепле туманит голову, но… Но не туманит, потому что трудно припомнить, когда в последний раз восьмого марта не было снега." +
+	"\nA dynamical system is a concept in mathematics where a fixed rule describes the time dependence of a point in a geometrical space. Examples include the mathematical models that describe the swinging of a clock pendulum, the flow of water in a pipe, and the number of fish each springtime in a lake.";
+fn = function() {
+	window.fastReader.parse4(str);
+}*/
+
+/*var str = 's/h.,h-df;`1%#@_+_@#%*()g[]g{g4}!?s df',
+	REX = /^(\.|…)|(,)|(;)|(:)|(!|\?)|(\-|—)|(\(|\[|\{)|(\)|\]|\})|(«|»|‹|›|"|„|“|”)|(\/|\\)|(\+)|(.)$/,
+	CHAR_DOT        = 1,
+	CHAR_COMMA      = 2,
+	CHAR_SEMICOLON  = 3,
+	CHAR_COLON      = 4,
+	CHAR_MARK       = 5,
+	CHAR_DASH       = 6,
+	CHAR_O_BRACKET  = 7,
+	CHAR_C_BRACKET  = 8,
+	CHAR_QUOTE      = 9,
+	CHAR_SLASH      = 10,
+	CHAR_PLUS       = 11,
+	CHAR_COMMON     = 12,
+	CHAR_TYPES      = [
+		CHAR_DOT,
+		CHAR_COMMA,
+		CHAR_SEMICOLON,
+		CHAR_COLON,
+		CHAR_MARK,
+		CHAR_DASH,
+		CHAR_O_BRACKET,
+		CHAR_C_BRACKET,
+		CHAR_QUOTE,
+		CHAR_SLASH,
+		CHAR_PLUS,
+		CHAR_COMMON
+	],
+	hashMap = {
+		'.': CHAR_DOT,
+		'…': CHAR_DOT,
+		',': CHAR_COMMA,
+		';': CHAR_SEMICOLON,
+		':': CHAR_COLON,
+		'!': CHAR_MARK,
+		'?': CHAR_MARK,
+		'-': CHAR_DASH,
+		'—': CHAR_DASH,
+		'(': CHAR_O_BRACKET,
+		'[': CHAR_O_BRACKET,
+		'{': CHAR_O_BRACKET,
+		')': CHAR_C_BRACKET,
+		']': CHAR_C_BRACKET,
+		'}': CHAR_C_BRACKET,
+		'«': CHAR_QUOTE,
+		'»': CHAR_QUOTE,
+		'‹': CHAR_QUOTE,
+		'›': CHAR_QUOTE,
+		'"': CHAR_QUOTE,
+		'„': CHAR_QUOTE,
+		'“': CHAR_QUOTE,
+		'”': CHAR_QUOTE,
+		'/': CHAR_SLASH,
+		'\\': CHAR_SLASH,
+		'+': CHAR_PLUS
+	};
+
+function useREX(char) {
+	var m = REX.exec(char), i;
 	
-	time = +(new Date()) - timeStart;
-	
-	//////////////////////////////////////////////////////////////
-	
-	if (!TIME_LIMIT || time <= TIME_LIMIT) {
-		console.log(time + 'мс');
-		totalTime += time;
-		testNum++;
+	for (i = 1; i < m.length; i++) {
+		if (m[i] !== undefined) {
+			return CHAR_TYPES[i-1];
+		}
 	}
 	
-	setTimeout(testNum < TESTS_COUNT ? go : done, 500);
+	return CHAR_COMMON;
 }
 
-function done() {
-	var result = totalTime / TESTS_COUNT,
-		mess = '-> ' + result + 'мс';
-	console.log(mess);
+function useHash(char) {
+	return hashMap[char] || CHAR_COMMON;
 }
 
-setTimeout(go, 500);
+fn = function() {
+	for (var i = 0, r; i < str.length; i++) {
+		r = useHash(str[i]);
+	}
+}*/
+
+/*ITERATIONS = 1E6;
+var REX1 = /(\d+( \d+)(\d+)(.+)?)/,
+	REX2 = /(?:\d+(?: \d+)(?:\d+)(?:.+)?)/;
+fn = function() {
+	REX1.test('7(985)970-45-45');
+	REX1.test('7(985)970-45-45');
+}*/
+
+/*var arr = [1], len = arr.length, x;
+fn = function() {
+//	if (len)
+		for (var i = 0; i < len; i++) {
+			x = 1;
+		}
+}*/
+
+
+
+
+
+;(function() {
+	
+	var totalTime = 0,
+		testNum = 0;
+	
+	function go() {
+		testNum || console.log('-> go');
+		
+		//////////////////////////////////////////////////////////////
+		
+		var timeStart = +(new Date()),
+			time, i;
+		
+		for (i = 0; i < ITERATIONS && fn() !== false; i++) { }
+		
+		time = +(new Date()) - timeStart;
+		
+		//////////////////////////////////////////////////////////////
+		
+		if (!TIME_LIMIT || time <= TIME_LIMIT) {
+			console.log(time + 'мс');
+			totalTime += time;
+			testNum++;
+		}
+		
+		setTimeout(testNum < TESTS_COUNT ? go : done, 200);
+	}
+	
+	function done() {
+		var result = totalTime / TESTS_COUNT,
+			mess = '-> ' + result + 'мс';
+		console.log(mess);
+	}
+	
+	setTimeout(go, 500);
+	
+})();

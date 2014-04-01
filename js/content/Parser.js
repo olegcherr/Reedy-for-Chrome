@@ -73,17 +73,7 @@
 	
 	
 	function getCharType(char) {
-		// TODO: Попробовать хеши (или if-ы) вместо регулярки
-		var m = REX_CHARS.exec(char), i;
-		
-		if (m)
-			for (i = 1; i < m.length; i++) {
-				if (m[i] !== undefined) {
-					return CHAR_TYPES[i-1];
-				}
-			}
-		
-		return CHAR_COMMON;
+		return CHAR_MAP[char] || CHAR_COMMON;
 	}
 	
 	
@@ -226,7 +216,7 @@
 		
 		
 		api.getMask = function() {
-			return [+api.hasSpaceBefore, +api.hasSpaceAfter, +api.hasNewLineBefore, +api.hasNewLineAfter].join('');;
+			return [+api.hasSpaceBefore, +api.hasSpaceAfter, +api.hasNewLineBefore, +api.hasNewLineAfter].join('');
 		}
 		
 		api.checkMask = function(mask) {
@@ -301,8 +291,7 @@
 	 * Notes
 	 * Doesn't match english single quotes (‘...’) because the closing quote equals to the apostrophe char.
 	 */
-	var REX_CHARS = /^(\.|…)|(,)|(;)|(:)|(!|\?)|(\-|—)|(\(|\[|\{)|(\)|\]|\})|(«|»|‹|›|"|„|“|”)|(\/|\\)|(\+)|(.)$/,
-		REX_SENTENCE_END = /(?:\.|…|!|\?|;)([^.…!?;]*)$/,
+	var REX_SENTENCE_END = /(?:\.|…|!|\?|;)([^.…!?;]*)$/,
 		REX_PHONE = /^\+?(?:\d+ ?)?(?:\(\d+(?: \d+)?\)|\d+)? ?[\d\-]+$/,
 		
 		CHAR_DOT        = 1,
@@ -318,20 +307,34 @@
 		CHAR_PLUS       = 11,
 		CHAR_COMMON     = 12,
 		
-		CHAR_TYPES      = [ // the order matters!!!
-			CHAR_DOT,
-			CHAR_COMMA,
-			CHAR_SEMICOLON,
-			CHAR_COLON,
-			CHAR_MARK,
-			CHAR_DASH,
-			CHAR_O_BRACKET,
-			CHAR_C_BRACKET,
-			CHAR_QUOTE,
-			CHAR_SLASH,
-			CHAR_PLUS,
-			CHAR_COMMON
-		],
+		CHAR_MAP        = {
+			'.': CHAR_DOT,
+			'…': CHAR_DOT,
+			',': CHAR_COMMA,
+			';': CHAR_SEMICOLON,
+			':': CHAR_COLON,
+			'!': CHAR_MARK,
+			'?': CHAR_MARK,
+			'-': CHAR_DASH,
+			'—': CHAR_DASH,
+			'(': CHAR_O_BRACKET,
+			'[': CHAR_O_BRACKET,
+			'{': CHAR_O_BRACKET,
+			')': CHAR_C_BRACKET,
+			']': CHAR_C_BRACKET,
+			'}': CHAR_C_BRACKET,
+			'«': CHAR_QUOTE,
+			'»': CHAR_QUOTE,
+			'‹': CHAR_QUOTE,
+			'›': CHAR_QUOTE,
+			'"': CHAR_QUOTE,
+			'„': CHAR_QUOTE,
+			'“': CHAR_QUOTE,
+			'”': CHAR_QUOTE,
+			'/': CHAR_SLASH,
+			'\\': CHAR_SLASH,
+			'+': CHAR_PLUS
+		},
 		
 		CHARS_INTO_WORD = [CHAR_DASH, CHAR_DOT],
 		
@@ -342,33 +345,29 @@
 		patterns_level2 = [
 			// `что-то` | `Préchac’а` | `30-е` | `15-20` | `S.T.A.L.K.E.R`
 			function(i, token, tokenStr) {
-				if (!i && token.type === CHAR_COMMON && token.checkMask('.0.0')) return RES_NEED_MORE;
-				if (i%2 && tokenStr.length === 1 && has(token.type, CHARS_INTO_WORD) && token.checkMask('0000')) return RES_NEED_MORE;
-				if (!(i%2) && token.type === CHAR_COMMON && token.checkMask('0.0.')) return RES_MATCH;
-				return RES_FALSE;
+				if (!i) return token.type === CHAR_COMMON && !token.hasSpaceAfter && !token.hasNewLineAfter ? RES_NEED_MORE : RES_FALSE;
+				if (i%2) return tokenStr.length === 1 && has(token.type, CHARS_INTO_WORD) && token.checkMask('0000') ? RES_NEED_MORE : RES_FALSE;
+				return token.type === CHAR_COMMON && !token.hasSpaceBefore && !token.hasNewLineBefore ? RES_MATCH : RES_FALSE;
 			},
 			
 			// `-30°C` | `+30*2` | `+100500`
 			function(i, token, tokenStr) {
-				if (!i && tokenStr.length === 1 && token.checkContents([CHAR_PLUS, CHAR_DASH]) && token.checkMask('.0.0')) return RES_NEED_MORE;
-				if (i === 1 && token.type === CHAR_COMMON && isDigits(tokenStr[0])) return RES_MATCH;
-				return RES_FALSE;
+				if (!i) return tokenStr.length === 1 && token.checkContents([CHAR_PLUS, CHAR_DASH]) && !token.hasSpaceAfter && !token.hasNewLineAfter ? RES_NEED_MORE : RES_FALSE;
+				return i === 1 && token.type === CHAR_COMMON && isDigits(tokenStr[0]) ? RES_MATCH : RES_FALSE;
 			},
 			
 			// `+7 (985) 970-45-45` | `7 985 970-45-45` | `7(985)970-45-45` | `(815 2) 400600` | `+850 (2) 3813031`
 			function(i, token, tokenStr, stack, stackStr) {
-				if (!i && (token.type === CHAR_PLUS || isDigits(tokenStr))) return RES_NEED_MORE;
-				if (i) {
-					if (stackStr.length > 7 && REX_PHONE.test(stackStr)) return RES_MATCH;
-					if (isDigits(tokenStr) || tokenStr === '(' || tokenStr === ')') return RES_NEED_MORE;
-				}
-				return RES_FALSE;
+				if (!i) return token.type === CHAR_PLUS || isDigits(tokenStr) ? RES_NEED_MORE : RES_FALSE;
+				if (stackStr.length > 7 && REX_PHONE.test(stackStr)) return RES_MATCH; // rex cannot be extracted from the if
+				return isDigits(tokenStr) || tokenStr === '(' || tokenStr === ')' ? RES_NEED_MORE : RES_FALSE;
 			},
 			
 			// https://chrome.google.com/webstore/detail/fastreader/ihbdojmggkmjbhfflnchljfkgdhokffj
 			// olegcherr@yandex.ru
 			function(i, token, tokenStr, stack, stackStr) {
-				stackStr = stackStr.trim();
+				if (stackStr.length < 5) return RES_NEED_MORE;
+				if (!/\w/.test(stackStr)) return RES_FALSE;
 				
 				var host, regexp;
 				
@@ -392,7 +391,7 @@
 		
 		patterns_level3 = [
 			// `A. Préchac’а` | `У. Б. Йитс`
-			function(i, token, tokenStr, stack, stackStr) {
+			function(i, token, tokenStr) {
 				if (i%2) return tokenStr === '.' && token.hasSpaceAfter && !token.hasSpaceBefore ? RES_NEED_MORE : RES_FALSE;
 				
 				if (tokenStr.length === 1 && !token.hasSpaceAfter && !token.hasNewLineAfter && isUpperLetter(tokenStr)) return RES_NEED_MORE;
@@ -416,7 +415,7 @@
 			},
 			
 			// `Команда А` | `Глава 1` | `Глава 1.1` | `Préchac’а A.` | `Йитс У. Б.` | `Прильвиц Й.К.Л.`
-			function(i, token, tokenStr, stack, stackStr) {
+			function(i, token, tokenStr) {
 				if (!i)
 					return token.hasSpaceAfter
 						&& isUpperLetter(tokenStr[0])
@@ -518,7 +517,7 @@
 		
 		
 		var tokens3 = app.parse3(raw),
-			token3, types, type, str,
+			token3, types, type,
 			nextToken3, nextTypes, nextType,
 			prevToken3, prevTypes, prevType,
 			hasBreakBefore, hasBreakAfter,
@@ -532,7 +531,6 @@
 			token3 = nextToken3 || tokens3[i];
 			types = nextTypes || token3.getTypes();
 			type = nextType || types[0];
-			str = token3.toString();
 			
 			nextToken3 = tokens3[i+1];
 			nextTypes = nextToken3 && nextToken3.getTypes();
