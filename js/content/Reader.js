@@ -312,11 +312,15 @@
 					break;
 				case 39: // right
 					app.stopEvent(e);
-					e.ctrlKey ? onNextSentenceCtrl() : onNextWordCtrl();
+					e.ctrlKey
+						? onNextSentenceCtrl()
+						: e.altKey ? onLastWordCtrl() : onNextWordCtrl();
 					break;
 				case 37: // left
 					app.stopEvent(e);
-					e.ctrlKey ? onPrevSentenceCtrl() : onPrevWordCtrl();
+					e.ctrlKey
+						? onPrevSentenceCtrl()
+						: e.altKey ? onFirstWordCtrl() : onPrevWordCtrl();
 					break;
 				case 35: // end
 					app.stopEvent(e);
