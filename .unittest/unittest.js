@@ -10,6 +10,7 @@ var colors          = require('colors'),
 		'parser3',
 		'parser4',
 		'parser4-sentenceEnd',
+		'hyphens',
 		''
 	];
 
@@ -39,6 +40,19 @@ window = (function() {
 	
 	return {
 		fastReader: {
+			flatten: function(array) {
+				var res = [];
+				
+				(function flat(arr) {
+					if (toString.call(arr) === '[object Array]')
+						arr.forEach(flat);
+					else
+						res.push(arr);
+				})(array);
+				
+				return res;
+			},
+			
 			get: function(key) {
 				return settings[key];
 			}

@@ -29,6 +29,31 @@
 			.replace(new RegExp(sign, 'g'), '\n');
 	}
 	
+	function splitWordIfNeeded(str) {
+		if (str.length > 13 || str.length > 9 && str.indexOf("-") > -1) {
+			var index = str.indexOf("-"),
+				res = [];
+			
+			if (index > 0 && index < str.length - 1) {
+				res.push(str.substr(0, index));
+				res.push(str.substr(index + 1));
+				return app.flatten(res.map(splitWordIfNeeded));
+			}
+			
+			var parts = Math.ceil(str.length / 8),
+				charCount = Math.ceil(str.length / parts);
+			
+			while (parts--) {
+				res.push(str.substr(0, charCount));
+				str = str.substr(charCount);
+			}
+			
+			return res;
+		}
+		
+		return [str];
+	}
+	
 	
 	function isUpperLetter(char) {
 		return char.toLowerCase() !== char;
@@ -281,6 +306,10 @@
 			}
 			
 			return api.value;
+		}
+		
+		api.toHyphenated = function() {
+			return splitWordIfNeeded(api.toString());
 		}
 		
 	}
@@ -683,7 +712,7 @@
 			var token = api.word(),
 				types = token.getTypes();
 			
-			return token.total > 1 || types[0] !== CHAR_COMMON || isDigits(token.toString());
+			return token.total > 1 || types[0] !== CHAR_COMMON || isDigits(token.toString()) || token.toHyphenated().length > 1;
 		}
 		
 		

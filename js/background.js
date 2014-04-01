@@ -59,7 +59,8 @@
 			focusMode: true,
 			smartSlowing: true,
 			entityAnalysis: true,
-			emptySentenceEnd: true
+			emptySentenceEnd: true,
+			hyphenation: true
 		},
 		
 		isPopupOpen = false;

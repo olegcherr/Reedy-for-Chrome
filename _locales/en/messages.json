@@ -53,6 +53,13 @@
 		"message": "Allows to display common entities as a single word. Performs the analysis of the punctuation. Corrects the basic design of the text."
 	},
 	
+	"hyphenation": {
+		"message": "Hyphenation"
+	},
+	"hyphenationDescr": {
+		"message": "Division of long words into smaller parts."
+	},
+	
 	
 	
 	

@@ -1,6 +1,6 @@
 
 
-(function(window) {
+(function() {
 	
 	function init(callback) {
 		if (!settings) {
@@ -29,6 +29,7 @@
 	
 	
 	var app = window.fastReader = {},
+		toString = Object.prototype.toString,
 		settings, reader;
 	
 	
@@ -47,6 +48,19 @@
 		return (num = num+'').length < len
 			? (new Array(len).join('0') + num).slice(-len)
 			: num;
+	}
+	
+	app.flatten = function(array) {
+		var res = [];
+		
+		(function flat(arr) {
+			if (toString.call(arr) === '[object Array]')
+				arr.forEach(flat);
+			else
+				res.push(arr);
+		})(array);
+		
+		return res;
 	}
 	
 	
@@ -120,4 +134,4 @@
 	app.on(window, "keydown", onKeyDown);
 	
 	
-})(this);
+})();

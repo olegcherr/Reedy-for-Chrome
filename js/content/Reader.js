@@ -78,13 +78,24 @@
 				token = justRun && token || parser.nextWord();
 				
 				function doUpdate() {
-					updateWord();
-					timeout = setTimeout(
-						next,
-						(60000/app.get('wpm')) * (wasRun
-							? parser.isDelayed() && app.get('smartSlowing') ? 2 : 1
-							: 2)
-					);
+					var hyphenated = app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
+						i = -1;
+					
+					(function go() {
+						if (hyphenated[++i]) {
+							updateWord(hyphenated[i]+(i < hyphenated.length-1 ? '-' : ''));
+							
+							timeout = setTimeout(
+								go,
+								(60000/app.get('wpm')) * (wasRun
+									? app.get('smartSlowing') && parser.isDelayed() ? 2 : 1
+									: 2)
+							);
+						}
+						else {
+							next();
+						}
+					})();
 				}
 				
 				if (!justRun && app.get('emptySentenceEnd') && parser.isSentenceStart() && !parser.isFirstWord()) {
@@ -121,25 +132,25 @@
 			}
 		}
 		
-		function updateWord(needEmpty) {
-			if (needEmpty) {
+		function updateWord(str) {
+			if (str === true) {
 				$word.innerHTML = '';
 				return;
 			}
 			
-			var word = token.toString();
+			str = str || token.toString();
 			
 			$word.style.left = '';
 			
 			if (app.get('focusMode')) {
-				var pivot = calcPivotPoint(word.length);
-				$word.innerHTML = word.substr(0, pivot)+'<span>'+word[pivot]+'</span>'+word.substr(pivot+1);
+				var pivot = calcPivotPoint(str.length);
+				$word.innerHTML = str.substr(0, pivot)+'<span>'+str[pivot]+'</span>'+str.substr(pivot+1);
 				
 				var letterRect = $word.querySelector('span').getBoundingClientRect();
 				$word.style.left = Math.round(focusPoint - letterRect.left - letterRect.width/2)+'px';
 			}
 			else {
-				$word.innerHTML = word;
+				$word.innerHTML = str;
 			}
 		}
 		

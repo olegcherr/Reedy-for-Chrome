@@ -136,6 +136,20 @@ fn = function() {
 		}
 }*/
 
+/*ITERATIONS = 5e6;
+var REX_HYPHEN = /[^^]\-[^$]/,
+	str = 'солн-ечным', x = 0;
+fn = function() {
+	var idx = str.indexOf("-");
+	if (idx > 0 && idx < str.length - 1) {
+		x = idx;
+	}
+//	var m = REX_HYPHEN.exec(str);
+//	if (m !== null) {
+//		x = m.index+1;
+//	}
+}*/
+
 
 
 
