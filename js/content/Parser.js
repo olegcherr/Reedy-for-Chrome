@@ -203,6 +203,10 @@
 			return api.value;
 		}
 		
+		api.toHyphenated = function() {
+			return splitWordIfNeeded(api.toString());
+		}
+		
 		api.destroy = function() {
 			api.value = api.type = null;
 		}
@@ -662,9 +666,10 @@
 					k && index++; // space
 					wlen = words[k].length;
 					
-					token = new Token();
+					token = new PlainToken();
 					
-					token.setValue(words[k], CHAR_COMMON);
+					token.value = words[k];
+					token.type = CHAR_COMMON;
 					
 					token.startIndex = index;
 					token.endIndex = index+wlen;
@@ -763,9 +768,10 @@
 		
 		api.isDelayed = function() {
 			var token = api.word(),
-				types = token.getTypes();
+				types = token.getTypes && token.getTypes(),
+				type = types ? types[0] : token.type;
 			
-			return token.total > 1 || types[0] !== CHAR_COMMON || isDigits(token.toString()) || token.toHyphenated().length > 1;
+			return types && token.total > 1 || type !== CHAR_COMMON || isDigits(token.toString()) || token.toHyphenated().length > 1;
 		}
 		
 		
