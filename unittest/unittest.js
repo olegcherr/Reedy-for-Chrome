@@ -1,20 +1,11 @@
 
 
-var colors          = require('colors'),
+var fs              = require('fs'),
+	colors          = require('colors'),
 	argv            = process.argv,
 	test2run        = argv[2],
 	
-	tests = [
-		'parser1',
-		'parser2',
-		'parser3',
-		'parser4',
-		'parser4-sentenceEnd',
-		'simpleParser',
-		'hyphens',
-		'token',
-		''
-	];
+	tests           = fs.readdirSync('./tests');
 
 
 colors.setTheme({
@@ -65,5 +56,5 @@ window = (function() {
 
 
 tests.forEach(function(name) {
-	name && (!test2run || test2run === name) && require('./tests/'+name+'.js');
+	name && (!test2run || test2run+'.js' === name) && require('./tests/'+name);
 });
