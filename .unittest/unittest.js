@@ -11,6 +11,7 @@ var colors          = require('colors'),
 		'parser4',
 		'parser4-sentenceEnd',
 		'hyphens',
+		'token',
 		''
 	];
 

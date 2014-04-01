@@ -443,7 +443,6 @@
 			api.stop();
 			
 			app.off(window, "resize", onWindowResize);
-			
 			app.off($wrapper, "keydown", onKeydown);
 			
 			$wrapper.setAttribute("is-closing", "true");
@@ -461,6 +460,9 @@
 			if (bodyOverflowBefore !== "hidden") {
 				$body.style.overflow = bodyOverflowBefore;
 			}
+			
+			parser.destroy();
+			parser = null;
 			
 			app.onReaderDestroy();
 		}

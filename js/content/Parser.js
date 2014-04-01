@@ -163,40 +163,12 @@
 	}
 	
 	
-	function Token() {
-		
-		function update() {
-			api.length = api._childs.length;
-			
-			var first = api._childs[0],
-				last = api._childs[api.length-1];
-			
-			api.startIndex = first ? first.startIndex : 0;
-			api.hasSpaceBefore = first ? first.hasSpaceBefore : false;
-			api.hasNewLineBefore = first ? first.hasNewLineBefore : false;
-			
-			api.endIndex = last ? last.endIndex : 0;
-			api.hasSpaceAfter = last ? last.hasSpaceAfter : false;
-			api.hasNewLineAfter = last ? last.hasNewLineAfter : false;
-			
-			api.textLength = api.endIndex - api.startIndex;
-			
-			api.total = api.value ? 1 : 0;
-			for (var i = 0; i < api.length; i++) {
-				api.total += api._childs[i].total;
-			}
-		}
-		
+	function PlainToken() {
 		
 		var api = this;
 		
-		api.length = 0;
-		api._childs = [];
-		
 		api.value = '';
 		api.type = null;
-		
-		api.total = 0;
 		
 		api.startIndex =
 		api.endIndex = 0;
@@ -210,11 +182,77 @@
 		api.isSentenceEnd = false;
 		
 		
-		api.setValue = function(value, type) {
-			api.value = value;
-			api.type = type;
-			api.total++;
+		api.getMask = function() {
+			return [+api.hasSpaceBefore, +api.hasSpaceAfter, +api.hasNewLineBefore, +api.hasNewLineAfter].join('');
 		}
+		
+		api.checkMask = function(mask) {
+			var m = api.getMask(), i;
+			
+			for (i = 0; i < m.length; i++) {
+				if (mask[i] !== '.' && mask[i] !== m[i]) {
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		
+		api.toString = function() {
+			return api.value;
+		}
+		
+		api.destroy = function() {
+			api.value = api.type = null;
+		}
+		
+	}
+	
+	function Token() {
+		
+		function update() {
+			api.length = api._childs.length;
+			
+			var first = api._childs[0],
+				last = api._childs[api.length-1],
+				child, i;
+			
+			api.startIndex = first ? first.startIndex : 0;
+			api.hasSpaceBefore = first ? first.hasSpaceBefore : false;
+			api.hasNewLineBefore = first ? first.hasNewLineBefore : false;
+			
+			api.endIndex = last ? last.endIndex : 0;
+			api.hasSpaceAfter = last ? last.hasSpaceAfter : false;
+			api.hasNewLineAfter = last ? last.hasNewLineAfter : false;
+			
+			api.textLength = api.endIndex - api.startIndex;
+			
+			api.total = 0;
+			for (i = 0; i < api.length; i++) {
+				child = api._childs[i];
+				api.total += child.value ? 1 : child.total;
+			}
+		}
+		
+		
+		var api = this;
+		
+		api.length = 0;
+		api._childs = [];
+		
+		api.total = 0;
+		
+		api.startIndex =
+		api.endIndex = 0;
+		api.textLength = 0;
+		
+		api.hasSpaceAfter =
+		api.hasSpaceBefore =
+		api.hasNewLineAfter =
+		api.hasNewLineBefore = false;
+		
+		api.isSentenceEnd = false;
 		
 		
 		api.get = function(index) {
@@ -265,17 +303,20 @@
 		
 		
 		api.getTypes = function() {
-			var res = [], types, i, k;
+			var res = [], types, child, i, k;
 			
-			if (api.type != null) {
-				res.push(api.type);
-			}
-			
-			for (i = 0; i < api._childs.length; i++) {
-				types = api._childs[i].getTypes();
-				for (k = 0; k < types.length; k++) {
-					res.indexOf(types[k]) < 0 && res.push(types[k]);
+			for (i = 0; i < api.length; i++) {
+				child = api._childs[i];
+				if (child.getTypes) {
+					types = child.getTypes();
+					for (k = 0; k < types.length; k++) {
+						res.indexOf(types[k]) < 0 && res.push(types[k]);
+					}
 				}
+				else {
+					res.indexOf(child.type) < 0 && res.push(child.type);
+				}
+				
 			}
 			
 			return res;
@@ -295,21 +336,27 @@
 		
 		
 		api.toString = function() {
-			var len = api._childs.length;
-			if (len) {
-				for (var i = 0, res = '', child; i < len; i++) {
-					child = api._childs[i];
-					res += i ? (child.hasNewLineBefore ? '\n' : '')+(child.hasSpaceBefore ? ' ' : '') : '';
-					res += child.toString();
-				}
-				return res;
+			var res = '', child, i;
+			
+			for (i = 0; i < api.length; i++) {
+				child = api._childs[i];
+				res += i ? (child.hasNewLineBefore ? '\n' : '')+(child.hasSpaceBefore ? ' ' : '') : '';
+				res += child.toString();
 			}
 			
-			return api.value;
+			return res;
 		}
 		
 		api.toHyphenated = function() {
 			return splitWordIfNeeded(api.toString());
+		}
+		
+		api.destroy = function() {
+			for (var i = 0; i < api.length; i++) {
+				api._childs[i].destroy();
+				api._childs[i] = null;
+			}
+			api._childs = null;
 		}
 		
 	}
@@ -381,7 +428,7 @@
 			
 			// `-30°C` | `+30*2` | `+100500`
 			function(i, token, tokenStr) {
-				if (!i) return tokenStr.length === 1 && token.checkContents([CHAR_PLUS, CHAR_DASH]) && !token.hasSpaceAfter && !token.hasNewLineAfter ? RES_NEED_MORE : RES_FALSE;
+				if (!i) return tokenStr.length === 1 && has(token.type, [CHAR_PLUS, CHAR_DASH]) && !token.hasSpaceAfter && !token.hasNewLineAfter ? RES_NEED_MORE : RES_FALSE;
 				return i === 1 && token.type === CHAR_COMMON && isDigits(tokenStr[0]) ? RES_MATCH : RES_FALSE;
 			},
 			
@@ -471,6 +518,11 @@
 		];
 	
 	
+	app.Token = Token;
+	
+	app.PlainToken = PlainToken;
+	
+	
 	app.parse1 = function(raw) {
 		var char, prevChar,
 			isSpace, isNewLine,
@@ -498,8 +550,9 @@
 				}
 				
 				if (char && !isSpace && !isNewLine) {
-					token = new Token();
-					token.setValue(char, charType);
+					token = new PlainToken();
+					token.value = char;
+					token.type = charType;
 					token.startIndex = i;
 					token.hasSpaceBefore = prevChar === ' ';
 					token.hasNewLineBefore = !i || prevChar === '\n';
@@ -722,6 +775,28 @@
 				before: api.text.substring(charsLimit ? Math.max(token.startIndex-charsLimit, 0) : 0, token.startIndex),
 				after: api.text.substring(token.endIndex, charsLimit ? Math.min(token.endIndex+charsLimit, api.text.length) : api.text.length)
 			};
+		}
+		
+		
+		api.destroy = function() {
+			var i;
+			
+			if (_cache_advancedData)
+				for (i = 0; i < _cache_advancedData.length; i++) {
+					_cache_advancedData[i].destroy();
+					_cache_advancedData[i] = null;
+				}
+			
+			if (_cache_simpleData)
+				for (i = 0; i < _cache_simpleData.length; i++) {
+					_cache_simpleData[i].destroy();
+					_cache_simpleData[i] = null;
+				}
+			
+			raw =
+			api.text = _cache_advancedText = _cache_simpleText =
+			data = _cache_advancedData = _cache_simpleData =
+			null;
 		}
 		
 		
