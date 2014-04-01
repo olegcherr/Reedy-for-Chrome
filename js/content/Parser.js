@@ -603,6 +603,8 @@
 	app.Parser = function(raw) {
 		
 		var api = this,
+			_cache_simpleData, _cache_simpleText,
+			_cache_advancedData, _cache_advancedText,
 			data = [],
 			wid = -1;
 		
@@ -696,12 +698,12 @@
 		
 		api.parse = function() {
 			if (app.get('entityAnalysis')) {
-				api.text = cleanUpText(raw);
-				data = app.parse4(api.text);
+				api.text = _cache_advancedText = _cache_advancedText || cleanUpText(raw);
+				data = _cache_advancedData = _cache_advancedData || app.parse4(_cache_advancedText);
 			}
 			else {
-				api.text = cleanUpTextSimple(raw);
-				data = app.simpleParser(api.text);
+				api.text = _cache_simpleText = _cache_simpleText || cleanUpTextSimple(raw);
+				data = _cache_simpleData = _cache_simpleData || app.simpleParser(_cache_simpleText);
 			}
 			
 			api.length = data.length;
