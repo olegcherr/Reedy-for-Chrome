@@ -30,8 +30,9 @@
 	}
 	
 	function splitWordIfNeeded(str) {
-		if (str.length > 13 || str.length > 9 && str.indexOf("-") > -1) {
-			var index = str.indexOf("-"),
+		var dashIndex = str.indexOf("-"), uscoreIndex = str.indexOf("_");
+		if (str.length > 13 || str.length > 9 && (dashIndex > -1 || uscoreIndex > -1)) {
+			var index = dashIndex > -1 ? dashIndex : uscoreIndex, // a dash is more important
 				res = [];
 			
 			if (index > 0 && index < str.length - 1) {

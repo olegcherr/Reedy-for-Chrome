@@ -137,17 +137,18 @@ fn = function() {
 }*/
 
 /*ITERATIONS = 5e6;
-var REX_HYPHEN = /[^^]\-[^$]/,
+var REX_HYPHEN = /[^^][_-][^$]/,
 	str = 'солн-ечным', x = 0;
 fn = function() {
-	var idx = str.indexOf("-");
-	if (idx > 0 && idx < str.length - 1) {
-		x = idx;
-	}
-//	var m = REX_HYPHEN.exec(str);
-//	if (m !== null) {
-//		x = m.index+1;
+//	var dashIndex = str.indexOf("-"), uscoreIndex = str.indexOf("_"),
+//		idx = dashIndex > -1 ? dashIndex : uscoreIndex;
+//	if (idx > 0 && idx < str.length - 1) {
+//		x = idx;
 //	}
+	var m = REX_HYPHEN.exec(str);
+	if (m !== null) {
+		x = m.index+1;
+	}
 }*/
 
 
