@@ -30,9 +30,11 @@
 	}
 	
 	function splitWordIfNeeded(str) {
-		var dashIndex = str.indexOf("-"), uscoreIndex = str.indexOf("_");
-		if (str.length > 13 || str.length > 9 && (dashIndex > -1 || uscoreIndex > -1)) {
-			var index = dashIndex > -1 ? dashIndex : uscoreIndex, // a dash is more important
+		var dashIndex = str.indexOf("-"), uscoreIndex = str.indexOf("_"), slashIndex = str.indexOf("/");
+		if (str.length > 13 || str.length > 9 && (dashIndex > -1 || uscoreIndex > -1 || slashIndex > -1)) {
+			var index = dashIndex > -1
+					? dashIndex // a dash is more important
+					: slashIndex > -1 ? slashIndex : uscoreIndex,
 				res = [];
 			
 			if (index > 0 && index < str.length - 1) {
@@ -473,12 +475,8 @@
 			// `A. Préchac’а` | `У. Б. Йитс`
 			function(i, token, tokenStr) {
 				if (i%2) return tokenStr === '.' && token.hasSpaceAfter && !token.hasSpaceBefore ? RES_NEED_MORE : RES_FALSE;
-				// TODO: optimize
-				if (tokenStr.length === 1 && !token.hasSpaceAfter && !token.hasNewLineAfter && isUpperLetter(tokenStr)) return RES_NEED_MORE;
-				
-				if (i && tokenStr.length > 1 && isUpperLetter(tokenStr[0])) return RES_MATCH;
-				
-				return RES_FALSE;
+				if (tokenStr.length === 1) return !token.hasSpaceAfter && !token.hasNewLineAfter && isUpperLetter(tokenStr) ? RES_NEED_MORE : RES_FALSE;
+				return i > 1 && isUpperLetter(tokenStr[0]) ? RES_MATCH : RES_FALSE;
 			},
 			
 			// `Й.К. Прильвиц` | `Й.К.Л. Прильвиц`
