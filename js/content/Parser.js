@@ -165,7 +165,6 @@
 	
 	
 	function PlainToken() {
-		
 		var api = this;
 		
 		api.value = '';
@@ -181,70 +180,43 @@
 		api.hasNewLineBefore = false;
 		
 		api.isSentenceEnd = false;
-		
-		
-		api.getMask = function() {
-			return [+api.hasSpaceBefore, +api.hasSpaceAfter, +api.hasNewLineBefore, +api.hasNewLineAfter].join('');
-		}
-		
-		api.checkMask = function(mask) {
-			var m = api.getMask(), i;
-			
-			for (i = 0; i < m.length; i++) {
-				if (mask[i] !== '.' && mask[i] !== m[i]) {
-					return false;
-				}
-			}
-			
-			return true;
-		}
-		
-		
-		api.toString = function() {
-			return api.value;
-		}
-		
-		api.toHyphenated = function() {
-			return splitWordIfNeeded(api.toString());
-		}
-		
-		api.destroy = function() {
-			api.value = api.type = null;
-		}
-		
 	}
 	
-	function Token() {
+	PlainToken.prototype.getMask = function() {
+		var api = this;
+		return [+api.hasSpaceBefore, +api.hasSpaceAfter, +api.hasNewLineBefore, +api.hasNewLineAfter].join('');
+	}
+	
+	PlainToken.prototype.checkMask = function(mask) {
+		var m = this.getMask(), i;
 		
-		function update() {
-			api.length = api._childs.length;
-			
-			var first = api._childs[0],
-				last = api._childs[api.length-1],
-				child, i;
-			
-			api.startIndex = first ? first.startIndex : 0;
-			api.hasSpaceBefore = first ? first.hasSpaceBefore : false;
-			api.hasNewLineBefore = first ? first.hasNewLineBefore : false;
-			
-			api.endIndex = last ? last.endIndex : 0;
-			api.hasSpaceAfter = last ? last.hasSpaceAfter : false;
-			api.hasNewLineAfter = last ? last.hasNewLineAfter : false;
-			
-			api.textLength = api.endIndex - api.startIndex;
-			
-			api.total = 0;
-			for (i = 0; i < api.length; i++) {
-				child = api._childs[i];
-				api.total += child.value ? 1 : child.total;
+		for (i = 0; i < m.length; i++) {
+			if (mask[i] !== '.' && mask[i] !== m[i]) {
+				return false;
 			}
 		}
 		
-		
+		return true;
+	}
+	
+	PlainToken.prototype.toString = function() {
+		return this.value;
+	}
+	
+	PlainToken.prototype.toHyphenated = function() {
+		return splitWordIfNeeded(this.toString());
+	}
+	
+	PlainToken.prototype.destroy = function() {
+		this.value = this.type = null;
+	}
+	
+	
+	function Token() {
 		var api = this;
 		
 		api.length = 0;
-		api._childs = [];
+		api.childs = [];
 		
 		api.total = 0;
 		
@@ -258,112 +230,139 @@
 		api.hasNewLineBefore = false;
 		
 		api.isSentenceEnd = false;
+	}
+	
+	Token.prototype.get = function(index) {
+		return this.childs[index];
+	}
+	
+	Token.prototype.set = function(index, child) {
+		this.childs[index] = child;
+		this.update();
+		return child;
+	}
+	
+	Token.prototype.push = function(child) {
+		this.childs.push(child);
+		this.update();
+		return this.length;
+	}
+	
+	Token.prototype.pop = function() {
+		var res = this.childs.pop();
+		this.update();
+		return res;
+	}
+	
+	Token.prototype.update = function() {
+		var api = this;
 		
+		api.length = api.childs.length;
 		
-		api.get = function(index) {
-			return api._childs[index];
+		var first = api.childs[0],
+			last = api.childs[api.length-1],
+			child, i;
+		
+		api.startIndex = first ? first.startIndex : 0;
+		api.hasSpaceBefore = first ? first.hasSpaceBefore : false;
+		api.hasNewLineBefore = first ? first.hasNewLineBefore : false;
+		
+		api.endIndex = last ? last.endIndex : 0;
+		api.hasSpaceAfter = last ? last.hasSpaceAfter : false;
+		api.hasNewLineAfter = last ? last.hasNewLineAfter : false;
+		
+		api.textLength = api.endIndex - api.startIndex;
+		
+		api.total = 0;
+		for (i = 0; i < api.length; i++) {
+			child = api.childs[i];
+			api.total += child.value ? 1 : child.total;
+		}
+	}
+	
+	
+	Token.prototype.getMask = function() {
+		var api = this;
+		return [+api.hasSpaceBefore, +api.hasSpaceAfter, +api.hasNewLineBefore, +api.hasNewLineAfter].join('');
+	}
+	
+	Token.prototype.checkMask = function(mask) {
+		var m = this.getMask(), i;
+		
+		for (i = 0; i < m.length; i++) {
+			if (mask[i] !== '.' && mask[i] !== m[i]) {
+				return false;
+			}
 		}
 		
-		api.set = function(index, child) {
-			api._childs[index] = child;
-			update();
-			return child;
+		return true;
+	}
+	
+	Token.prototype.checkChildren = function(callback) {
+		for (var i = 0; i < this.length; i++) {
+			if (callback(i, this.childs[i]) === false) return false;
 		}
+		return true;
+	}
+	
+	
+	Token.prototype.getTypes = function() {
+		var res = [], types, child, i, k;
 		
-		api.push = function(child) {
-			api._childs.push(child);
-			update();
-			return api.length;
-		}
-		
-		api.pop = function() {
-			var res = api._childs.pop();
-			update();
-			return res;
-		}
-		
-		
-		api.getMask = function() {
-			return [+api.hasSpaceBefore, +api.hasSpaceAfter, +api.hasNewLineBefore, +api.hasNewLineAfter].join('');
-		}
-		
-		api.checkMask = function(mask) {
-			var m = api.getMask(), i;
-			
-			for (i = 0; i < m.length; i++) {
-				if (mask[i] !== '.' && mask[i] !== m[i]) {
-					return false;
+		for (i = 0; i < this.length; i++) {
+			child = this.childs[i];
+			if (child.getTypes) {
+				types = child.getTypes();
+				for (k = 0; k < types.length; k++) {
+					res.indexOf(types[k]) < 0 && res.push(types[k]);
 				}
 			}
-			
-			return true;
-		}
-		
-		api.checkChildren = function(callback) {
-			for (var i = 0; i < api.length; i++) {
-				if (callback(i, api._childs[i]) === false) return false;
-			}
-			return true;
-		}
-		
-		
-		api.getTypes = function() {
-			var res = [], types, child, i, k;
-			
-			for (i = 0; i < api.length; i++) {
-				child = api._childs[i];
-				if (child.getTypes) {
-					types = child.getTypes();
-					for (k = 0; k < types.length; k++) {
-						res.indexOf(types[k]) < 0 && res.push(types[k]);
-					}
-				}
-				else {
-					res.indexOf(child.type) < 0 && res.push(child.type);
-				}
-				
+			else {
+				res.indexOf(child.type) < 0 && res.push(child.type);
 			}
 			
-			return res;
 		}
 		
-		api.checkContents = function(types) {
-			var t = api.getTypes(), i;
-			
-			for (i = 0; i < t.length; i++) {
-				if (types.indexOf(t[i]) < 0) {
-					return false;
-				}
+		return res;
+	}
+	
+	Token.prototype.checkContents = function(types) {
+		var t = this.getTypes(), i;
+		
+		for (i = 0; i < t.length; i++) {
+			if (types.indexOf(t[i]) < 0) {
+				return false;
 			}
-			
-			return !!t.length;
 		}
 		
+		return !!t.length;
+	}
+	
+	
+	Token.prototype.toString = function() {
+		var res = '', child, i;
 		
-		api.toString = function() {
-			var res = '', child, i;
-			
-			for (i = 0; i < api.length; i++) {
-				child = api._childs[i];
-				res += i ? (child.hasNewLineBefore ? '\n' : '')+(child.hasSpaceBefore ? ' ' : '') : '';
-				res += child.toString();
-			}
-			
-			return res;
+		for (i = 0; i < this.length; i++) {
+			child = this.childs[i];
+			res += i ? (child.hasNewLineBefore ? '\n' : '')+(child.hasSpaceBefore ? ' ' : '') : '';
+			res += child.toString();
 		}
 		
-		api.toHyphenated = function() {
-			return splitWordIfNeeded(api.toString());
-		}
+		return res;
+	}
+	
+	Token.prototype.toHyphenated = function() {
+		return splitWordIfNeeded(this.toString());
+	}
+	
+	Token.prototype.destroy = function() {
+		var api = this;
 		
-		api.destroy = function() {
-			for (var i = 0; i < api.length; i++) {
-				api._childs[i].destroy();
-				api._childs[i] = null;
-			}
-			api._childs = null;
+		for (var i = 0; i < api.length; i++) {
+			api.childs[i].destroy();
+			api.childs[i] = null;
 		}
-		
+		api.childs = null;
 	}
 	
 	
@@ -474,7 +473,7 @@
 			// `A. Préchac’а` | `У. Б. Йитс`
 			function(i, token, tokenStr) {
 				if (i%2) return tokenStr === '.' && token.hasSpaceAfter && !token.hasSpaceBefore ? RES_NEED_MORE : RES_FALSE;
-				
+				// TODO: optimize
 				if (tokenStr.length === 1 && !token.hasSpaceAfter && !token.hasNewLineAfter && isUpperLetter(tokenStr)) return RES_NEED_MORE;
 				
 				if (i && tokenStr.length > 1 && isUpperLetter(tokenStr[0])) return RES_MATCH;
