@@ -41,7 +41,7 @@
 		
 		$elem = document.querySelector('.j-startReadingBtnWrapper');
 		app.sendMessageToSelectedTab({type: 'getSelection'}, function(sel) {
-			sel.length && ($elem.style.display = "block");
+			sel && sel.length && ($elem.style.display = "block");
 		});
 		app.on($elem, "click", onStartReadingClick);
 		
