@@ -38,5 +38,9 @@
 		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
 	}
 	
+	app.event = function(category, action, label) {
+		app.sendMessageToExtension({type: 'trackEvent', category: category, action: action, label: label});
+	}
+	
 	
 })();

@@ -77,6 +77,22 @@
 			else {
 				token = justRun && token || parser.nextWord();
 				
+				// This is a good place for this check.
+				// If there are less that 3 words in the text, the check will be never passed.
+				if (parser.isPenultWord()) {
+					app.event('Config', 'WPM',              app.get('wpm'));
+					app.event('Config', 'Font size',        app.get('fontSize'));
+					app.event('Config', 'Autostart',        app.get('autostart'));
+					app.event('Config', 'Dark theme',       app.get('darkTheme'));
+					app.event('Config', 'Transparent bg',   app.get('transparentBg'));
+					app.event('Config', 'Ver. position',    app.get('vPosition'));
+					app.event('Config', 'Focus mode',       app.get('focusMode'));
+					app.event('Config', 'Smart slowing',    app.get('smartSlowing'));
+					app.event('Config', 'Entity analysis',  app.get('entityAnalysis'));
+//					app.event('Config', 'Empty sent. end',  app.get('emptySentenceEnd'));
+					app.event('Config', 'Hyphenation',      app.get('hyphenation'));
+				}
+				
 				function doUpdate() {
 					var hyphenated = app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
 						i = -1;
@@ -184,7 +200,10 @@
 		
 		function onClosingAreaClick() {
 			app.isPopupOpen(function(res) {
-				res || onCloseCtrl();
+				if (!res) {
+					api.destroy();
+					app.event('Reader', 'Stop', 'Close area');
+				}
 			});
 		}
 		
@@ -282,6 +301,7 @@
 		
 		function onCloseCtrl() {
 			api.destroy();
+			app.event('Reader', 'Stop', 'Close button');
 		}
 		
 		function onThemeCtrl() {
@@ -304,6 +324,7 @@
 				case 27: // esc
 					app.stopEvent(e);
 					onCloseCtrl();
+					app.event('Reader', 'Stop', 'Hotkey (Esc)');
 					break;
 				case 32: // space
 				case 13: // enter
@@ -489,9 +510,18 @@
 		}
 		
 		
+		;(function(date) {
+			parser.parse();
+			app.event(
+				'Parsing time',
+				app.get('entityAnalysis') ? 'Advanced' : 'Simple',
+				app.roundExp(new Date() - date)
+			);
+		})(new Date());
 		
-		parser.parse();
+		
 		if (!parser.length) {
+			app.event('Error', 'Can\'t parse', app.get('entityAnalysis') ? 'Advanced' : 'Simple');
 			alert(app.t('cantParse'));
 			// The destroy should be called after the reader is created and saved in the app (into main.js)
 			setTimeout(function() {

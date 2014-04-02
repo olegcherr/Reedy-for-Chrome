@@ -758,6 +758,10 @@
 			return wid <= 0;
 		}
 		
+		api.isPenultWord = function() {
+			return wid === data.length-2;
+		}
+		
 		api.isSentenceStart = function() {
 			return !wid || data[wid-1].isSentenceEnd;
 		}

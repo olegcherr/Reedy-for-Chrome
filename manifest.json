@@ -42,7 +42,10 @@
 		"default_popup": "popup.html"
 	},
 	"background": {
-		"scripts": ["js/background.js"],
+		"scripts": [
+			"js/ga.js",
+			"js/background.js"
+		],
 		"persistent": false
 	}
 }

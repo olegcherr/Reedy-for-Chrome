@@ -13,11 +13,13 @@
 	}
 	
 	function onExternalLinkClick(e) {
+		app.event('External link', e.target.href);
 		window.open(e.target.href);
 	}
 	
 	function onStartReadingClick() {
 		window.close();
+		app.event('Reader', 'Start', 'Popup');
 		app.sendMessageToSelectedTab({type: 'startReading'});
 	}
 	

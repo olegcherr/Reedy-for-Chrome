@@ -2,38 +2,29 @@
 
 (function() {
 	
-	/*function checkTabsAliveness() {
-		function onResult(res) {
-			var index = tabIds.indexOf(res);
-			if (index > -1) {
-				tabIds.splice(index, 1);
-			}
-		}
-		
-		function onComplete() {
-			for (var i = 0, id; i < tabIds.length; i++) {
-				id = tabIds[i];
-				chrome.tabs.executeScript(id, {file: 'js/content/main.js'});
-				chrome.tabs.executeScript(id, {file: 'js/content/Parser.js'});
-				chrome.tabs.executeScript(id, {file: 'js/content/Reader.js'});
-				chrome.tabs.executeScript(id, {file: 'js/content/unittests.js'});
-			}
-		}
-		
-		var tabIds = [];
-		
-		chrome.tabs.query({}, function(tabs) {
-			if (tabs.length) {
-				for (var i = 0, tid; i < tabs.length; i++) {
-					tid = tabs[i].id;
-					tabIds.push(tid);
-					chrome.tabs.executeScript(tid, {code: tid+';'}, onResult);
+	function generateUUID() {
+		var d = new Date().getTime(),
+			uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+				var r = (d + Math.random()*16)%16 | 0;
+				d = Math.floor(d/16);
+				return (c === 'x' ? r : (r&0x7|0x8)).toString(16);
+			});
+		return parseInt(uuid, 16).toString(36);
+	}
+	
+	function getUUID(callback) {
+		if (UUID)
+			callback(UUID);
+		else
+			chrome.storage.sync.get({UUID: 0}, function(items) {
+				UUID = items.UUID;
+				if (!UUID) {
+					UUID = generateUUID();
+					chrome.storage.sync.set({UUID: UUID});
 				}
-				
-				setTimeout(onComplete, 500);
-			}
-		});
-	}*/
+				callback(UUID);
+			});
+	}
 	
 	
 	function settingsGet(key, callback) {
@@ -49,7 +40,18 @@
 	}
 	
 	
-	var defaults = {
+	function trackEvent(category, action, label) {
+		if (isDebugMode)
+			console.log('Event: ' + [category, action, label].join(', '));
+		else
+			ga('send', 'event', category, action, label);
+	}
+	
+	
+	var UUID,
+		isDebugMode = false,
+		isPopupOpen = false,
+		defaults = {
 			fontSize: 4, // 1-7
 			wpm: 300,
 			autostart: false,
@@ -61,9 +63,18 @@
 			entityAnalysis: true,
 			emptySentenceEnd: true,
 			hyphenation: true
-		},
-		
-		isPopupOpen = false;
+		};
+	
+	
+	ga('create', 'UA-5025776-14', 'fast-reader.com');
+	/**
+	 * Fix
+	 * Read more: https://code.google.com/p/analytics-issues/issues/detail?id=312
+	 */
+	ga('set', 'checkProtocolTask', function() {});
+	getUUID(function(UUID) {
+		ga('set', 'dimension1', UUID);
+	});
 	
 	
 	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
@@ -77,9 +88,12 @@
 			case 'isPopupOpen':
 				callback(isPopupOpen);
 				break;
+			case 'trackEvent':
+				trackEvent(msg.category, msg.action, msg.label);
+				callback();
+				break;
 		}
 	});
-	
 	
 	chrome.extension.onConnect.addListener(function(port) {
 		if (port.name === "Popup") {
@@ -102,6 +116,7 @@
 			chrome.tabs.executeScript(null, {
 				code: 'window.fastReader && window.fastReader.start();'
 			});
+			trackEvent('Reader', 'Start', 'Context menu');
 		}
 	});
 	
@@ -116,6 +131,11 @@
 					chrome.tabs.executeScript(tid, {file: 'js/content/Reader.js'});
 				}
 			});
+			
+			// Let the UUID to be generated
+			setTimeout(function() {
+				trackEvent('Extension', 'Installed');
+			}, 500);
 		}
 	});
 	

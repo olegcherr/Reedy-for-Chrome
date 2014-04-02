@@ -2,6 +2,10 @@
 
 (function() {
 	
+	function getSelection() {
+		return window.getSelection().toString().trim();
+	}
+	
 	function init(callback) {
 		if (!settings) {
 			settings = {};
@@ -15,15 +19,23 @@
 		}
 	}
 	
+	function onError(e) {
+		app.event('Error', 'JS Context', e.message);
+	}
+	
 	function onKeyDown(e) {
 		switch (e.keyCode) {
-				case 83: // S
-					if (e.altKey) {
+			case 83: // S
+				if (e.altKey) {
+					var text = getSelection();
+					if (text.length) {
 						app.stopEvent(e);
-						app.start();
+						app.start(text);
+						app.event('Reader', 'Start', 'Hotkey (Alt+S)');
 					}
-					break;
-			}
+				}
+				break;
+		}
 	}
 	
 	
@@ -63,17 +75,9 @@
 		return res;
 	}
 	
-	
-	app.sendMessageToExtension = function(data, callback) {
-		chrome.extension.sendMessage(data, callback);
-	}
-	
-	app.isPopupOpen = function(callback) {
-		app.sendMessageToExtension({type: "isPopupOpen"}, callback);
-	}
-	
-	app.t = function() {
-		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
+	app.roundExp = function(num) {
+		var pow = Math.pow(10, (num+'').length-1);
+		return Math.round(num/pow) * pow;
 	}
 	
 	
@@ -96,18 +100,37 @@
 	}
 	
 	
-	app.start = function() {
+	app.start = function(text) {
 		reader && reader.destroy();
-		var text = window.getSelection().toString().trim();
+		
+		text = text != null ? text : getSelection();
 		text.length && init(function() {
 			reader = new app.Reader(
 				new app.Parser(text)
 			);
+			app.event('Text', 'Length', app.roundExp(text.length));
 		});
 	}
 	
 	app.onReaderDestroy = function() {
 		settings = reader = null;
+	}
+	
+	
+	app.sendMessageToExtension = function(data, callback) {
+		chrome.extension.sendMessage(data, callback);
+	}
+	
+	app.isPopupOpen = function(callback) {
+		app.sendMessageToExtension({type: "isPopupOpen"}, callback);
+	}
+	
+	app.t = function() {
+		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
+	}
+	
+	app.event = function(category, action, label) {
+		app.sendMessageToExtension({type: 'trackEvent', category: category, action: action, label: label});
 	}
 	
 	
@@ -121,7 +144,7 @@
 				callback();
 				break;
 			case 'getSelection':
-				callback(window.getSelection().toString().trim());
+				callback(getSelection());
 				break;
 			case 'startReading':
 				app.start();
@@ -132,6 +155,7 @@
 	
 	
 	app.on(window, "keydown", onKeyDown);
+	app.on(window, "error", onError);
 	
 	
 })();
