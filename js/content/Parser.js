@@ -685,6 +685,30 @@
 	}
 	
 	
+	app.calcPivotPoint = function(str) {
+		var len = str.length,
+			point = 4, char;
+		
+		if (len < 2)  point = 0;
+		else if (len < 6)  point = 1;
+		else if (len < 10) point = 2;
+		else if (len < 14) point = 3;
+		
+		char = str[point];
+		
+		if (!(isLetter(char) || isDigits(char))) {
+			if ((char = str[point+1]) && (isLetter(char) || isDigits(char))) {
+				point++;
+			}
+			else if ((char = str[point-1]) && (isLetter(char) || isDigits(char))) {
+				point--;
+			}
+		}
+		
+		return point;
+	}
+	
+	
 	app.Parser = function(raw) {
 		
 		var api = this,

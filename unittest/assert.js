@@ -22,13 +22,13 @@ function log(res, actual, expected, message) {
 	expected = cleanUp(expected);
 	message = cleanUp(message);
 	
-	if (res && !message) {
-		msg += actual.OK;
+	if (res) {
+		msg += (message || actual).OK;
 	}
 	else {
 		message && (msg += message[c(res)]);
-		!res && (msg += '\nExpect '.Grey+expected.OK);
-		msg += (res ? '\n' : '\nActual '.Grey)+actual[c(res)];
+		msg += '\nExpect '.Grey+expected.OK;
+		msg += '\nActual '.Grey+actual.Fail;
 	}
 	
 	console.log(msg[c(res)]);

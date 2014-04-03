@@ -38,15 +38,6 @@
 	}
 	
 	
-	function calcPivotPoint(len) {
-		if (len < 2)  return 0;
-		if (len < 6)  return 1;
-		if (len < 10) return 2;
-		if (len < 14) return 3;
-		return 4;
-	}
-	
-	
 	
 	var CLS_MAIN = 'e-FastReader',
 		
@@ -159,7 +150,7 @@
 			$word.style.left = '';
 			
 			if (app.get('focusMode')) {
-				var pivot = calcPivotPoint(str.length);
+				var pivot = app.calcPivotPoint(str);
 				$word.innerHTML = str.substr(0, pivot)+'<span>'+str[pivot]+'</span>'+str.substr(pivot+1);
 				
 				var letterRect = $word.querySelector('span').getBoundingClientRect();
