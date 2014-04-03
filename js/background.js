@@ -42,7 +42,7 @@
 	
 	function trackEvent(category, action, label) {
 		getUUID(function(UUID) {
-			if (isDebugMode)
+			if (isDevMode)
 				console.log('Event: ' + [category, action, label].join(', '));
 			
 			ga('send', 'event', category, action, label, {
@@ -61,7 +61,7 @@
 		trackEvent('Error', 'JS Background', msg);
 	});
 	
-	var isDebugMode = !('update_url' in chrome.runtime.getManifest()),
+	var isDevMode = !('update_url' in chrome.runtime.getManifest()),
 		isPopupOpen = false,
 		UUID,
 		defaults = {
@@ -79,7 +79,7 @@
 		};
 	
 	
-	ga('create', isDebugMode ? 'UA-5025776-14' : 'UA-5025776-15', 'fast-reader.com');
+	ga('create', isDevMode ? 'UA-5025776-14' : 'UA-5025776-15', isDevMode ? 'dev-profile.com' : 'fast-reader.com');
 	/**
 	 * Fix
 	 * Read more: https://code.google.com/p/analytics-issues/issues/detail?id=312
