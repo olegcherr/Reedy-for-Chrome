@@ -52,7 +52,16 @@
 	}
 	
 	
-	var isDebugMode = false,
+	
+	window.addEventListener('error', function(e) {
+		var msg = e.message;
+		if (e.filename) {
+			msg += ' ('+e.filename+': '+e.lineno+':'+e.colno+')';
+		}
+		trackEvent('Error', 'JS Background', msg);
+	});
+	
+	var isDebugMode = !('update_url' in chrome.runtime.getManifest()),
 		isPopupOpen = false,
 		UUID,
 		defaults = {
@@ -68,15 +77,6 @@
 			emptySentenceEnd: true,
 			hyphenation: true
 		};
-	
-	
-	window.addEventListener('error', function(e) {
-		var msg = e.message;
-		if (e.filename) {
-			msg += ' ('+e.filename+': '+e.lineno+':'+e.colno+')';
-		}
-		trackEvent('Error', 'JS Background', msg);
-	});
 	
 	
 	ga('create', isDebugMode ? 'UA-5025776-14' : 'UA-5025776-15', 'fast-reader.com');
