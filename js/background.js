@@ -70,6 +70,15 @@
 		};
 	
 	
+	window.addEventListener('error', function(e) {
+		var msg = e.message;
+		if (e.filename) {
+			msg += [' (', e.filename, ': ', e.lineno, ':', e.colno, ')'].join('');
+		}
+		trackEvent('Error', 'JS Background', msg);
+	});
+	
+	
 	ga('create', isDebugMode ? 'UA-5025776-14' : 'UA-5025776-15', 'fast-reader.com');
 	/**
 	 * Fix

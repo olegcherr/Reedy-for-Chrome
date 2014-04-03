@@ -20,7 +20,11 @@
 	}
 	
 	function onError(e) {
-		app.event('Error', 'JS Context', e.message);
+		var msg = e.message;
+		if (e.filename) {
+			msg += [' (', e.filename, ': ', e.lineno, ':', e.colno, ')'].join('');
+		}
+		app.event('Error', 'JS Context', msg);
 	}
 	
 	function onKeyDown(e) {

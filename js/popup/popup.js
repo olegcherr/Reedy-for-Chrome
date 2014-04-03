@@ -2,6 +2,15 @@
 
 (function() {
 	
+	function onError(e) {
+		var msg = e.message;
+		if (e.filename) {
+			msg += [' (', e.filename, ': ', e.lineno, ':', e.colno, ')'].join('');
+		}
+		app.event('Error', 'JS Popup', msg);
+	}
+	
+	
 	var app = window.fastReaderPopup = {};
 	
 	
@@ -41,6 +50,9 @@
 	app.event = function(category, action, label) {
 		app.sendMessageToExtension({type: 'trackEvent', category: category, action: action, label: label});
 	}
+	
+	
+	app.on(window, "error", onError);
 	
 	
 })();
