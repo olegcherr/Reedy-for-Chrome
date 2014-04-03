@@ -19,14 +19,6 @@
 		}
 	}
 	
-	function onError(e) {
-		var msg = e.message;
-		if (e.filename) {
-			msg += ' ('+e.filename+': '+e.lineno+':'+e.colno+')';
-		}
-		app.event('Error', 'JS Context', msg);
-	}
-	
 	function onKeyDown(e) {
 		switch (e.keyCode) {
 			case 83: // S
@@ -159,7 +151,6 @@
 	
 	
 	app.on(window, "keydown", onKeyDown);
-	app.on(window, "error", onError);
 	
 	
 })();

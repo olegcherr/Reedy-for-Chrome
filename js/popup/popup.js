@@ -3,11 +3,14 @@
 (function() {
 	
 	function onError(e) {
-		var msg = e.message;
-		if (e.filename) {
-			msg += ' ('+e.filename+': '+e.lineno+':'+e.colno+')';
-		}
-		app.event('Error', 'JS Popup', msg);
+		app.sendMessageToExtension({
+				type: 'trackJSError',
+				context: 'JS Popup',
+				message: e.message,
+				filename: e.filename,
+				lineno: e.lineno,
+				colno: e.colno
+		});
 	}
 	
 	

@@ -51,18 +51,25 @@
 		});
 	}
 	
+	function trackJSError(e, context) {
+		var msg = e.message,
+			filename = e.filename;
+		if (filename) {
+			filename = filename.replace(new RegExp('^.+'+extensionId+'/'), '');
+			msg += ' ('+filename+' -> '+e.lineno+':'+e.colno+')';
+		}
+		trackEvent('Error', context, msg);
+	}
+	
 	
 	
 	window.addEventListener('error', function(e) {
-		var msg = e.message;
-		if (e.filename) {
-			msg += ' ('+e.filename+': '+e.lineno+':'+e.colno+')';
-		}
-		trackEvent('Error', 'JS Background', msg);
+		trackJSError(e, 'JS Background');
 	});
 	
 	var isDevMode = !('update_url' in chrome.runtime.getManifest()),
 		isPopupOpen = false,
+		extensionId = chrome.i18n.getMessage("@@extension_id"),
 		UUID,
 		defaults = {
 			fontSize: 4, // 1-7
@@ -100,6 +107,10 @@
 				break;
 			case 'trackEvent':
 				trackEvent(msg.category, msg.action, msg.label);
+				callback();
+				break;
+			case 'trackJSError':
+				trackJSError(msg, msg.context);
 				callback();
 				break;
 		}
