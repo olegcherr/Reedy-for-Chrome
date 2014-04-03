@@ -143,7 +143,7 @@
 			chrome.tabs.executeScript(null, {
 				code: 'window.fastReader && window.fastReader.start();'
 			});
-			trackEvent('Reader', 'Start', 'Context menu');
+			trackEvent('Reader', 'Open', 'Context menu');
 		}
 	});
 	

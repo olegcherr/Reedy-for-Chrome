@@ -62,7 +62,7 @@
 			
 			if (parser.isLastWord()) {
 				setTimeout(function() {
-					api.stop();
+					api.pause();
 				}, 500);
 			}
 			else {
@@ -179,7 +179,7 @@
 			}
 			
 			app.isPopupOpen(function(res) {
-				res || onStartCtrl();
+				res || api.toggle();
 			});
 		}
 		
@@ -192,19 +192,19 @@
 		function onClosingAreaClick() {
 			app.isPopupOpen(function(res) {
 				if (!res) {
-					api.destroy();
-					app.event('Reader', 'Stop', 'Close area');
+					api.close();
+					app.event('Reader', 'Close', 'Close area');
 				}
 			});
 		}
 		
 		
 		function onStartCtrl() {
-			isRunning ? api.stop() : api.start();
+			api.toggle();
 		}
 		
 		function onNextWordCtrl() {
-			isRunning && api.stop();
+			isRunning && api.pause();
 			
 			token = parser.nextWord();
 			
@@ -214,7 +214,7 @@
 		}
 		
 		function onPrevWordCtrl() {
-			isRunning && api.stop();
+			isRunning && api.pause();
 			
 			token = parser.prevWord();
 			
@@ -224,7 +224,7 @@
 		}
 		
 		function onNextSentenceCtrl() {
-			isRunning && api.stop();
+			isRunning && api.pause();
 			
 			token = parser.nextSentense();
 			
@@ -234,27 +234,27 @@
 		}
 		
 		function onPrevSentenceCtrl() {
-			isRunning && api.stop();
+			isRunning && api.pause();
 			
 			token = parser.prevSentense();
-				
+			
 			dNone($info);
 			updateWord();
 			updateContext();
 		}
 		
 		function onLastWordCtrl() {
-			isRunning && api.stop();
+			isRunning && api.pause();
 			
 			token = parser.lastWord();
-				
+			
 			dNone($info);
 			updateWord();
 			updateContext();
 		}
 		
 		function onFirstWordCtrl() {
-			isRunning && api.stop();
+			isRunning && api.pause();
 			
 			token = parser.firstWord();
 			
@@ -291,8 +291,8 @@
 		
 		
 		function onCloseCtrl() {
-			api.destroy();
-			app.event('Reader', 'Stop', 'Close button');
+			api.close();
+			app.event('Reader', 'Close', 'Close button');
 		}
 		
 		function onThemeCtrl() {
@@ -310,17 +310,22 @@
 			updateFocusPoint();
 		}
 		
+		function onWindowPopstate() {
+			api.close();
+			app.event('Reader', 'Close', 'Popstate');
+		}
+		
 		function onKeydown(e) {
 			switch (e.keyCode) {
 				case 27: // esc
 					app.stopEvent(e);
-					onCloseCtrl();
-					app.event('Reader', 'Stop', 'Hotkey (Esc)');
+					api.close();
+					app.event('Reader', 'Close', 'Shortcut (Esc)');
 					break;
 				case 32: // space
 				case 13: // enter
 					app.stopEvent(e);
-					onStartCtrl();
+					api.toggle();
 					break;
 				case 39: // right
 					app.stopEvent(e);
@@ -367,6 +372,7 @@
 		
 		var api = this,
 			isRunning = false,
+			isClosed = false,
 			wasRun = false,
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
@@ -420,8 +426,8 @@
 		
 		
 		
-		api.start = function() {
-			if (isRunning) return;
+		api.play = function() {
+			if (isRunning || isClosed) return;
 			isRunning = true;
 			
 			dNone($contextBefore);
@@ -435,7 +441,7 @@
 			next(true);
 		}
 		
-		api.stop = function() {
+		api.pause = function() {
 			clearTimeout(timeout);
 			
 			if (!isRunning) return;
@@ -451,10 +457,18 @@
 			dBlock($botPanel);
 		}
 		
-		api.destroy = function() {
-			api.stop();
+		api.toggle = function() {
+			isRunning ? api.pause() : api.play();
+		}
+		
+		api.close = function() {
+			if (isClosed) return;
+			isClosed = true;
+			
+			api.pause();
 			
 			app.off(window, "resize", onWindowResize);
+			app.off(window, "popstate", onWindowPopstate);
 			app.off($wrapper, "keydown", onKeydown);
 			
 			$wrapper.setAttribute("is-closing", "true");
@@ -516,7 +530,7 @@
 			alert(app.t('cantParse'));
 			// The destroy should be called after the reader is created and saved in the app (into main.js)
 			setTimeout(function() {
-				api.destroy();
+				api.close();
 			}, 100);
 		}
 		else {
@@ -532,7 +546,7 @@
 				dNone($info);
 				
 				setTimeout(function() {
-					api.start();
+					api.play();
 				}, 500);
 			}
 			else {
@@ -576,7 +590,7 @@
 			app.on($menuBtnClose, "click", onCloseCtrl);
 			
 			app.on(window, "resize", onWindowResize);
-			app.on(window, "popstate", onCloseCtrl);
+			app.on(window, "popstate", onWindowPopstate);
 		}
 	};
 	

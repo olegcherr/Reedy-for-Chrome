@@ -27,7 +27,7 @@
 					if (text.length) {
 						app.stopEvent(e);
 						app.start(text);
-						app.event('Reader', 'Start', 'Hotkey (Alt+S)');
+						app.event('Reader', 'Open', 'Shortcut (Alt+S)');
 					}
 				}
 				break;
@@ -97,7 +97,10 @@
 	
 	
 	app.start = function(text) {
-		reader && reader.destroy();
+		if (reader) {
+			app.event('Reader', 'Close', 'Application');
+			reader.close();
+		}
 		
 		text = text != null ? text : getSelection();
 		text.length && init(function() {

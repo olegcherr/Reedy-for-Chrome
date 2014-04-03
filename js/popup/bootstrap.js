@@ -19,7 +19,7 @@
 	
 	function onStartReadingClick() {
 		window.close();
-		app.event('Reader', 'Start', 'Popup');
+		app.event('Reader', 'Open', 'Popup');
 		app.sendMessageToSelectedTab({type: 'startReading'});
 	}
 	
