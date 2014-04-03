@@ -41,16 +41,20 @@
 	
 	
 	function trackEvent(category, action, label) {
-		if (isDebugMode)
-			console.log('Event: ' + [category, action, label].join(', '));
-		else
-			ga('send', 'event', category, action, label);
+		getUUID(function(UUID) {
+			if (isDebugMode)
+				console.log('Event: ' + [category, action, label].join(', '));
+			
+			ga('send', 'event', category, action, label, {
+				'dimension1': UUID
+			});
+		});
 	}
 	
 	
-	var UUID,
-		isDebugMode = false,
+	var isDebugMode = false,
 		isPopupOpen = false,
+		UUID,
 		defaults = {
 			fontSize: 4, // 1-7
 			wpm: 300,
@@ -66,15 +70,12 @@
 		};
 	
 	
-	ga('create', 'UA-5025776-14', 'fast-reader.com');
+	ga('create', isDebugMode ? 'UA-5025776-14' : 'UA-5025776-15', 'fast-reader.com');
 	/**
 	 * Fix
 	 * Read more: https://code.google.com/p/analytics-issues/issues/detail?id=312
 	 */
 	ga('set', 'checkProtocolTask', function() {});
-	getUUID(function(UUID) {
-		ga('set', 'dimension1', UUID);
-	});
 	
 	
 	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
