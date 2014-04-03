@@ -28,6 +28,8 @@ exports = (function() {
 	test('- 14',            2);
 	test('1.',              0);
 	test('ым), -',          1);
+	test('25-ти',           1);
+	test('25-ти.',          1);
 	
 	return assert.profileEnd();
 	

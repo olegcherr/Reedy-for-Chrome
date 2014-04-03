@@ -697,11 +697,11 @@
 		char = str[point];
 		
 		if (!(isLetter(char) || isDigits(char))) {
-			if ((char = str[point+1]) && (isLetter(char) || isDigits(char))) {
-				point++;
-			}
-			else if ((char = str[point-1]) && (isLetter(char) || isDigits(char))) {
+			if ((char = str[point-1]) && (isLetter(char) || isDigits(char))) {
 				point--;
+			}
+			else if ((char = str[point+1]) && (isLetter(char) || isDigits(char))) {
+				point++;
 			}
 		}
 		
