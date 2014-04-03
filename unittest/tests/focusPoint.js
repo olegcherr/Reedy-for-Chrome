@@ -25,6 +25,7 @@ exports = (function() {
 	test('наложения',       2);
 	
 	test('- Ну',            2);
+	test('- 14',            2);
 	test('1.',              0);
 	test('ым), -',          1);
 	

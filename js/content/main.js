@@ -22,7 +22,7 @@
 	function onError(e) {
 		var msg = e.message;
 		if (e.filename) {
-			msg += [' (', e.filename, ': ', e.lineno, ':', e.colno, ')'].join('');
+			msg += ' ('+e.filename+': '+e.lineno+':'+e.colno+')';
 		}
 		app.event('Error', 'JS Context', msg);
 	}

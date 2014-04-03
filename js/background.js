@@ -73,7 +73,7 @@
 	window.addEventListener('error', function(e) {
 		var msg = e.message;
 		if (e.filename) {
-			msg += [' (', e.filename, ': ', e.lineno, ':', e.colno, ')'].join('');
+			msg += ' ('+e.filename+': '+e.lineno+':'+e.colno+')';
 		}
 		trackEvent('Error', 'JS Background', msg);
 	});
