@@ -492,7 +492,7 @@
 				return tokenStr.length > 1 && isUpperLetter(tokenStr[0]) ? RES_MATCH : RES_FALSE;
 			},
 			
-			// `Команда А` | `Глава 1` | `Глава 1.1` | `Préchac’а A.` | `Йитс У. Б.` | `Прильвиц Й.К.Л.`
+			// `Préchac’а A.` | `Йитс У. Б.` | `Прильвиц Й.К.Л.` | `Прильвиц Й.К.Л`
 			function(i, token, tokenStr) {
 				if (!i)
 					return token.hasSpaceAfter
@@ -501,10 +501,10 @@
 					? RES_NEED_MORE : RES_FALSE;
 				
 				if (i%2) {
-					if (token.total === 1) return tokenStr.length === 1 && isUpperLetter(tokenStr) || isDigits(tokenStr) ? RES_MATCH : RES_FALSE;
+					if (tokenStr.length === 1) return isUpperLetter(tokenStr) ? RES_NEED_MORE : RES_FALSE;
 					return token.total > 2 && token.checkChildren(function(i, tkn) {
 						var str = tkn.toString();
-						return i%2 ? str === '.' : isUpperLetter(str) || isDigits(str);
+						return i%2 ? str === '.' : isUpperLetter(str);
 					}) ? RES_MATCH : RES_FALSE;
 				}
 				
