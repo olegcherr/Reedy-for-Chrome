@@ -86,12 +86,18 @@
 		};
 	
 	
-	ga('create', isDevMode ? 'UA-5025776-14' : 'UA-5025776-15', isDevMode ? 'dev-profile.com' : 'fast-reader.com');
-	/**
-	 * Fix
-	 * Read more: https://code.google.com/p/analytics-issues/issues/detail?id=312
-	 */
-	ga('set', 'checkProtocolTask', function() {});
+	getUUID(function(UUID) {
+		ga('create', isDevMode ? 'UA-5025776-14' : 'UA-5025776-15', {
+			'storage': 'none',
+			'clientId': UUID
+		});
+		
+		/**
+		 * Fix
+		 * Read more: https://code.google.com/p/analytics-issues/issues/detail?id=312
+		 */
+		ga('set', 'checkProtocolTask', function() {});
+	});
 	
 	
 	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
