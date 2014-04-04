@@ -17,6 +17,9 @@
 	"startReadingBtn": {
 		"message": "Запустить FastReader"
 	},
+	"startContentSelectorBtn": {
+		"message": "Выбрать элемент на странице"
+	},
 	
 	"tab_reading": {
 		"message": "Режим чтения"

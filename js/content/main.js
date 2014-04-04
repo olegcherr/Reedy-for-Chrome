@@ -23,11 +23,15 @@
 		switch (e.keyCode) {
 			case 83: // S
 				if (e.altKey) {
+					app.stopEvent(e);
 					var text = getSelection();
 					if (text.length) {
-						app.stopEvent(e);
-						app.start(text);
+						app.startReader(text);
 						app.event('Reader', 'Open', 'Shortcut (Alt+S)');
+					}
+					else {
+						app.startContentSelection();
+						app.event('Content selector', 'Start', 'Shortcut (Alt+S)');
 					}
 				}
 				break;
@@ -79,6 +83,34 @@
 		return Math.round(num/pow) * pow;
 	}
 	
+	app.offset = function($elem) {
+		var rect = $elem.getBoundingClientRect(),
+			$docElem = $elem.ownerDocument && $elem.ownerDocument.documentElement || {};
+		return {
+			top: rect.top + window.pageYOffset - $docElem.clientTop,
+			left: rect.left + window.pageXOffset - $docElem.clientLeft,
+			width: rect.width,
+			height: rect.height
+		};
+	}
+	
+	app.createElement = function(tagName, className, $appendTo, html, title) {
+		var $elem = document.createElement(tagName);
+		className != null && ($elem.className = className);
+		$appendTo && $appendTo.appendChild($elem);
+		html != null && ($elem.innerHTML = html);
+		title != null && ($elem.title = title);
+		return $elem;
+	}
+	
+	app.parents = function($elem) {
+		var res = [];
+		while ($elem = $elem.parentNode) {
+			res.push($elem);
+		}
+		return res;
+	}
+	
 	
 	app.on = function(elem, event, fn) {
 		elem.addEventListener(event, fn);
@@ -99,12 +131,13 @@
 	}
 	
 	
-	app.start = function(text) {
-		if (app.isStarted) return;
+	app.startReader = function(text) {
+		text = text != null ? text : getSelection();
+		
+		if (!text.length || app.isStarted) return;
 		app.isStarted = true;
 		
-		text = text != null ? text : getSelection();
-		text.length && init(function() {
+		init(function() {
 			reader = new app.Reader(
 				new app.Parser(text)
 			);
@@ -148,7 +181,11 @@
 				callback(getSelection());
 				break;
 			case 'startReading':
-				app.start();
+				app.startReader();
+				callback();
+				break;
+			case 'startSelector':
+				app.startContentSelection();
 				callback();
 				break;
 		}

@@ -17,6 +17,9 @@
 	"startReadingBtn": {
 		"message": "Launch FastReader"
 	},
+	"startContentSelectorBtn": {
+		"message": "Select an element on the page"
+	},
 	
 	"tab_reading": {
 		"message": "Reading"

@@ -3,15 +3,20 @@
 (function() {
 	
 	function StartReader() {
-		chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.start();'});
+		chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader();'});
 	}
 	
-	function Install() {
+	function Install(tabId) {
 		var contentScripts = manifest.content_scripts['0'].js, i;
 		for (i = 0; i < contentScripts.length; i++) {
-			chrome.tabs.executeScript(null, {file: contentScripts[i]});
+			chrome.tabs.executeScript(tabId == null ? null : tabId, {file: contentScripts[i]});
 		}
-		trackEvent('Extension', 'Manual content script installation');
+	}
+	
+	function checkIfStarted(callback) {
+		chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.isStarted;'}, function(res) {
+			callback(!!(res && res[0]));
+		});
 	}
 	
 	
@@ -157,10 +162,13 @@
 			StartReader();
 			
 			setTimeout(function() {
-				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.isStarted;'}, function(res) {
-					if (!res || !res[0]) {
+				checkIfStarted(function(res) {
+					if (!res) {
 						Install();
 						StartReader();
+						checkIfStarted(function(res) {
+							trackEvent('Extension', 'Runtime content script installation', res);
+						});
 					}
 				});
 			}, 100);
@@ -172,6 +180,12 @@
 	
 	chrome.runtime.onInstalled.addListener(function(details) {
 		if (details.reason === "install") {
+			chrome.tabs.query({}, function(tabs) {
+				for (var i = 0; i < tabs.length; i++) {
+					Install(tabs[i].id);
+				}
+			});
+			
 			// Let the UUID to be generated
 			setTimeout(function() {
 				trackEvent('Extension', 'Installed');

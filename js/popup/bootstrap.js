@@ -2,9 +2,24 @@
 
 (function(app) {
 	
-	function onTabCall(e) {
+	function querySelector(selector) {
+		return document.querySelector(selector);
+	}
+	
+	function querySelectorAll(selector) {
+		return document.querySelectorAll(selector);
+	}
+	
+	
+	function onTabMousedown(e) {
 		setActiveTab(e.target.getAttribute('tab-id'));
 	}
+	
+	function onExternalLinkClick(e) {
+		app.event('External link', e.target.href);
+		window.open(e.target.href);
+	}
+	
 	
 	function onCheckbox(value, $checkbox, api) {
 		app.sendMessageToExtension({type: 'settingsSet', key: $checkbox.name, value: value});
@@ -16,15 +31,17 @@
 		app.sendMessageToSelectedTab({type: 'popupSettings', key: $input.name, value: value});
 	}
 	
-	function onExternalLinkClick(e) {
-		app.event('External link', e.target.href);
-		window.open(e.target.href);
-	}
 	
 	function onStartReadingClick() {
 		window.close();
 		app.event('Reader', 'Open', 'Popup');
 		app.sendMessageToSelectedTab({type: 'startReading'});
+	}
+	
+	function onStartSelectorClick() {
+		window.close();
+		app.event('Content selector', 'Start', 'Popup');
+		app.sendMessageToSelectedTab({type: 'startSelector'});
 	}
 	
 	
@@ -41,55 +58,66 @@
 		});
 	}
 	
-	function init(settings) {
+	function initControls(settings) {
 		var $elem, temp;
 		
 		
-		app.each(document.querySelectorAll('[i18n]'), function($elem) {
-			$elem.innerHTML = app.t($elem.getAttribute('i18n'));
-		});
 		
 		
-		app.each($tabs, function($elem) {
-			app.on($elem, "mousedown", onTabCall);
-		});
-		
-		if (temp = localStorage["tabId"])
-			setActiveTab(temp);
 		
 		
-		app.each(document.querySelectorAll('.j-checkbox'), function($elem) {
+		
+		
+		
+		
+		app.each(querySelectorAll('.j-checkbox'), function($elem) {
 			$elem.checked = settings[$elem.name];
 			new app.Checkbox($elem, onCheckbox);
 		});
 		
-		app.each(document.querySelectorAll('.j-range'), function($elem) {
+		app.each(querySelectorAll('.j-range'), function($elem) {
 			$elem.value = settings[$elem.name];
 			new app.Range($elem, +$elem.getAttribute('min-value'), +$elem.getAttribute('max-value'), onRange);
 		});
-		
-		
-		app.each(document.querySelectorAll('a[href^=http]'), function($elem) {
-			app.on($elem, 'click', onExternalLinkClick);
-		});
-		
-		
-		$elem = document.querySelector('.j-startReadingBtnWrapper');
-		app.sendMessageToSelectedTab({type: 'getSelection'}, function(sel) {
-			sel && sel.length && ($elem.style.display = "block");
-		});
-		app.on($elem, "click", onStartReadingClick);
 	}
 	
 	
-	var $body = document.querySelector('body'),
-		$tabs = document.querySelectorAll('.j-tab'),
-		$content = document.querySelectorAll('.j-content');
+	
+	var $body = querySelector('body'),
+		$startReadingBtn = querySelector('.j-startReadingBtn'),
+		$startSelectorBtn = querySelector('.j-startContentSelectorBtn'),
+		$tabs = querySelectorAll('.j-tab'),
+		$content = querySelectorAll('.j-content');
 	
 	
-	app.sendMessageToExtension({type: 'settingsGet'}, init);
+	app.each(querySelectorAll('[i18n]'), function($elem) {
+		$elem.innerHTML = app.t($elem.getAttribute('i18n'));
+	});
+	
+	app.each(querySelectorAll('a[href^=http]'), function($elem) {
+		app.on($elem, 'click', onExternalLinkClick);
+	});
+	
+	
+	app.each($tabs, function($elem) {
+		app.on($elem, "mousedown", onTabMousedown);
+	});
+	
+	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
+	
+	
+	app.sendMessageToSelectedTab({type: 'getSelection'}, function(sel) {
+		$startReadingBtn.setAttribute('hidden', !sel.length);
+		$startSelectorBtn.setAttribute('hidden', !!sel.length);
+	});
+	
+	app.sendMessageToExtension({type: 'settingsGet'}, initControls);
 	
 	chrome.extension.connect({name: "Popup"});
+	
+	
+	app.on($startReadingBtn, "click", onStartReadingClick);
+	app.on($startSelectorBtn, "click", onStartSelectorClick);
 	
 	
 })(window.fastReaderPopup);

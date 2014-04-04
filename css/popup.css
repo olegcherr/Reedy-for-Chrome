@@ -188,6 +188,9 @@ body {
 .e-btn:active {
 	box-shadow: inset 0 2px 0 rgba(0, 0, 0, .15);
 }
+.e-btn[hidden="true"] {
+	display: none;
+}
 .e-btn_theme1 {
 	color: #fff;
 	background: #4dbd85;
