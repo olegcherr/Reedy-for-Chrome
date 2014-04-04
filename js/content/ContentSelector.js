@@ -89,7 +89,7 @@
 			case 27: // esc
 				app.stopEvent(e);
 				clearTimeout(timeout);
-				api.stopContentSelection();
+				app.stopContentSelection();
 				app.event('Content selector', 'Stop', 'Shortcut (Esc)');
 				break;
 			case 13: // enter
