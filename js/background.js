@@ -2,24 +2,6 @@
 
 (function() {
 	
-	function StartReader() {
-		chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader();'});
-	}
-	
-	function Install(tabId) {
-		var contentScripts = manifest.content_scripts['0'].js, i;
-		for (i = 0; i < contentScripts.length; i++) {
-			chrome.tabs.executeScript(tabId == null ? null : tabId, {file: contentScripts[i]});
-		}
-	}
-	
-	function checkIfStarted(callback) {
-		chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.isStarted;'}, function(res) {
-			callback(!!(res && res[0]));
-		});
-	}
-	
-	
 	function generateUUID() {
 		var d = new Date().getTime(),
 			uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -45,13 +27,13 @@
 	}
 	
 	
-	function settingsGet(key, callback) {
+	function getSettings(key, callback) {
 		chrome.storage.sync.get(defaults, function(items) {
 			callback(key != null ? items[key] : items);
 		});
 	}
 	
-	function settingsSet(key, value, callback) {
+	function setSettings(key, value, callback) {
 		var settings = {};
 		settings[key] = value;
 		chrome.storage.sync.set(settings, callback);
@@ -77,6 +59,62 @@
 			msg += ' ('+filename+' -> '+e.lineno+':'+e.colno+')';
 		}
 		trackEvent('Error', context, msg);
+	}
+	
+	
+	function install(tabId) {
+		var contentScripts = manifest.content_scripts['0'].js, i;
+		for (i = 0; i < contentScripts.length; i++) {
+			chrome.tabs.executeScript(tabId == null ? null : tabId, {file: contentScripts[i]});
+		}
+	}
+	
+	function isInstalled(callback) {
+		chrome.tabs.executeScript(null, {code: '!!window.fastReader;'}, function(res) {
+			callback(res && res[0]);
+		});
+	}
+	
+	function installAndRun(callback) {
+		isInstalled(function(res) {
+			if (res) {
+				callback();
+			}
+			else {
+				install();
+				setTimeout(function() {
+					isInstalled(function(res) {
+						if (res) {
+							callback();
+							trackEvent('Extension', 'Runtime content script installation');
+						}
+						else {
+							getCurrentTab(function(tab) {
+								if (!/^chrome/.test(tab.url))
+									trackEvent('Error', 'Can\'n install content scripts');
+							});
+						}
+					});
+				}, 100);
+				
+			}
+		});
+	}
+	
+	
+	function getCurrentTab(callback) {
+		chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
+			tabs[0] && callback(tabs[0]);
+		});
+	}
+	
+	function sendMessageToSelectedTab(data, callback) {
+		installAndRun(function() {
+			getCurrentTab(function(tab) {
+				chrome.tabs.sendMessage(tab.id, data, callback);
+			});
+		});
+		
 	}
 	
 	
@@ -121,12 +159,12 @@
 	
 	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
 		switch (msg.type) {
-			case 'settingsGet':
-				settingsGet(msg.key, callback);
+			case 'getSettings':
+				getSettings(msg.key, callback);
 				return true;
-			case 'settingsSet':
-				settingsSet(msg.key, msg.value, callback);
-				break;
+			case 'setSettings':
+				setSettings(msg.key, msg.value, callback);
+				return true;
 			case 'isPopupOpen':
 				callback(isPopupOpen);
 				break;
@@ -138,6 +176,12 @@
 				trackJSError(msg, msg.context);
 				callback();
 				break;
+			case 'popupSettings':
+			case 'startReading':
+			case 'startSelector':
+			case 'getSelection':
+				sendMessageToSelectedTab(msg, callback);
+				return true;
 		}
 	});
 	
@@ -159,33 +203,16 @@
 	
 	chrome.contextMenus.onClicked.addListener(function (data) {
 		if (data.menuItemId == 'fastReaderMenu') {
-			StartReader();
-			
-			setTimeout(function() {
-				checkIfStarted(function(res) {
-					if (!res) {
-						Install();
-						StartReader();
-						checkIfStarted(function(res) {
-							trackEvent('Extension', 'Runtime content script installation', res);
-						});
-					}
-				});
-			}, 100);
-			
-			trackEvent('Reader', 'Open', 'Context menu');
+			installAndRun(function() {
+				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader();'});
+				trackEvent('Reader', 'Open', 'Context menu');
+			});
 		}
 	});
 	
 	
 	chrome.runtime.onInstalled.addListener(function(details) {
 		if (details.reason === "install") {
-			chrome.tabs.query({}, function(tabs) {
-				for (var i = 0; i < tabs.length; i++) {
-					Install(tabs[i].id);
-				}
-			});
-			
 			// Let the UUID to be generated
 			setTimeout(function() {
 				trackEvent('Extension', 'Installed');

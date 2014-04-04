@@ -9,7 +9,7 @@
 	function init(callback) {
 		if (!settings) {
 			settings = {};
-			app.sendMessageToExtension({type: 'settingsGet'}, function(sett) {
+			app.sendMessageToExtension({type: 'getSettings'}, function(sett) {
 				settings = sett;
 				callback();
 			});
@@ -127,7 +127,7 @@
 	
 	app.set = function(key, value) {
 		settings[key] = value;
-		app.sendMessageToExtension({type: 'settingsSet', key: key, value: value});
+		app.sendMessageToExtension({type: 'setSettings', key: key, value: value});
 	}
 	
 	
@@ -152,7 +152,7 @@
 	
 	
 	app.sendMessageToExtension = function(data, callback) {
-		chrome.extension.sendMessage(data, callback);
+		chrome.extension.sendMessage(data, callback || function() {});
 	}
 	
 	app.isPopupOpen = function(callback) {

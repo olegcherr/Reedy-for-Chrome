@@ -30,28 +30,22 @@
 	}
 	
 	
-	app.sendMessageToExtension = function(data, callback) {
-		chrome.extension.sendMessage(data, callback);
-	}
-	
-	app.sendMessageToSelectedTab = function(data, callback) {
-		chrome.tabs.getSelected(null, function(tab) {
-			chrome.tabs.sendMessage(tab.id, data, callback);
-		});
-	}
-	
-	
-	app.settingsSet = function(key, value, callback) {
-		app.sendMessageToExtension({type: 'settingsSet', key: key, value: value}, callback);
-		app.sendMessageToExtension({type: 'popupSettings', key: key, value: value});
+	app.event = function(category, action, label) {
+		app.sendMessageToExtension({type: 'trackEvent', category: category, action: action, label: label});
 	}
 	
 	app.t = function() {
 		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
 	}
 	
-	app.event = function(category, action, label) {
-		app.sendMessageToExtension({type: 'trackEvent', category: category, action: action, label: label});
+	
+	app.sendMessageToExtension = function(data, callback) {
+		chrome.extension.sendMessage(data, callback || function() {});
+	}
+	
+	app.setSettings = function(key, value) {
+		app.sendMessageToExtension({type: 'setSettings', key: key, value: value});
+		app.sendMessageToExtension({type: 'popupSettings', key: key, value: value});
 	}
 	
 	

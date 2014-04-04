@@ -22,26 +22,24 @@
 	
 	
 	function onCheckbox(value, $checkbox, api) {
-		app.sendMessageToExtension({type: 'settingsSet', key: $checkbox.name, value: value});
-		app.sendMessageToSelectedTab({type: 'popupSettings', key: $checkbox.name, value: value});
+		app.setSettings($checkbox.name, value);
 	}
 	
 	function onRange(value, $input, api) {
-		app.sendMessageToExtension({type: 'settingsSet', key: $input.name, value: value});
-		app.sendMessageToSelectedTab({type: 'popupSettings', key: $input.name, value: value});
+		app.setSettings($input.name, value);
 	}
 	
 	
 	function onStartReadingClick() {
-		window.close();
+		app.sendMessageToExtension({type: 'startReading'});
 		app.event('Reader', 'Open', 'Popup');
-		app.sendMessageToSelectedTab({type: 'startReading'});
+		window.close();
 	}
 	
 	function onStartSelectorClick() {
-		window.close();
+		app.sendMessageToExtension({type: 'startSelector'});
 		app.event('Content selector', 'Start', 'Popup');
-		app.sendMessageToSelectedTab({type: 'startSelector'});
+		window.close();
 	}
 	
 	
@@ -59,17 +57,6 @@
 	}
 	
 	function initControls(settings) {
-		var $elem, temp;
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		app.each(querySelectorAll('.j-checkbox'), function($elem) {
 			$elem.checked = settings[$elem.name];
 			new app.Checkbox($elem, onCheckbox);
@@ -106,12 +93,13 @@
 	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
 	
 	
-	app.sendMessageToSelectedTab({type: 'getSelection'}, function(sel) {
-		$startReadingBtn.setAttribute('hidden', !sel.length);
-		$startSelectorBtn.setAttribute('hidden', !!sel.length);
+	app.sendMessageToExtension({type: 'getSelection'}, function(sel) {
+		sel = sel && sel.length;
+		$startReadingBtn.setAttribute('hidden', !sel);
+		$startSelectorBtn.setAttribute('hidden', !!sel);
 	});
 	
-	app.sendMessageToExtension({type: 'settingsGet'}, initControls);
+	app.sendMessageToExtension({type: 'getSettings'}, initControls);
 	
 	chrome.extension.connect({name: "Popup"});
 	
