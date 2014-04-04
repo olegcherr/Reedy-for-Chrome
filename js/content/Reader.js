@@ -50,6 +50,9 @@
 		MIN_FONT    = 1,
 		MAX_FONT    = 7,
 		
+		MIN_VPOS    = 1,
+		MAX_VPOS    = 5,
+		
 		$body = querySelector('body');
 	
 	
@@ -71,17 +74,17 @@
 				// This is a good place for this check.
 				// If there are less that 3 words in the text, the check will be never passed.
 				if (parser.isPenultWord()) {
-					app.event('Config', 'WPM',              app.get('wpm'));
-					app.event('Config', 'Font size',        app.get('fontSize'));
-					app.event('Config', 'Autostart',        app.get('autostart'));
-					app.event('Config', 'Dark theme',       app.get('darkTheme'));
-					app.event('Config', 'Transparent bg',   app.get('transparentBg'));
-					app.event('Config', 'Ver. position',    app.get('vPosition'));
-					app.event('Config', 'Focus mode',       app.get('focusMode'));
-					app.event('Config', 'Smart slowing',    app.get('smartSlowing'));
-					app.event('Config', 'Entity analysis',  app.get('entityAnalysis'));
-//					app.event('Config', 'Empty sent. end',  app.get('emptySentenceEnd'));
-					app.event('Config', 'Hyphenation',      app.get('hyphenation'));
+					app.event('Config', 'WPM',                  app.get('wpm'));
+					app.event('Config', 'Font size',            app.get('fontSize'));
+					app.event('Config', 'Autostart',            app.get('autostart'));
+					app.event('Config', 'Dark theme',           app.get('darkTheme'));
+					app.event('Config', 'Transparent bg',       app.get('transparentBg'));
+					app.event('Config', 'Vertical position',    app.get('vPosition'));
+					app.event('Config', 'Focus mode',           app.get('focusMode'));
+					app.event('Config', 'Smart slowing',        app.get('smartSlowing'));
+					app.event('Config', 'Entity analysis',      app.get('entityAnalysis'));
+//					app.event('Config', 'Empty sent. end',      app.get('emptySentenceEnd'));
+					app.event('Config', 'Hyphenation',          app.get('hyphenation'));
 				}
 				
 				function doUpdate() {
@@ -305,6 +308,20 @@
 			updateWrapper();
 		}
 		
+		function onVPosUpCtrl() {
+			var vPos = Math.min(app.get('vPosition')+1, MAX_VPOS);
+			app.set('vPosition', vPos);
+			$menuRangeText.innerHTML = vPos;
+			updateWrapper();
+		}
+		
+		function onVPosDnCtrl() {
+			var vPos = Math.max(app.get('vPosition')-1, MIN_VPOS);
+			app.set('vPosition', vPos);
+			$menuRangeText.innerHTML = vPos;
+			updateWrapper();
+		}
+		
 		
 		function onWindowResize() {
 			updateFocusPoint();
@@ -396,19 +413,24 @@
 			
 			$topPanelLeft       = createElement('div', cls('topPanelLeft'), $topPanel),
 			$fontAdjust         = createElement('div', cls('adjust','adjust_font'), $topPanelLeft, '<span>aA</span>'),
-			$ctrlDecFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $fontAdjust, null, app.t('ctrl_smallerFont')),
-			$ctrlIncFont        = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $fontAdjust, null, app.t('ctrl_largerFont')),
+			$ctrlDecFont        = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_minus'), $fontAdjust, null, app.t('ctrl_smallerFont')),
+			$ctrlIncFont        = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_plus'), $fontAdjust, null, app.t('ctrl_largerFont')),
 			$wpmAdjust          = createElement('div', cls('adjust','adjust_wpm'), $topPanelLeft),
 			$wpmText            = createElement('span', null, $wpmAdjust),
-			$ctrlDecWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_minus'), $wpmAdjust, null, app.t('ctrl_decSpeed')),
-			$ctrlIncWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_adjust','topPanelBtn_plus'), $wpmAdjust, null, app.t('ctrl_incSpeed')),
+			$ctrlDecWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_minus'), $wpmAdjust, null, app.t('ctrl_decSpeed')),
+			$ctrlIncWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_plus'), $wpmAdjust, null, app.t('ctrl_incSpeed')),
 			
 			$topPanelRight      = createElement('div', cls('topPanelRight'), $topPanel),
 			$menuGroup1         = createElement('div', cls('menuGroup'), $topPanelRight),
-			$menuBtnClose       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_close'), $menuGroup1, null, app.t('ctrl_close')),
+			$menuBtnClose       = createElement('div', cls('topPanelBtn','topPanelBtn_regular','menuBtn','menuBtn_close'), $menuGroup1, null, app.t('ctrl_close')),
 			$menuGroup2         = createElement('div', cls('menuGroup'), $topPanelRight),
-			$menuBtnTheme       = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_theme'), $menuGroup2, null, app.t('ctrl_switchTheme')),
-			$menuBtnBackground  = createElement('div', cls('topPanelBtn','topPanelBtn_menu','topPanelBtn_background'), $menuGroup2, null, app.t('ctrl_bgTransparency')),
+			$menuBtnTheme       = createElement('div', cls('topPanelBtn','topPanelBtn_regular','menuBtn','menuBtn_theme'), $menuGroup2, null, app.t('ctrl_switchTheme')),
+			$menuBtnBackground  = createElement('div', cls('topPanelBtn','topPanelBtn_regular','menuBtn','menuBtn_background'), $menuGroup2, null, app.t('ctrl_bgTransparency')),
+			$menuGroup3         = createElement('div', cls('menuGroup'), $topPanelRight, null, app.t('ctrl_vPosition')),
+			$menuRangeCtrl      = createElement('div', cls('rangeCtrl'), $menuGroup3),
+			$menuRangeText      = createElement('span', null, $menuRangeCtrl, app.get('vPosition')),
+			$vPosUpCtrl         = createElement('div', cls('topPanelBtn','rangeCtrl-btn','rangeCtrl-btn_up'), $menuRangeCtrl),
+			$vPosDnCtrl         = createElement('div', cls('topPanelBtn','rangeCtrl-btn','rangeCtrl-btn_dn'), $menuRangeCtrl),
 			
 			// Bottom panel
 			$botPanel           = createElement('div', cls('panel', 'panel_bottom'), $wrapper),
@@ -495,9 +517,6 @@
 		
 		api.onPopupSettings = function(key, value) {
 			switch (key) {
-				case 'vPosition':
-					updateWrapper();
-					break;
 				case 'focusMode':
 					updateWrapper();
 					updateFocusPoint();
@@ -584,6 +603,9 @@
 			
 			app.on($ctrlDecFont, "click", onDecreaseFontCtrl);
 			app.on($ctrlIncFont, "click", onIncreaseFontCtrl);
+			
+			app.on($vPosUpCtrl, "click", onVPosUpCtrl);
+			app.on($vPosDnCtrl, "click", onVPosDnCtrl);
 			
 			app.on($menuBtnTheme, "click", onThemeCtrl);
 			app.on($menuBtnBackground, "click", onBackgroundCtrl);

@@ -77,7 +77,7 @@
 			autostart: false,
 			darkTheme: false,
 			transparentBg: false,
-			vPosition: 4,
+			vPosition: 4, // 1-5
 			focusMode: true,
 			smartSlowing: true,
 			entityAnalysis: true,

@@ -32,13 +32,6 @@
 		"message": "Точка фокусировки будет смещена ближе к началу слова и выделена красным."
 	},
 	
-	"vPosition": {
-		"message": "Вертикальное положение"
-	},
-	"vPositionDescr": {
-		"message": "Установите положение области чтения по вертикали (1&nbsp;-&nbsp;самое низкое; 5&nbsp;-&nbsp;самое высокое)."
-	},
-	
 	"smartSlowing": {
 		"message": "Умное замедление"
 	},
@@ -90,6 +83,9 @@
 	},
 	"ctrl_bgTransparency": {
 		"message": "Прозрачный фон"
+	},
+	"ctrl_vPosition": {
+		"message": "Вертикальное положение"
 	},
 	"ctrl_playPause": {
 		"message": "Play/pause [space]"

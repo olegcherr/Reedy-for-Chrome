@@ -32,13 +32,6 @@
 		"message": "The focus point is shifted closer to the beginning of a word."
 	},
 	
-	"vPosition": {
-		"message": "Vertical position"
-	},
-	"vPositionDescr": {
-		"message": "Set the vertical position of the reading area (1&nbsp;-&nbsp;lowes; 5&nbsp;–&nbsp;highest)."
-	},
-	
 	"smartSlowing": {
 		"message": "Smart slowing"
 	},
@@ -90,6 +83,9 @@
 	},
 	"ctrl_bgTransparency": {
 		"message": "Background transparency"
+	},
+	"ctrl_vPosition": {
+		"message": "Vertical position"
 	},
 	"ctrl_playPause": {
 		"message": "Play/pause [space]"
