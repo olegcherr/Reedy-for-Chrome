@@ -328,8 +328,10 @@
 		}
 		
 		function onWindowPopstate() {
-			api.close();
-			app.event('Reader', 'Close', 'Popstate');
+			if (location+'' !== urlOnOpen) {
+				api.close();
+				app.event('Reader', 'Close', 'Popstate');
+			}
 		}
 		
 		function onKeydown(e) {
@@ -444,6 +446,7 @@
 			
 			focusPoint = 0,
 			bodyOverflowBefore = $body.style.overflow,
+			urlOnOpen = location+'',
 			token, timeout;
 		
 		
