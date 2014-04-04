@@ -387,6 +387,7 @@
 	left: 50%;
 	top: 0;
 	border-left: 1px solid #c5c5c5;
+	-webkit-transition: border-color 1s;
 	-webkit-user-select: none;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-topPanelLeft {
@@ -430,6 +431,7 @@
 	float: left;
 	padding: 17px 45px 18px;
 	border-right: 1px solid #c5c5c5;
+	-webkit-transition: border-color 1s;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-adjust {
 	border-right-color: #262626;
@@ -468,6 +470,7 @@
 	padding: 9px 0 9px 10px;
 	border: solid #c5c5c5;
 	border-width: 0 1px;
+	-webkit-transition: border-color 1s;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-menuGroup {
 	border-color: #262626;

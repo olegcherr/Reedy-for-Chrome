@@ -23,10 +23,11 @@ body {
 	position: relative;
 	margin: 0 0 8px;
 	padding: 11px 0 0;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/bg_popupHead.jpg") center bottom;
+	background: #ededed url("chrome-extension://__MSG_@@extension_id__/img/bg_popupHead.jpg") center bottom;
 }
 .p-head-content {
 	padding: 0 15px 15px;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
 }
 .p-head-btnWrapper {
 	margin: 8px 0 0;
@@ -39,6 +40,7 @@ body {
 	width: 50%;
 	text-align: center;
 	white-space: nowrap;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
 	background: rgba(255, 255, 255, .5);
 	border-bottom: 5px solid;
 	cursor: pointer;
@@ -193,5 +195,6 @@ body {
 }
 .e-btn_theme1 {
 	color: #fff;
+	text-shadow: 0 0 1px rgba(255, 255, 255, .2);
 	background: #4dbd85;
 }

@@ -145,11 +145,20 @@
 		hlStyle.width =
 		hlStyle.height = 0;
 		
+		
 		app.on($body, 'mousemove', onMouseMove);
 		app.on($body, 'mousedown', onMouseDown);
 		app.on($body, 'contextmenu', onContextMenu);
 		
 		app.on(window, 'keydown', onKeyDown);
+		
+		
+		// Makes the browser fire the `mousemove` event
+		var scrollLeft = window.pageXOffset,
+			scrollTop = window.pageYOffset;
+		window.scrollTo(scrollLeft+1, scrollTop+1);
+		window.scrollTo(scrollLeft-1, scrollTop-1);
+		window.scrollTo(scrollLeft, scrollTop);
 	}
 	
 	app.stopContentSelection = function() {
