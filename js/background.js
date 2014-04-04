@@ -2,6 +2,19 @@
 
 (function() {
 	
+	function StartReader() {
+		chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.start();'});
+	}
+	
+	function Install() {
+		var contentScripts = manifest.content_scripts['0'].js, i;
+		for (i = 0; i < contentScripts.length; i++) {
+			chrome.tabs.executeScript(null, {file: contentScripts[i]});
+		}
+		trackEvent('Extension', 'Manual content script installation');
+	}
+	
+	
 	function generateUUID() {
 		var d = new Date().getTime(),
 			uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -67,7 +80,8 @@
 		trackJSError(e, 'JS Background');
 	});
 	
-	var isDevMode = !('update_url' in chrome.runtime.getManifest()),
+	var manifest = chrome.runtime.getManifest(),
+		isDevMode = !('update_url' in manifest),
 		isPopupOpen = false,
 		extensionId = chrome.i18n.getMessage("@@extension_id"),
 		UUID,
@@ -140,9 +154,17 @@
 	
 	chrome.contextMenus.onClicked.addListener(function (data) {
 		if (data.menuItemId == 'fastReaderMenu') {
-			chrome.tabs.executeScript(null, {
-				code: 'window.fastReader && window.fastReader.start();'
-			});
+			StartReader();
+			
+			setTimeout(function() {
+				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.isStarted;'}, function(res) {
+					if (!res || !res[0]) {
+						Install();
+						StartReader();
+					}
+				});
+			}, 100);
+			
 			trackEvent('Reader', 'Open', 'Context menu');
 		}
 	});
@@ -150,15 +172,6 @@
 	
 	chrome.runtime.onInstalled.addListener(function(details) {
 		if (details.reason === "install") {
-			chrome.tabs.query({}, function(tabs) {
-				for (var i = 0, tid; i < tabs.length; i++) {
-					tid = tabs[i].id;
-					chrome.tabs.executeScript(tid, {file: 'js/content/main.js'});
-					chrome.tabs.executeScript(tid, {file: 'js/content/Parser.js'});
-					chrome.tabs.executeScript(tid, {file: 'js/content/Reader.js'});
-				}
-			});
-			
 			// Let the UUID to be generated
 			setTimeout(function() {
 				trackEvent('Extension', 'Installed');

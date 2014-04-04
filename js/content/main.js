@@ -41,6 +41,9 @@
 		settings, reader;
 	
 	
+	app.isStarted = false;
+	
+	
 	app.stopEvent = function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
@@ -97,10 +100,8 @@
 	
 	
 	app.start = function(text) {
-		if (reader) {
-			app.event('Reader', 'Close', 'Application');
-			reader.close();
-		}
+		if (app.isStarted) return;
+		app.isStarted = true;
 		
 		text = text != null ? text : getSelection();
 		text.length && init(function() {
@@ -111,8 +112,9 @@
 		});
 	}
 	
-	app.onReaderDestroy = function() {
+	app.onReaderClose = function() {
 		settings = reader = null;
+		app.isStarted = false;
 	}
 	
 	

@@ -512,7 +512,7 @@
 			parser.destroy();
 			parser = null;
 			
-			app.onReaderDestroy();
+			app.onReaderClose();
 		}
 		
 		api.onPopupSettings = function(key, value) {
