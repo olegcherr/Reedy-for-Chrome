@@ -38,25 +38,55 @@
 	}
 	
 	
+	function getWpmFactor(wpm) {
+		return Math.sin(PI2 * (wpm-MIN_WPM)/WPM_RANGE);
+	}
+	
+	
 	
 	var CLS_MAIN = 'e-FastReader',
 		
 		CONTEXT_CHARS_LIMIT = 2000,
 		
-		MIN_WPM     = 50,
-		MAX_WPM     = 2000,
-		WPM_STEP    = 50,
+		MIN_WPM             = 50,
+		MAX_WPM             = 2000,
+		WPM_STEP            = 50,
+		START_WPM_REDUCING  = 0.85, // from 0 to 0.99 - more value means lower start wpm
+		ACCEL_DURATION      = 3,    // from 0.1 to infinity - more value means longer acceleration time
 		
-		MIN_FONT    = 1,
-		MAX_FONT    = 7,
+		MIN_FONT            = 1,
+		MAX_FONT            = 7,
 		
-		MIN_VPOS    = 1,
-		MAX_VPOS    = 5,
+		MIN_VPOS            = 1,
+		MAX_VPOS            = 5,
+		
+		WPM_RANGE           = MAX_WPM - MIN_WPM,
+		PI2                 = Math.PI/2,
 		
 		$body = querySelector('body');
 	
 	
 	app.Reader = function(parser) {
+		
+		function getTiming(isDelayed) {
+			var smartSlowing = app.get('smartSlowing'),
+				targetWpm = app.get('wpm'), wpm = targetWpm;
+			
+			if (app.get('gradualAccel')) {
+				wpm = (targetWpm*(1 - START_WPM_REDUCING*getWpmFactor(targetWpm))) + WPM_STEP/ACCEL_DURATION * wordIndexSinceStart;
+				if (wpm >= targetWpm)
+					wpm = targetWpm;
+				else
+					wordIndexSinceStart++;
+				console.log(wpm);
+			}
+			
+			if (smartSlowing && (isDelayed || !wasReadingLaunchedSinceOpen)) {
+				wpm /= 2;
+			}
+			
+			return 60000/wpm;
+		}
 		
 		function next(justRun) {
 			clearTimeout(timeout);
@@ -94,13 +124,7 @@
 					(function go() {
 						if (hyphenated[++i]) {
 							updateWord(hyphenated[i]+(i < hyphenated.length-1 ? '-' : ''));
-							
-							timeout = setTimeout(
-								go,
-								(60000/app.get('wpm')) * (wasRun
-									? app.get('smartSlowing') && parser.isDelayed() ? 2 : 1
-									: 2)
-							);
+							timeout = setTimeout(go, getTiming(parser.isDelayed()));
 						}
 						else {
 							next();
@@ -110,13 +134,13 @@
 				
 				if (!justRun && app.get('emptySentenceEnd') && parser.isSentenceStart() && !parser.isFirstWord()) {
 					updateWord(true);
-					timeout = setTimeout(doUpdate, 60000/app.get('wpm')*2);
+					timeout = setTimeout(doUpdate, getTiming(true));
 				}
 				else {
 					doUpdate();
 				}
 				
-				wasRun = true;
+				wasReadingLaunchedSinceOpen = true;
 			}
 		}
 		
@@ -392,7 +416,14 @@
 		var api = this,
 			isRunning = false,
 			isClosed = false,
-			wasRun = false,
+			wasReadingLaunchedSinceOpen = false,
+			
+			focusPoint = 0,
+			wordIndexSinceStart,
+			bodyOverflowBefore = $body.style.overflow,
+			urlOnOpen = location+'',
+			token, timeout,
+			
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
 			
@@ -442,12 +473,7 @@
 			$ctrlLastWord       = createControl(['lastWord'], $botPanel, app.t('ctrl_lastWord')),
 			$ctrlPrevWord       = createControl(['prevWord'], $botPanel, app.t('ctrl_prevWord')),
 			$ctrlPrevSentence   = createControl(['prevSentence'], $botPanel, app.t('ctrl_prevSentence')),
-			$ctrlFirstWord      = createControl(['firstWord'], $botPanel, app.t('ctrl_firstWord')),
-			
-			focusPoint = 0,
-			bodyOverflowBefore = $body.style.overflow,
-			urlOnOpen = location+'',
-			token, timeout;
+			$ctrlFirstWord      = createControl(['firstWord'], $botPanel, app.t('ctrl_firstWord'));
 		
 		
 		
@@ -463,6 +489,7 @@
 			
 			updateWrapper();
 			
+			wordIndexSinceStart = 0;
 			next(true);
 		}
 		
@@ -527,7 +554,7 @@
 					break;
 				case 'entityAnalysis':
 					parser.parse();
-					if (wasRun) {
+					if (wasReadingLaunchedSinceOpen) {
 						token = parser.wordAtIndex(token.startIndex+1);
 						updateWord();
 						updateContext();

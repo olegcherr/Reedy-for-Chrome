@@ -139,7 +139,8 @@
 			smartSlowing: true,
 			entityAnalysis: true,
 			emptySentenceEnd: true,
-			hyphenation: true
+			hyphenation: true,
+			gradualAccel: true
 		};
 	
 	

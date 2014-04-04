@@ -42,6 +42,13 @@
 		"message": "The focus point is shifted closer to the beginning of a word."
 	},
 	
+	"gradualAccel": {
+		"message": "Gradual acceleration"
+	},
+	"gradualAccelDescr": {
+		"message": "Start reading at a lower speed and gradually increase it."
+	},
+	
 	"smartSlowing": {
 		"message": "Smart slowing"
 	},
