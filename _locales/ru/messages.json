@@ -18,6 +18,13 @@
 		"message": "Запустить FastReader"
 	},
 	
+	"tab_reading": {
+		"message": "Режим чтения"
+	},
+	"tab_parsing": {
+		"message": "Обработка текста"
+	},
+	
 	"autostart": {
 		"message": "Автостарт"
 	},
@@ -37,6 +44,13 @@
 	},
 	"smartSlowingDescr": {
 		"message": "Увеличивать время отображения на пунктуации и сложных словах."
+	},
+	
+	"emptySentenceEnd": {
+		"message": "Разрыв между предложениями"
+	},
+	"emptySentenceEndDescr": {
+		"message": "Добавлять «пустое слово» перед началом следующего предложения."
 	},
 	
 	"entityAnalysis": {

@@ -4,14 +4,22 @@
 	<title>FastReader menu</title>
 	<link href="css/popup.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
-<div class="p-block">
-	<span i18n="startReadingInfo"></span>
-	<div class="p-block-btnWrapper j-startReadingBtnWrapper" style="display: none;">
-		<span class="e-btn e-btn_theme1" i18n="startReadingBtn"></span>
+<body active-tab="1">
+<div class="p-head">
+	<div class="p-head-content">
+		<span i18n="startReadingInfo"></span>
+		<div class="p-head-btnWrapper j-startReadingBtnWrapper" style="display: none;">
+			<span class="e-btn e-btn_theme1" i18n="startReadingBtn"></span>
+		</div>
+	</div>
+	
+	<div class="p-tabs g-clrfix">
+		<div i18n="tab_reading" tab-id="1" active="true" class="j-tab p-tabs-tab"></div>
+		<div i18n="tab_parsing" tab-id="2" active="false" class="j-tab p-tabs-tab"></div>
+		<i class="p-tabs-arrow"></i>
 	</div>
 </div>
-<table class="p-table" cellspacing="0">
+<table content-id="1" active="true" class="j-content p-content" cellspacing="0">
 	<tr>
 		<td class="p-item-left">
 			<b i18n="autostart"></b>
@@ -39,6 +47,17 @@
 			<input class="j-checkbox" type="checkbox" name="smartSlowing"/>
 		</td>
 	</tr>
+	<tr>
+		<td class="p-item-left">
+			<b i18n="emptySentenceEnd"></b>
+			<span i18n="emptySentenceEndDescr"></span>
+		</td>
+		<td class="p-item-right">
+			<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
+		</td>
+	</tr>
+</table>
+<table content-id="2" active="false" class="j-content p-content" cellspacing="0">
 	<tr>
 		<td class="p-item-left">
 			<b i18n="entityAnalysis"></b>

@@ -83,7 +83,7 @@
 					app.event('Config', 'Focus mode',           app.get('focusMode'));
 					app.event('Config', 'Smart slowing',        app.get('smartSlowing'));
 					app.event('Config', 'Entity analysis',      app.get('entityAnalysis'));
-//					app.event('Config', 'Empty sent. end',      app.get('emptySentenceEnd'));
+					app.event('Config', 'Empty sentence end',   app.get('emptySentenceEnd'));
 					app.event('Config', 'Hyphenation',          app.get('hyphenation'));
 				}
 				

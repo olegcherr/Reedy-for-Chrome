@@ -18,6 +18,13 @@
 		"message": "Launch FastReader"
 	},
 	
+	"tab_reading": {
+		"message": "Reading"
+	},
+	"tab_parsing": {
+		"message": "Text processing"
+	},
+	
 	"autostart": {
 		"message": "Autostart"
 	},
@@ -37,6 +44,13 @@
 	},
 	"smartSlowingDescr": {
 		"message": "Slow down the speed at a punctuation mark."
+	},
+	
+	"emptySentenceEnd": {
+		"message": "Gap between sentences"
+	},
+	"emptySentenceEndDescr": {
+		"message": "Insert an «empty word» before the beginning of the next sentence."
 	},
 	
 	"entityAnalysis": {
