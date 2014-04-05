@@ -51,7 +51,7 @@
 		MIN_WPM             = 50,
 		MAX_WPM             = 2000,
 		WPM_STEP            = 50,
-		START_WPM_REDUCING  = 0.85, // from 0 to 0.99 - more value means lower start wpm
+		START_WPM_REDUCING  = 0.9,  // from 0 to 0.99 - more value means lower start wpm
 		ACCEL_DURATION      = 3,    // from 0.1 to infinity - more value means longer acceleration time
 		
 		MIN_FONT            = 1,
@@ -103,7 +103,7 @@
 				
 				// This is a good place for this check.
 				// If there are less that 3 words in the text, the check will be never passed.
-				if (parser.isPenultWord()) {
+				if (parser.text.length >= 3000 && parser.isPenultWord()) {
 					app.event('Config', 'WPM',                  app.get('wpm'));
 					app.event('Config', 'Font size',            app.get('fontSize'));
 					app.event('Config', 'Autostart',            app.get('autostart'));
