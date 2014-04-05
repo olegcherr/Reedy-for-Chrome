@@ -18,7 +18,7 @@
 	},
 	
 	"startReadingInfo": {
-		"message": "To start reading select the text on the page, click the right button and choose FastReader.<br/>You can also use the shortcut <b>Alt+S</b> while the text is selected."
+		"message": "To start reading select the text on the page, click the right mouse button and choose FastReader.<br/>You can also use the <b>Alt+S</b> shortcut."
 	},
 	
 	"startReadingBtn": {
