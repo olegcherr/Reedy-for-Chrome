@@ -20,6 +20,12 @@
 		window.open(e.target.href);
 	}
 	
+	function onSwitchBtnClick(e) {
+		var viewName = e.target.getAttribute('switch-to');
+		switchToView(viewName);
+		app.event('Popup', 'Switch to', viewName);
+	}
+	
 	
 	function onCheckbox(value, $checkbox, api) {
 		app.setSettings($checkbox.name, value);
@@ -56,6 +62,12 @@
 		});
 	}
 	
+	function switchToView(name) {
+		app.each($views, function($view) {
+			$view.setAttribute('active', $view.getAttribute('view-name') === name);
+		});
+	}
+	
 	function initControls(settings) {
 		app.each(querySelectorAll('.j-checkbox'), function($elem) {
 			$elem.checked = settings[$elem.name];
@@ -73,25 +85,22 @@
 	var $body = querySelector('body'),
 		$startReadingBtn = querySelector('.j-startReadingBtn'),
 		$startSelectorBtn = querySelector('.j-startContentSelectorBtn'),
+		$views = querySelectorAll('[view-name]'),
 		$tabs = querySelectorAll('.j-tab'),
 		$content = querySelectorAll('.j-content');
 	
 	
-	app.each(querySelectorAll('[i18n]'), function($elem) {
-		$elem.innerHTML = app.t($elem.getAttribute('i18n'));
-	});
-	
-	app.each(querySelectorAll('a[href^=http]'), function($elem) {
-		app.on($elem, 'click', onExternalLinkClick);
-	});
-	
-	
-	app.each($tabs, function($elem) {
-		app.on($elem, "mousedown", onTabMousedown);
-	});
-	
 	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
 	
+	app.each(querySelectorAll('[i18n]'), function($elem) {
+		$elem.innerHTML = app.t($elem.getAttribute('i18n'));
+		$elem.removeAttribute('i18n');
+	});
+	app.each(querySelectorAll('[i18n-attr]'), function($elem) {
+		var m = $elem.getAttribute('i18n-attr').split('|');
+		$elem.setAttribute(m[0], app.t(m[1]));
+		$elem.removeAttribute('i18n-attr');
+	});
 	
 	app.sendMessageToExtension({type: 'getSelection'}, function(sel) {
 		sel = sel && sel.length;
@@ -106,6 +115,17 @@
 	
 	app.on($startReadingBtn, "click", onStartReadingClick);
 	app.on($startSelectorBtn, "click", onStartSelectorClick);
+	
+	app.each(querySelectorAll('a[href^=http]'), function($elem) {
+		app.on($elem, 'click', onExternalLinkClick);
+	});
+	app.each(querySelectorAll('[switch-to]'), function($elem) {
+		app.on($elem, 'click', onSwitchBtnClick);
+	});
+	
+	app.each($tabs, function($elem) {
+		app.on($elem, "mousedown", onTabMousedown);
+	});
 	
 	
 })(window.fastReaderPopup);

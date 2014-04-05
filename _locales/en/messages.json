@@ -1,4 +1,8 @@
 {
+	"locale": {
+		"message": "en"
+	},
+	
 	"contextMenu": {
 		"message": "Read this with FastReader"
 	},
@@ -16,6 +20,7 @@
 	"startReadingInfo": {
 		"message": "To start reading select the text on the page, click the right button and choose FastReader.<br/>You can also use the shortcut <b>Alt+S</b> while the text is selected."
 	},
+	
 	"startReadingBtn": {
 		"message": "Launch FastReader"
 	},
@@ -141,5 +146,15 @@
 	},
 	"ctrl_firstWord": {
 		"message": "First word [alt+left]"
+	},
+	
+	
+	
+	"____HELP_________________________________________________________": {
+		"message": ""
+	},
+	
+	"helpTitle": {
+		"message": "Briefly about FastReader"
 	}
 }

@@ -1,0 +1,82 @@
+
+
+.p-head {
+	position: relative;
+	margin: 0 0 8px;
+	padding: 11px 0 0;
+	background: #ededed url("chrome-extension://__MSG_@@extension_id__/img/bg_popupHead.jpg") center bottom;
+}
+.p-head-content {
+	padding: 0 15px 15px;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
+}
+.p-head-btnWrapper {
+	position: relative;
+	margin: 8px 0 0;
+	text-align: center;
+}
+.p-head-helpBtn {
+	position: absolute;
+	right: 0;
+	top: 2px;
+}
+
+.p-tabs-tab {
+	float: left;
+	padding: 10px 0 9px;
+	width: 50%;
+	text-align: center;
+	white-space: nowrap;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
+	background: rgba(255, 255, 255, .5);
+	border-bottom: 5px solid #db5a78;
+	cursor: pointer;
+}
+.p-tabs-tab:hover {
+	background: rgba(255, 255, 255, .65);
+}
+.p-tabs-tab[active="true"] {
+	border-bottom-color: #4dbd85;
+	background: rgba(255, 255, 255, 1);
+}
+.p-tabs-arrow {
+	position: absolute;
+	margin-left: -7px;
+	bottom: -14px;
+	width: 0;
+	height: 0;
+	border: 7px solid transparent;
+	border-top-color: #4dbd85;
+	-webkit-transition: left 200ms;
+}
+[active-tab="1"] .p-tabs-arrow {
+	left: 25%;
+}
+[active-tab="2"] .p-tabs-arrow {
+	left: 75%;
+}
+
+.p-content {
+	display: none;
+	padding: 0 15px;
+	width: 100%;
+}
+.p-content[active="true"] {
+	display: table;
+}
+.p-item-left {
+	padding: 7px 0 9px;
+	border-bottom: 1px solid #ededed;
+}
+.p-item-left > span {
+	display: block;
+	padding: 0 0 0 1px;
+	color: #a3a3a3;
+	font-size: 11px;
+}
+.p-item-right {
+	padding: 0 0 0 13px;
+	text-align: center;
+	width: 42px;
+	border-bottom: 1px solid #ededed;
+}

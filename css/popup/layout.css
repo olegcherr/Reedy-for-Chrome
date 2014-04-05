@@ -1,0 +1,18 @@
+
+
+.l-footer {
+	padding: 10px 15px 9px;
+	color: #a3a3a3;
+	font-size: 11px;
+}
+.l-footer-right {
+	float: right;
+}
+.l-footer a {
+	color: #a3a3a3;
+	font-weight: bold;
+	text-decoration: underline;
+}
+.l-footer a:hover {
+	text-decoration: none;
+}

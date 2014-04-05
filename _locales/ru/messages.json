@@ -1,4 +1,8 @@
 {
+	"locale": {
+		"message": "ru"
+	},
+	
 	"contextMenu": {
 		"message": "Запустить FastReader"
 	},
@@ -16,6 +20,7 @@
 	"startReadingInfo": {
 		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите FastReader. Вы также можете использовать сочетание клавиш <b>Alt+S</b>."
 	},
+	
 	"startReadingBtn": {
 		"message": "Запустить FastReader"
 	},
@@ -141,5 +146,15 @@
 	},
 	"ctrl_firstWord": {
 		"message": "В начало [alt+left]"
+	},
+	
+	
+	
+	"____HELP_________________________________________________________": {
+		"message": ""
+	},
+	
+	"helpTitle": {
+		"message": "Кратко о FastReader"
 	}
 }

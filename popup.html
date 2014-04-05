@@ -1,98 +1,198 @@
 <!doctype html>
 <html>
 <head>
-	<title>FastReader menu</title>
-	<link href="css/popup.css" rel="stylesheet" type="text/css"/>
+	<meta charset="utf-8"/>
+	<title>FastReader – Settings</title>
+	<link href="css/popup/main.css" rel="stylesheet" type="text/css"/>
+	<link href="css/popup/layout.css" rel="stylesheet" type="text/css"/>
+	<link href="css/popup/elements.css" rel="stylesheet" type="text/css"/>
+	<link href="css/popup/page-main.css" rel="stylesheet" type="text/css"/>
+	<link href="css/popup/page-help.css" rel="stylesheet" type="text/css"/>
 </head>
-<body active-tab="1">
-<div class="p-head">
-	<div class="p-head-content">
-		<span i18n="startReadingInfo"></span>
-		<div class="p-head-btnWrapper">
-			<span class="j-startContentSelectorBtn e-btn e-btn_theme1" i18n="startContentSelectorBtn"></span>
-			<span class="j-startReadingBtn e-btn e-btn_theme1" i18n="startReadingBtn" hidden="true"></span>
+<body i18n-attr="locale|locale" active-tab="1">
+
+<div class="e-view" view-name="main" active="true">
+	<div class="p-head">
+		<div class="p-head-content">
+			<span i18n="startReadingInfo"></span>
+			<div class="p-head-btnWrapper">
+				<span class="j-startContentSelectorBtn e-btn e-btn_theme1" i18n="startContentSelectorBtn"></span>
+				<span class="j-startReadingBtn e-btn e-btn_theme1" i18n="startReadingBtn" hidden="true"></span>
+				<a class="e-switchBtn e-switchBtn_help p-head-helpBtn" switch-to="help" href="javascript:"></a>
+			</div>
+		</div>
+		<div class="p-tabs g-clrfix">
+			<div i18n="tab_reading" tab-id="1" active="true" class="j-tab p-tabs-tab"></div>
+			<div i18n="tab_parsing" tab-id="2" active="false" class="j-tab p-tabs-tab"></div>
+			<i class="p-tabs-arrow"></i>
 		</div>
 	</div>
 	
-	<div class="p-tabs g-clrfix">
-		<div i18n="tab_reading" tab-id="1" active="true" class="j-tab p-tabs-tab"></div>
-		<div i18n="tab_parsing" tab-id="2" active="false" class="j-tab p-tabs-tab"></div>
-		<i class="p-tabs-arrow"></i>
+	<table content-id="1" active="true" class="j-content p-content" cellspacing="0">
+		<tr>
+			<td class="p-item-left">
+				<b i18n="autostart"></b>
+				<span i18n="autostartDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="autostart"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="p-item-left">
+				<b i18n="focusMode"></b>
+				<span i18n="focusModeDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="focusMode"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="p-item-left">
+				<b i18n="gradualAccel"></b>
+				<span i18n="gradualAccelDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="gradualAccel"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="p-item-left">
+				<b i18n="smartSlowing"></b>
+				<span i18n="smartSlowingDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="smartSlowing"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="p-item-left">
+				<b i18n="emptySentenceEnd"></b>
+				<span i18n="emptySentenceEndDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
+			</td>
+		</tr>
+	</table>
+	
+	<table content-id="2" active="false" class="j-content p-content" cellspacing="0">
+		<tr>
+			<td class="p-item-left">
+				<b i18n="entityAnalysis"></b>
+				<span i18n="entityAnalysisDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="entityAnalysis"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="p-item-left">
+				<b i18n="hyphenation"></b>
+				<span i18n="hyphenationDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="hyphenation"/>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="e-view" view-name="help" active="false">
+	<div class="p-help-title">
+		<span i18n="helpTitle"></span>
+		<a class="e-switchBtn e-switchBtn_close p-help-closeBtn" switch-to="main" href="javascript:"></a>
+	</div>
+	
+	<div class="p-help-content">
+		<div lng="ru">
+			С помощью FastReader вы сможете читать любые тексты гораздо быстрее прямо в браузере.
+			<br/><br/>
+			Если вы впервые используете данную технологию, то попробуйте начать чтение со скорости 300 слов в минуту. Через некоторое время вы заметите, что такая скорость вам начала казаться медленной. Тогда прибавляйте ещё 50 слов.
+			<br/><br/>
+			<strong>Как запускать программу:</strong>
+				<br/>
+				1. Выделите текст на странице.
+				<br/>
+				2. Кликните по нему правой кнопкой мыши и выберите пункт <b>Запустить FastReader</b>, либо просто нажмите <b>Alt+S</b>.
+			<br/><br/>
+			<strong>FastReader может работать и без выделения текста:</strong>
+				<br/>
+				1. Нажмите <b>Alt+S</b>.
+				<br/>
+				2. Наведите курсор на блок с текстом. Блок подсветится зелёным цветом.
+				<br/>
+				3. Нажмите <b>левую</b> клавишу мыши для начала чтения. Чтобы выключить режим выделения нажмите <b>правую</b> клавишу или <b>Escape</b>.
+				<br/>
+				Стрелки вверх и вниз (и клавиши «+» и «–») увеличивают и уменьшают текущую область выделения.
+			<br/><br/>
+			<strong>Управление во время чтения:</strong>
+				<br/>
+				<b>Space</b> (или Enter) – остановить/продолжить.
+				<br/>
+				<b>Right/Left</b> – следующее/предыдущее слово.
+				<br/>
+				<b>Ctrl+Right/Left</b> – следующее/предыдущее предложение (также возможна прокрутка колёсиком мыши).
+				<br/>
+				<b>End/Home</b> – переход в конец/в начало.
+				<br/>
+				<b>Up/Down</b> – повысить/понизить скорость.
+				<br/>
+				<b>+/-</b> – увеличить/уменьшить размер шрифта.
+				<br/>
+				<b>Esc</b> – выход.
+			<br/><br/>
+			<strong>Приятного чтения!</strong>
+		</div>
+		<div lng="en">
+			By means of FastReader you'll be able to read anything much faster straight in the browser. 
+			<br/><br/>
+			If you are using this technology for the first time try to read at a speed of 300 words per minute. Most likely after a while this speed'll seem too low and then you can add 50 words more.
+			<br/><br/>
+			<strong>How to use FastReader:</strong>
+				<br/>
+				1. Select the text on the page.
+				<br/>
+				2. Click the right mouse button and choose FastReader, or just press the <b>Alt+S</b> shortcut.
+			<br/><br/>
+			<strong>Also you can launch FastReader without text selection:</strong>
+				<br/>
+				1. Press <b>Alt+S</b>.
+				<br/>
+				2. Place the mouse over the text block. Block will be highlighted in green.
+				<br/>
+				3. Press the <b>left</b> mouse button to start reading. Press <b>Escape</b> or the <b>right</b> mouse button to turn the selection mode off.
+				<br/>
+				Pressing the Up/Down arrow will increase/decrease the selected area.
+			<br/><br/>
+			<strong>Shortcuts available while reading:</strong>
+				<br/>
+				<b>Space</b> (or Enter) – play/pause.
+				<br/>
+				<b>Right/Left</b> – next/previous word.
+				<br/>
+				<b>Ctrl+Right/Left</b> – next/previous sentence (you can also use the mouse wheel).
+				<br/>
+				<b>End/Home</b> – go to the end/beginning.
+				<br/>
+				<b>Up/Down</b> – increase/decrease the speed.
+				<br/>
+				<b>+/-</b> – larger/smaller font size.
+				<br/>
+				<b>Esc</b> – close FastReader.
+			<br/><br/>
+			<strong>Enjoy your reading!</strong>
+		</div>
 	</div>
 </div>
-<table content-id="1" active="true" class="j-content p-content" cellspacing="0">
-	<tr>
-		<td class="p-item-left">
-			<b i18n="autostart"></b>
-			<span i18n="autostartDescr"></span>
-		</td>
-		<td class="p-item-right">
-			<input class="j-checkbox" type="checkbox" name="autostart"/>
-		</td>
-	</tr>
-	<tr>
-		<td class="p-item-left">
-			<b i18n="focusMode"></b>
-			<span i18n="focusModeDescr"></span>
-		</td>
-		<td class="p-item-right">
-			<input class="j-checkbox" type="checkbox" name="focusMode"/>
-		</td>
-	</tr>
-	<tr>
-		<td class="p-item-left">
-			<b i18n="gradualAccel"></b>
-			<span i18n="gradualAccelDescr"></span>
-		</td>
-		<td class="p-item-right">
-			<input class="j-checkbox" type="checkbox" name="gradualAccel"/>
-		</td>
-	</tr>
-	<tr>
-		<td class="p-item-left">
-			<b i18n="smartSlowing"></b>
-			<span i18n="smartSlowingDescr"></span>
-		</td>
-		<td class="p-item-right">
-			<input class="j-checkbox" type="checkbox" name="smartSlowing"/>
-		</td>
-	</tr>
-	<tr>
-		<td class="p-item-left">
-			<b i18n="emptySentenceEnd"></b>
-			<span i18n="emptySentenceEndDescr"></span>
-		</td>
-		<td class="p-item-right">
-			<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
-		</td>
-	</tr>
-</table>
-<table content-id="2" active="false" class="j-content p-content" cellspacing="0">
-	<tr>
-		<td class="p-item-left">
-			<b i18n="entityAnalysis"></b>
-			<span i18n="entityAnalysisDescr"></span>
-		</td>
-		<td class="p-item-right">
-			<input class="j-checkbox" type="checkbox" name="entityAnalysis"/>
-		</td>
-	</tr>
-	<tr>
-		<td class="p-item-left">
-			<b i18n="hyphenation"></b>
-			<span i18n="hyphenationDescr"></span>
-		</td>
-		<td class="p-item-right">
-			<input class="j-checkbox" type="checkbox" name="hyphenation"/>
-		</td>
-	</tr>
-</table>
-<div class="p-footer">
-	<div class="p-footer-right">
+
+<div class="l-footer">
+	<div class="l-footer-right">
 		Inspired by <a href="https://play.google.com/store/apps/details?id=com.citriccode.fastreader">citriccode</a>
 	</div>
 	Made by <a href="https://github.com/olegcherr">Oleg Cherr</a>
 </div>
+
 <script src="js/popup/popup.js"></script>
 <script src="js/popup/Checkbox.js"></script>
 <script src="js/popup/Range.js"></script>

@@ -14,7 +14,7 @@ Chrome Web Store: https://chrome.google.com/webstore/detail/fastreader/ihbdojmgg
 
 * Install the extension;
 * Select the text on the page;
-* Click the right button and choose FastReader. You can also use the shortcut «Alt+S» while the text is selected.
+* Click the right button and choose FastReader. You can also use the «Alt+S» shortcut while the text is selected.
 
 ### Features
 

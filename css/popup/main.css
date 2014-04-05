@@ -1,0 +1,29 @@
+
+
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	width: 320px;
+	font: 12px/1.334 Tahoma, Geneva, Verdana, sans-serif;
+	color: #303030;
+	cursor: default;
+}
+
+[lng] {
+	display: none;
+}
+body[locale="en"] [lng="en"],
+body[locale="ru"] [lng="ru"] {
+	display: block;
+}
+
+
+.g-clrfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden;
+}
