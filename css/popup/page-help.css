@@ -2,10 +2,9 @@
 
 .p-help-title {
 	position: relative;
-	padding: 8px 40px 12px;
+	padding: 8px 15px 12px;
 	font-size: 14px;
 	font-weight: bold;
-	text-align: right;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
 	border-bottom: 1px solid #ededed;
 }
