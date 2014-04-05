@@ -650,7 +650,7 @@
 
 .e-FastReader-hlighter {
 	position: absolute;
-	background: rgba(66, 133, 244, .35);
+	background: rgba(77, 189, 133, .35);
 	z-index: 2147483647;
 	pointer-events: none;
 	-webkit-transition: all 100ms;

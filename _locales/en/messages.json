@@ -9,7 +9,9 @@
 	
 	
 	
-	
+	"____POPUP_HEAD_________________________________________________________": {
+		"message": ""
+	},
 	
 	"startReadingInfo": {
 		"message": "To start reading select the text on the page, click the right button and choose FastReader.<br/>You can also use the shortcut <b>Alt+S</b> while the text is selected."
@@ -26,6 +28,12 @@
 	},
 	"tab_parsing": {
 		"message": "Text processing"
+	},
+	
+	
+	
+	"____POPUP_SETTINGS_________________________________________________________": {
+		"message": ""
 	},
 	
 	"autostart": {
@@ -79,7 +87,9 @@
 	
 	
 	
-	
+	"____READER_________________________________________________________": {
+		"message": ""
+	},
 	
 	"loading": {
 		"message": "Loading ..."

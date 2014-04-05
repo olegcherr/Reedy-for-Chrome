@@ -42,20 +42,15 @@ body {
 	white-space: nowrap;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
 	background: rgba(255, 255, 255, .5);
-	border-bottom: 5px solid;
+	border-bottom: 5px solid #db5a78;
 	cursor: pointer;
 }
 .p-tabs-tab:hover {
 	background: rgba(255, 255, 255, .65);
 }
 .p-tabs-tab[active="true"] {
-	background: rgba(255, 255, 255, 1);
-}
-.p-tabs-tab[tab-id="1"] {
 	border-bottom-color: #4dbd85;
-}
-.p-tabs-tab[tab-id="2"] {
-	border-bottom-color: #db5a78;
+	background: rgba(255, 255, 255, 1);
 }
 .p-tabs-arrow {
 	position: absolute;
@@ -64,15 +59,14 @@ body {
 	width: 0;
 	height: 0;
 	border: 7px solid transparent;
-	-webkit-transition: all 200ms;
+	border-top-color: #4dbd85;
+	-webkit-transition: left 200ms;
 }
 [active-tab="1"] .p-tabs-arrow {
 	left: 25%;
-	border-top-color: #4dbd85;
 }
 [active-tab="2"] .p-tabs-arrow {
 	left: 75%;
-	border-top-color: #db5a78;
 }
 
 .p-content {
