@@ -45,7 +45,7 @@
 		settings, reader;
 	
 	
-	app.isStarted = false;
+	app.isReaderStarted = false;
 	
 	
 	app.stopEvent = function(e) {
@@ -140,8 +140,8 @@
 	app.startReader = function(text) {
 		text = text != null ? text : getSelection();
 		
-		if (!text.length || app.isStarted) return;
-		app.isStarted = true;
+		if (!text.length || app.isReaderStarted) return;
+		app.isReaderStarted = true;
 		
 		init(function() {
 			reader = new app.Reader(
@@ -153,7 +153,7 @@
 	
 	app.onReaderClose = function() {
 		settings = reader = null;
-		app.isStarted = false;
+		app.isReaderStarted = false;
 	}
 	
 	

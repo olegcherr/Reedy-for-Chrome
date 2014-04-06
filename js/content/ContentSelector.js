@@ -137,7 +137,7 @@
 	
 	
 	app.startContentSelection = function() {
-		if (isStarted) return;
+		if (isStarted || app.isReaderStarted) return;
 		isStarted = true;
 		
 		hlStyle.left =
