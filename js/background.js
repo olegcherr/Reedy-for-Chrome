@@ -124,6 +124,7 @@
 	});
 	
 	var manifest = chrome.runtime.getManifest(),
+		version = manifest.version,
 		isDevMode = !('update_url' in manifest),
 		isPopupOpen = false,
 		extensionId = chrome.i18n.getMessage("@@extension_id"),
@@ -157,6 +158,13 @@
 		 * Read more: https://code.google.com/p/analytics-issues/issues/detail?id=312
 		 */
 		ga('set', 'checkProtocolTask', function() {});
+		
+		
+		var lastVersion = localStorage['version'];
+		if (lastVersion && lastVersion !== version)
+			trackEvent('Extension', 'Updated', 'To '+version+' from '+lastVersion);
+		
+		localStorage['version'] = version;
 	});
 	
 	
@@ -224,7 +232,7 @@
 			
 			// Let the UUID to be generated
 			setTimeout(function() {
-				trackEvent('Extension', 'Installed');
+				trackEvent('Extension', 'Installed', version);
 			}, 500);
 		}
 	});
