@@ -174,8 +174,8 @@
 		function updateContext() {
 			if (token) {
 				var context = parser.getContext(CONTEXT_CHARS_LIMIT);
-				$contextBefore.innerHTML = context.before.replace(/\n/g, "<br/>");
-				$contextAfter.innerHTML = context.after.replace(/\n/g, "<br/>");
+				$contextBefore.innerHTML = app.htmlEncode(context.before).replace(/\n/g, "<br/>");
+				$contextAfter.innerHTML = app.htmlEncode(context.after).replace(/\n/g, "<br/>");
 			}
 		}
 		
@@ -191,13 +191,13 @@
 			
 			if (app.get('focusMode')) {
 				var pivot = app.calcPivotPoint(str);
-				$word.innerHTML = str.substr(0, pivot)+'<span>'+str[pivot]+'</span>'+str.substr(pivot+1);
+				$word.innerHTML = app.htmlEncode(str.substr(0, pivot))+'<span>'+app.htmlEncode(str[pivot])+'</span>'+app.htmlEncode(str.substr(pivot+1));
 				
 				var letterRect = $word.querySelector('span').getBoundingClientRect();
 				$word.style.left = Math.round(focusPoint - letterRect.left - letterRect.width/2)+'px';
 			}
 			else {
-				$word.innerHTML = str;
+				$word.innerHTML = app.htmlEncode(str);
 			}
 		}
 		

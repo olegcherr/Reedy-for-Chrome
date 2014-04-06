@@ -117,6 +117,10 @@
 			: num < min ? min : num;
 	}
 	
+	app.htmlEncode = function(str) {
+		return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	}
+	
 	
 	app.on = function(elem, event, fn) {
 		elem.addEventListener(event, fn);
