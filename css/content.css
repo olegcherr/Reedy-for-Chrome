@@ -307,7 +307,7 @@
 
 .e-FastReader-info {
 	position: absolute;
-	margin: -14px 0 0;
+	margin: -17px 0 0;
 	width: 100%;
 	left: 0;
 	top: 50%;
@@ -315,7 +315,6 @@
 	font-size: 28px;
 	line-height: 1;
 	text-align: center;
-	font-style: italic;
 	-webkit-transition: color 500ms;
 }
 .e-FastReader-wrapper[transparent-bg=true] .e-FastReader-info {
