@@ -38,8 +38,12 @@
 	}
 	
 	
-	function getWpmFactor(wpm) {
-		return Math.sin(PI2 * (wpm-MIN_WPM)/WPM_RANGE);
+	function getSinFactor(num, min, max) {
+		return Math.sin(PI2 * (num-min) / (max-min));
+	}
+	
+	function getWpmReducing(wasReadingLaunchedSinceOpen) {
+		return wasReadingLaunchedSinceOpen ? INIT_WPM_REDUCE_1 : INIT_WPM_REDUCE_0;
 	}
 	
 	
@@ -51,8 +55,9 @@
 		MIN_WPM             = 50,
 		MAX_WPM             = 2000,
 		WPM_STEP            = 50,
-		START_WPM_REDUCING  = 0.9,  // from 0 to 0.99 - more value means lower start wpm
-		ACCEL_DURATION      = 3,    // from 0.1 to infinity - more value means longer acceleration time
+		INIT_WPM_REDUCE_0   = 0.5,  // from 0 to 1 - wpm reduce factor for the FIRST start (more value means higher start wpm)
+		INIT_WPM_REDUCE_1   = 0.65, // from 0 to 1 - wpm reduce factor for the FOLLOWING starts (more value means higher start wpm)
+		ACCEL_CURVE         = 5,    // from 0 to infinity - more value means more smooth acceleration curve
 		
 		MIN_FONT            = 1,
 		MAX_FONT            = 7,
@@ -60,7 +65,6 @@
 		MIN_VPOS            = 1,
 		MAX_VPOS            = 5,
 		
-		WPM_RANGE           = MAX_WPM - MIN_WPM,
 		PI2                 = Math.PI/2,
 		
 		$body = querySelector('body');
@@ -69,23 +73,26 @@
 	app.Reader = function(parser) {
 		
 		function getTiming(isDelayed) {
-			var smartSlowing = app.get('smartSlowing'),
-				targetWpm = app.get('wpm'), wpm = targetWpm;
+			var targetWpm = app.get('wpm');
 			
-			if (app.get('gradualAccel')) {
-				wpm = (targetWpm*(1 - START_WPM_REDUCING*getWpmFactor(targetWpm))) + WPM_STEP/ACCEL_DURATION * wordIndexSinceStart;
+			if (app.get('gradualAccel') && wpm < targetWpm && startWpm < targetWpm) {
+				if (wpm)
+					wpm += WPM_STEP / (1 + ACCEL_CURVE*getSinFactor(wpm, startWpm, targetWpm));
+				else
+					wpm = startWpm = targetWpm*getWpmReducing(wasReadingLaunchedSinceOpen);
+				
 				if (wpm >= targetWpm)
 					wpm = targetWpm;
-				else
-					wordIndexSinceStart++;
-				console.log(wpm);
+			}
+			else {
+				wpm = targetWpm;
 			}
 			
-			if (smartSlowing && (isDelayed || !wasReadingLaunchedSinceOpen)) {
-				wpm /= 2;
-			}
+			// Don't allow `startWpm` to get gte than `targetWpm`
+			if (startWpm >= targetWpm)
+				startWpm = targetWpm;
 			
-			return 60000/wpm;
+			return 60000/wpm * (app.get('smartSlowing') && (isDelayed || !wasReadingLaunchedSinceOpen) ? 2 : 1);
 		}
 		
 		function next(justRun) {
@@ -99,7 +106,7 @@
 				}, 500);
 			}
 			else {
-				token = justRun && token || parser.nextWord();
+				token = justRun && (token || parser.word()) || parser.nextWord();
 				
 				// This is a good place for this check.
 				// If there are less that 3 words in the text, the check will be never passed.
@@ -139,9 +146,12 @@
 				else {
 					doUpdate();
 				}
-				
-				wasReadingLaunchedSinceOpen = true;
 			}
+		}
+		
+		function changeWpm(diff) {
+			app.set('wpm', app.norm(app.get('wpm')+diff, MIN_WPM, MAX_WPM));
+			updatePanels();
 		}
 		
 		
@@ -292,13 +302,11 @@
 		
 		
 		function onIncreaseWpmCtrl() {
-			app.set('wpm', Math.min(app.get('wpm')+WPM_STEP, MAX_WPM));
-			updatePanels();
+			changeWpm(WPM_STEP);
 		}
 		
 		function onDecreaseWpmCtrl() {
-			app.set('wpm', Math.max(app.get('wpm')-WPM_STEP, MIN_WPM));
-			updatePanels();
+			changeWpm(-WPM_STEP);
 		}
 		
 		
@@ -417,9 +425,8 @@
 			isRunning = false,
 			isClosed = false,
 			wasReadingLaunchedSinceOpen = false,
-			
+			wpm = 0, startWpm = 0,
 			focusPoint = 0,
-			wordIndexSinceStart,
 			bodyOverflowBefore = $body.style.overflow,
 			urlOnOpen = location+'',
 			token, timeout,
@@ -481,6 +488,8 @@
 			if (isRunning || isClosed) return;
 			isRunning = true;
 			
+			wpm = startWpm = 0;
+			
 			dNone($contextBefore);
 			dNone($contextAfter);
 			dNone($info);
@@ -488,9 +497,9 @@
 			dNone($botPanel);
 			
 			updateWrapper();
-			
-			wordIndexSinceStart = 0;
 			next(true);
+			
+			wasReadingLaunchedSinceOpen = true;
 		}
 		
 		api.pause = function() {
