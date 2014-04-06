@@ -56,8 +56,8 @@
 		MAX_WPM             = 2000,
 		WPM_STEP            = 50,
 		INIT_WPM_REDUCE_0   = 0.5,  // from 0 to 1 - wpm reduce factor for the FIRST start (more value means higher start wpm)
-		INIT_WPM_REDUCE_1   = 0.65, // from 0 to 1 - wpm reduce factor for the FOLLOWING starts (more value means higher start wpm)
-		ACCEL_CURVE         = 5,    // from 0 to infinity - more value means more smooth acceleration curve
+		INIT_WPM_REDUCE_1   = 0.6, // from 0 to 1 - wpm reduce factor for the FOLLOWING starts (more value means higher start wpm)
+		ACCEL_CURVE         = 3,    // from 0 to infinity - more value means more smooth acceleration curve
 		
 		MIN_FONT            = 1,
 		MAX_FONT            = 7,
@@ -73,9 +73,11 @@
 	app.Reader = function(parser) {
 		
 		function getTiming(isDelayed) {
-			var targetWpm = app.get('wpm');
+			var gradualAccel = app.get('gradualAccel'),
+				targetWpm = app.get('wpm'), res;
 			
-			if (app.get('gradualAccel') && wpm < targetWpm && startWpm < targetWpm) {
+			
+			if (gradualAccel && wpm < targetWpm && startWpm < targetWpm) {
 				if (wpm)
 					wpm += WPM_STEP / (1 + ACCEL_CURVE*getSinFactor(wpm, startWpm, targetWpm));
 				else
@@ -92,7 +94,16 @@
 			if (startWpm >= targetWpm)
 				startWpm = targetWpm;
 			
-			return 60000/wpm * (app.get('smartSlowing') && (isDelayed || !wasReadingLaunchedSinceOpen) ? 2 : 1);
+			
+			res = 60000/wpm;
+			
+			if (gradualAccel && !wasReadingLaunchedSinceOpen)
+				res /= 1.5;
+			
+			if (!wasReadingLaunchedSinceOpen || isDelayed && app.get('smartSlowing'))
+				res *= 2;
+			
+			return res;
 		}
 		
 		function next(justRun) {
