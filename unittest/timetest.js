@@ -151,6 +151,18 @@ fn = function() {
 	}
 }*/
 
+/*ITERATIONS = 1e7;
+function norm(num, min, max) {
+	return num > max
+		? max
+		: num < min ? min : num;
+}
+var num = 1, min = 0, max = 5, x;
+fn = function() {
+//	x = Math.max(Math.min(num, max), min);
+	x = norm(num, min, max);
+}*/
+
 
 
 

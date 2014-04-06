@@ -69,12 +69,6 @@
 		"message": "Slow down the speed at a punctuation mark."
 	},
 	
-	"emptySentenceEnd": {
-		"message": "Gap between sentences"
-	},
-	"emptySentenceEndDescr": {
-		"message": "Insert an «empty word» before the beginning of the next sentence."
-	},
 	
 	"entityAnalysis": {
 		"message": "Entity analysis"
@@ -88,6 +82,13 @@
 	},
 	"hyphenationDescr": {
 		"message": "Division of long words into smaller parts."
+	},
+	
+	"emptySentenceEnd": {
+		"message": "Gap between sentences"
+	},
+	"emptySentenceEndDescr": {
+		"message": "Insert an «empty word» before the beginning of the next sentence."
 	},
 	
 	

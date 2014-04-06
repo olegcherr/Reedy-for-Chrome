@@ -111,6 +111,12 @@
 		return res;
 	}
 	
+	app.norm = function(num, min, max) {
+		return num > max
+			? max
+			: num < min ? min : num;
+	}
+	
 	
 	app.on = function(elem, event, fn) {
 		elem.addEventListener(event, fn);

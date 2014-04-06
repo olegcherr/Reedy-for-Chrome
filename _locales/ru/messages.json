@@ -63,18 +63,12 @@
 	},
 	
 	"smartSlowing": {
-		"message": "Умное замедление"
+		"message": "Интеллектуальное замедление"
 	},
 	"smartSlowingDescr": {
 		"message": "Увеличивать время отображения на пунктуации и сложных словах."
 	},
 	
-	"emptySentenceEnd": {
-		"message": "Разрыв между предложениями"
-	},
-	"emptySentenceEndDescr": {
-		"message": "Добавлять «пустое слово» перед началом следующего предложения."
-	},
 	
 	"entityAnalysis": {
 		"message": "Анализатор сущностей"
@@ -88,6 +82,13 @@
 	},
 	"hyphenationDescr": {
 		"message": "Разделять сложные слова на части."
+	},
+	
+	"emptySentenceEnd": {
+		"message": "Разрыв между предложениями"
+	},
+	"emptySentenceEndDescr": {
+		"message": "Добавлять «пустое слово» перед началом следующего предложения."
 	},
 	
 	

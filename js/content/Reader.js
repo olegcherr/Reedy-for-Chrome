@@ -113,15 +113,18 @@
 				if (parser.text.length >= 3000 && parser.isPenultWord()) {
 					app.event('Config', 'WPM',                  app.get('wpm'));
 					app.event('Config', 'Font size',            app.get('fontSize'));
-					app.event('Config', 'Autostart',            app.get('autostart'));
+					app.event('Config', 'Vertical position',    app.get('vPosition'));
 					app.event('Config', 'Dark theme',           app.get('darkTheme'));
 					app.event('Config', 'Transparent bg',       app.get('transparentBg'));
-					app.event('Config', 'Vertical position',    app.get('vPosition'));
+					
+					app.event('Config', 'Autostart',            app.get('autostart'));
 					app.event('Config', 'Focus mode',           app.get('focusMode'));
+					app.event('Config', 'Gradual acceleration', app.get('gradualAccel'));
 					app.event('Config', 'Smart slowing',        app.get('smartSlowing'));
+					
 					app.event('Config', 'Entity analysis',      app.get('entityAnalysis'));
-					app.event('Config', 'Empty sentence end',   app.get('emptySentenceEnd'));
 					app.event('Config', 'Hyphenation',          app.get('hyphenation'));
+					app.event('Config', 'Empty sentence end',   app.get('emptySentenceEnd'));
 				}
 				
 				function doUpdate() {

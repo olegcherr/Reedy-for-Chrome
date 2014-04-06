@@ -44,7 +44,7 @@
 		}
 		
 		if (isOffsetChanged) {
-			traverseOffset = Math.max(Math.min(traverseOffset, $parents.length-1), 0);
+			traverseOffset = app.norm(traverseOffset, 0, $parents.length-1);
 			$current = traverseOffset
 				? $parents[traverseOffset-1]
 				: $source;

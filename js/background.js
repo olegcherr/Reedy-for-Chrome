@@ -129,18 +129,20 @@
 		extensionId = chrome.i18n.getMessage("@@extension_id"),
 		UUID,
 		defaults = {
-			fontSize: 4, // 1-7
 			wpm: 300,
-			autostart: false,
+			fontSize: 4, // 1-7
+			vPosition: 4, // 1-5
 			darkTheme: false,
 			transparentBg: false,
-			vPosition: 4, // 1-5
+			
+			autostart: false,
 			focusMode: true,
+			gradualAccel: true,
 			smartSlowing: true,
+			
 			entityAnalysis: true,
-			emptySentenceEnd: true,
 			hyphenation: true,
-			gradualAccel: true
+			emptySentenceEnd: true
 		};
 	
 	
