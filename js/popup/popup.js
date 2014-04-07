@@ -122,6 +122,30 @@
 		$content = querySelectorAll('.j-content');
 	
 	
+	// TODO: This is a temporary stuff that helps to be sure that `getBackgroundPage` works always fine
+	if (!app) {
+		$body.innerHTML = '<br/><b>Something goes wrong.</b><br/>Please try to restart your browser.<br/><br/><b>Произошла ошибка.</b><br/>Пожалуйста, попробуйте перезапустить ваш браузер.<br/><br/>';
+		$body.style.textAlign = 'center';
+		
+		localStorage['temp_cid'] = Math.round(2147483647 * Math.random());
+		
+		var params = [];
+		params.push('tid=UA-5025776-14');
+		params.push('cid='+localStorage['temp_cid']);
+		params.push('cd1=temp_'+localStorage['temp_cid']);
+		params.push('ul='+navigator.language);
+		params.push('t=event');
+		params.push('ec=Error');
+		params.push('ea=Popup can\'t get background page');
+		
+		xhr = new XMLHttpRequest();
+		xhr.open("GET", 'http://www.google-analytics.com/collect?v=1&'+params.join('&'), true);
+		xhr.send(null); 
+		
+		return;
+	}
+	
+	
 	app.on(window, "error", function(e) {
 		app.trackJSError(e, 'JS Popup');
 	});
