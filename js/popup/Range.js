@@ -64,4 +64,4 @@
 	}
 	
 	
-})(window.fastReaderPopup);
+})(chrome.extension.getBackgroundPage().fastReader);

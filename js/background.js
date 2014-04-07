@@ -27,41 +27,6 @@
 	}
 	
 	
-	function getSettings(key, callback) {
-		chrome.storage.sync.get(defaults, function(items) {
-			callback(key != null ? items[key] : items);
-		});
-	}
-	
-	function setSettings(key, value, callback) {
-		var settings = {};
-		settings[key] = value;
-		chrome.storage.sync.set(settings, callback);
-	}
-	
-	
-	function trackEvent(category, action, label) {
-		getUUID(function(UUID) {
-			if (isDevMode)
-				console.log('Event: ' + [category, action, label].join(', '));
-			
-			ga('send', 'event', category, action, label, {
-				'dimension1': UUID
-			});
-		});
-	}
-	
-	function trackJSError(e, context) {
-		var msg = e.message,
-			filename = e.filename;
-		if (filename) {
-			filename = filename.replace(new RegExp('^.+'+extensionId+'/'), '');
-			msg += ' ('+filename+' -> '+e.lineno+':'+e.colno+')';
-		}
-		trackEvent('Error', context, msg);
-	}
-	
-	
 	function install(tabId) {
 		var contentScripts = manifest.content_scripts['0'].js, i;
 		for (i = 0; i < contentScripts.length; i++) {
@@ -86,12 +51,12 @@
 					isInstalled(function(res) {
 						if (res) {
 							callback();
-							trackEvent('Extension', 'Runtime content script installation');
+							app.event('Extension', 'Runtime content script installation');
 						}
 						else {
 							getCurrentTab(function(tab) {
 								var protocol = /^(.+?):.+$/.exec(tab.url);
-								trackEvent('Error', 'Can\'n install content scripts', protocol ? protocol[1] : tab.url.substring(0,5));
+								app.event('Error', 'Can\'n install content scripts', protocol ? protocol[1] : tab.url.substring(0,5));
 							});
 						}
 					});
@@ -107,26 +72,19 @@
 		});
 	}
 	
-	function sendMessageToSelectedTab(data, callback) {
-		installAndRun(function() {
-			getCurrentTab(function(tab) {
-				chrome.tabs.sendMessage(tab.id, data, callback);
-			});
-		});
-		
-	}
-	
 	
 	
 	window.addEventListener('error', function(e) {
-		trackJSError(e, 'JS Background');
+		app.trackJSError(e, 'JS Background');
 	});
 	
-	var manifest = chrome.runtime.getManifest(),
+	var app = window.fastReader = {},
+		manifest = chrome.runtime.getManifest(),
 		version = manifest.version,
 		isDevMode = !('update_url' in manifest),
 		isPopupOpen = false,
 		extensionId = chrome.i18n.getMessage("@@extension_id"),
+		noop = function() {},
 		UUID,
 		defaults = {
 			wpm: 300,
@@ -146,6 +104,71 @@
 		};
 	
 	
+	
+	app.each = function(arr, fn) {
+		for (var i = 0; i < arr.length && fn(arr[i]) !== false; i++) {}
+	}
+	
+	app.on = function($elem, event, fn) {
+		$elem.addEventListener(event, fn);
+	}
+	
+	app.off = function($elem, event, fn) {
+		$elem.removeEventListener(event, fn);
+	}
+	
+	
+	app.event = function(category, action, label) {
+		getUUID(function(UUID) {
+			if (isDevMode)
+				console.log('Event: ' + [category, action, label].join(', '));
+			
+			ga('send', 'event', category, action, label, {
+				'dimension1': UUID
+			});
+		});
+	}
+	
+	app.trackJSError = function(e, context) {
+		var msg = e.message,
+			filename = e.filename;
+		if (filename) {
+			filename = filename.replace(new RegExp('^.+'+extensionId+'/'), '');
+			msg += ' ('+filename+' -> '+e.lineno+':'+e.colno+')';
+		}
+		app.event('Error', context, msg);
+	}
+	
+	app.t = function() {
+		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
+	}
+	
+	
+	app.getSettings = function(key, callback) {
+		chrome.storage.sync.get(defaults, function(items) {
+			callback(key != null ? items[key] : items);
+		});
+	}
+	
+	app.setSettings = function(key, value, callback) {
+		var settings = {};
+		settings[key] = value;
+		chrome.storage.sync.set(settings, callback || noop);
+		
+		app.sendMessageToSelectedTab({type: 'popupSettings', key: key, value: value});
+	}
+	
+	
+	app.sendMessageToSelectedTab = function(data, callback) {
+		installAndRun(function() {
+			getCurrentTab(function(tab) {
+				chrome.tabs.sendMessage(tab.id, data, callback || noop);
+			});
+		});
+	}
+	
+	
+	
 	getUUID(function(UUID) {
 		ga('create', isDevMode ? 'UA-5025776-14' : 'UA-5025776-15', {
 			'storage': 'none',
@@ -161,7 +184,7 @@
 		
 		var lastVersion = localStorage['version'];
 		if (lastVersion && lastVersion !== version)
-			trackEvent('Extension', 'Updated', 'To '+version+' from '+lastVersion);
+			app.event('Extension', 'Updated', 'To '+version+' from '+lastVersion);
 		
 		localStorage['version'] = version;
 	});
@@ -170,28 +193,22 @@
 	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
 		switch (msg.type) {
 			case 'getSettings':
-				getSettings(msg.key, callback);
+				app.getSettings(msg.key, callback);
 				return true;
 			case 'setSettings':
-				setSettings(msg.key, msg.value, callback);
+				app.setSettings(msg.key, msg.value, callback);
 				return true;
 			case 'isPopupOpen':
 				callback(isPopupOpen);
 				break;
 			case 'trackEvent':
-				trackEvent(msg.category, msg.action, msg.label);
+				app.event(msg.category, msg.action, msg.label);
 				callback();
 				break;
 			case 'trackJSError':
-				trackJSError(msg, msg.context);
+				app.trackJSError(msg, msg.context);
 				callback();
 				break;
-			case 'popupSettings':
-			case 'startReading':
-			case 'startSelector':
-			case 'getSelection':
-				sendMessageToSelectedTab(msg, callback);
-				return true;
 		}
 	});
 	
@@ -215,7 +232,7 @@
 		if (data.menuItemId == 'fastReaderMenu') {
 			installAndRun(function() {
 				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader();'});
-				trackEvent('Reader', 'Open', 'Context menu');
+				app.event('Reader', 'Open', 'Context menu');
 			});
 		}
 	});
@@ -231,7 +248,7 @@
 			
 			// Let the UUID to be generated
 			setTimeout(function() {
-				trackEvent('Extension', 'Installed', version);
+				app.event('Extension', 'Installed', version);
 			}, 500);
 		}
 	});
