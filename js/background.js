@@ -42,25 +42,25 @@
 	
 	function installAndRun(callback) {
 		isInstalled(function(res) {
-			if (res) {
+			if (res)
 				callback();
-			}
-			else {
-				install();
-				setTimeout(function() {
-					isInstalled(function(res) {
-						if (res) {
-							callback();
-							app.event('Extension', 'Runtime content script installation');
-						}
-						else {
-							getCurrentTab(function(tab) {
-								app.event('Error', 'Can\'n install content scripts', tab.url.substring(0, 12));
+			else
+				getCurrentTab(function(tab) {
+					if (!/^chrome/.test(tab.url)) {
+						install();
+						setTimeout(function() {
+							isInstalled(function(res) {
+								if (res) {
+									callback();
+									app.event('Extension', 'Runtime content script installation');
+								}
+								else {
+									app.event('Error', 'Can\'n install content scripts', tab.url.substring(0, 12));
+								}
 							});
-						}
-					});
-				}, 200);
-			}
+						}, 200);
+					}
+				});
 		});
 	}
 	
