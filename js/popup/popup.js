@@ -10,6 +10,12 @@
 		return document.querySelectorAll(selector);
 	}
 	
+	function getTextSelection(callback) {
+		app.sendMessageToSelectedTab({type: 'getSelection'}, function(sel) {
+			callback(sel || '');
+		});
+	}
+	
 	
 	function onTabMousedown(e) {
 		setActiveTab(e.target.getAttribute('tab-id'));
@@ -37,17 +43,43 @@
 	
 	
 	function onStartReadingClick() {
-		app.sendMessageToSelectedTab({type: 'startReading'});
 		app.event('Reader', 'Open', 'Popup');
-		window.close();
+		startReading();
 	}
 	
 	function onStartSelectorClick() {
-		app.sendMessageToSelectedTab({type: 'startSelector'});
 		app.event('Content selector', 'Start', 'Popup');
+		startSelector();
+	}
+	
+	
+	function onKeyDown(e) {
+		switch (e.keyCode) {
+			case 83: // S
+				e.altKey && getTextSelection(function(text) {
+					if (text.length) {
+						app.event('Reader', 'Open', 'Shortcut in popup (Alt+S)');
+						startReading();
+					}
+					else {
+						app.event('Content selector', 'Start', 'Shortcut in popup (Alt+S)');
+						startSelector();
+					}
+				});
+				break;
+		}
+	}
+	
+	
+	function startReading() {
+		app.sendMessageToSelectedTab({type: 'startReading'});
 		window.close();
 	}
 	
+	function startSelector() {
+		app.sendMessageToSelectedTab({type: 'startSelector'});
+		window.close();
+	}
 	
 	function setActiveTab(id) {
 		localStorage["tabId"] = id;
@@ -110,10 +142,9 @@
 	
 	app.getSettings(null, initControls);
 	
-	app.sendMessageToSelectedTab({type: 'getSelection'}, function(sel) {
-		sel = sel && sel.length;
-		$startReadingBtn.setAttribute('hidden', !sel);
-		$startSelectorBtn.setAttribute('hidden', !!sel);
+	getTextSelection(function(text) {
+		$startReadingBtn.setAttribute('hidden', !text.length);
+		$startSelectorBtn.setAttribute('hidden', !!text.length);
 	});
 	
 	
@@ -130,6 +161,8 @@
 	app.each($tabs, function($elem) {
 		app.on($elem, "mousedown", onTabMousedown);
 	});
+	
+	app.on(window, "keydown", onKeyDown);
 	
 	
 })(chrome.extension.getBackgroundPage().fastReader);
