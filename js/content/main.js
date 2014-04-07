@@ -19,6 +19,36 @@
 		}
 	}
 	
+	
+	function onDisconnect() {
+		app.off(window, "keydown", onKeyDown);
+		app.stopContentSelection();
+		reader && reader.close();
+	}
+	
+	function onMessage(msg, sender, callback) {
+		switch (msg.type) {
+			case 'popupSettings':
+				if (settings && reader) {
+					settings[msg.key] = msg.value;
+					reader.onPopupSettings(msg.key, msg.value);
+				}
+				callback();
+				break;
+			case 'getSelection':
+				callback(getSelection());
+				break;
+			case 'startReading':
+				app.startReader();
+				callback();
+				break;
+			case 'startSelector':
+				app.startContentSelection();
+				callback();
+				break;
+		}
+	}
+	
 	function onKeyDown(e) {
 		switch (e.keyCode) {
 			case 83: // S
@@ -41,6 +71,7 @@
 	
 	
 	var app = window.fastReader = {},
+		port = chrome.extension.connect({name: "Content"}),
 		toString = Object.prototype.toString,
 		settings, reader;
 	
@@ -178,29 +209,9 @@
 	}
 	
 	
-	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
-		switch (msg.type) {
-			case 'popupSettings':
-				if (settings && reader) {
-					settings[msg.key] = msg.value;
-					reader.onPopupSettings(msg.key, msg.value);
-				}
-				callback();
-				break;
-			case 'getSelection':
-				callback(getSelection());
-				break;
-			case 'startReading':
-				app.startReader();
-				callback();
-				break;
-			case 'startSelector':
-				app.startContentSelection();
-				callback();
-				break;
-		}
-	});
 	
+	chrome.extension.onMessage.addListener(onMessage);
+	port.onDisconnect.addListener(onDisconnect);
 	
 	app.on(window, "keydown", onKeyDown);
 	

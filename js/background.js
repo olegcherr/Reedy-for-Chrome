@@ -90,13 +90,12 @@
 						}
 						else {
 							getCurrentTab(function(tab) {
-								if (!/^chrome/.test(tab.url))
-									trackEvent('Error', 'Can\'n install content scripts');
+								var protocol = /^(.+?):.+$/.exec(tab.url);
+								trackEvent('Error', 'Can\'n install content scripts', protocol ? protocol[1] : tab.url.substring(0,5));
 							});
 						}
 					});
-				}, 100);
-				
+				}, 200);
 			}
 		});
 	}
