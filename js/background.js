@@ -55,8 +55,7 @@
 						}
 						else {
 							getCurrentTab(function(tab) {
-								var protocol = /^(.+?):.+$/.exec(tab.url);
-								app.event('Error', 'Can\'n install content scripts', protocol ? protocol[1] : tab.url.substring(0,5));
+								app.event('Error', 'Can\'n install content scripts', tab.url.substring(0, 12));
 							});
 						}
 					});

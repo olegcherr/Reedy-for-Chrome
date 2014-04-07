@@ -34,6 +34,7 @@
 	height: 26px;
 	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
 	opacity: .5;
+	cursor: pointer;
 }
 .e-switchBtn:hover {
 	opacity: .65;
