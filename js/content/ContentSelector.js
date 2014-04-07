@@ -18,6 +18,8 @@
 		else {
 			removeHlighter();
 		}
+		
+		isJustStarted = false;
 	}
 	
 	function removeHlighter() {
@@ -61,7 +63,7 @@
 		timeout = setTimeout(function() {
 			$current = $source = e.target;
 			updateHlighter();
-		}, 100);
+		}, isJustStarted ? 0 : 100);
 	}
 	
 	function onMouseDown(e) {
@@ -129,6 +131,7 @@
 	
 	var isStarted = false,
 		isHLighterAttached = false,
+		isJustStarted = false,
 		$body = document.body,
 		$hlighter = app.createElement('div', 'e-FastReader-hlighter'),
 		hlStyle = $hlighter.style,
@@ -139,6 +142,7 @@
 	app.startContentSelection = function() {
 		if (isStarted || app.isReaderStarted) return;
 		isStarted = true;
+		isJustStarted = true;
 		
 		hlStyle.left =
 		hlStyle.top =
