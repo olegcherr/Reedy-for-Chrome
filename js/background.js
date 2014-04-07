@@ -1,6 +1,6 @@
 
 
-(function() {
+(function(app) {
 	
 	function generateUUID() {
 		var d = new Date().getTime(),
@@ -77,8 +77,7 @@
 		app.trackJSError(e, 'JS Background');
 	});
 	
-	var app = window.fastReader = {},
-		manifest = chrome.runtime.getManifest(),
+	var manifest = chrome.runtime.getManifest(),
 		version = manifest.version,
 		isDevMode = !('update_url' in manifest),
 		isPopupOpen = false,
@@ -254,4 +253,4 @@
 	
 	
 	
-})();
+})(window);

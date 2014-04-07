@@ -1,6 +1,6 @@
 
 
-(function(app) {
+chrome.runtime.getBackgroundPage(function(app) {
 	
 	function createElement(tagName, className, $appendTo, html) {
 		var $elem = document.createElement(tagName);
@@ -58,4 +58,4 @@
 	}
 	
 	
-})(chrome.extension.getBackgroundPage().fastReader);
+});

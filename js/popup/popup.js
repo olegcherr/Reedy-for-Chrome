@@ -1,6 +1,6 @@
 
 
-(function(app) {
+chrome.runtime.getBackgroundPage(function(app) {
 	
 	function querySelector(selector) {
 		return document.querySelector(selector);
@@ -122,21 +122,21 @@
 		$content = querySelectorAll('.j-content');
 	
 	
-	// TODO: This is a temporary stuff that helps to be sure that `getBackgroundPage` works always fine
-	if (!app) {
-		$body.innerHTML = '<br/><b>Something goes wrong.</b><br/>Please try to restart your browser.<br/><br/><b>Произошла ошибка.</b><br/>Пожалуйста, попробуйте перезапустить ваш браузер.<br/><br/>';
+	// TODO: This is a temporary stuff that helps to be sure that `getBackgroundPage` works always fine (its callbacks run in the correct order)
+	if (!app.Checkbox || !app.Range) {
+		$body.innerHTML = '<br/><b>Something goes wrong.</b><br/>Please try to reopen this popup window.<br/><br/><b>Произошла ошибка.</b><br/>Пожалуйста, попробуйте переоткрыть это окно.<br/><br/>';
 		$body.style.textAlign = 'center';
 		
 		localStorage['temp_cid'] = Math.round(2147483647 * Math.random());
 		
 		var params = [];
-		params.push('tid=UA-5025776-14');
+		params.push('tid='+('update_url' in chrome.runtime.getManifest() ? 'UA-5025776-15' : 'UA-5025776-14'));
 		params.push('cid='+localStorage['temp_cid']);
 		params.push('cd1=temp_'+localStorage['temp_cid']);
 		params.push('ul='+navigator.language);
 		params.push('t=event');
 		params.push('ec=Error');
-		params.push('ea=Popup can\'t get background page');
+		params.push('ea=getBackgroundPage');
 		
 		xhr = new XMLHttpRequest();
 		xhr.open("GET", 'http://www.google-analytics.com/collect?v=1&'+params.join('&'), true);
@@ -189,4 +189,4 @@
 	app.on(window, "keydown", onKeyDown);
 	
 	
-})(chrome.extension.getBackgroundPage().fastReader);
+});
