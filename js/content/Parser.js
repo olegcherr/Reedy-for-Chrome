@@ -2,33 +2,6 @@
 
 (function(app) {
 	
-	function cleanUpText(raw) {
-		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
-		return raw
-			.trim()
-			.replace(/\n|\r/gm, sign)
-			.replace(/\s+/g, ' ')
-			.replace(new RegExp('\\s*'+sign+'\\s*', 'g'), sign)     // `      \n    `
-			.replace(/ \- /g, ' — ')                                // replace minus with em dash
-			.replace(/–|―/g, '—')                                   // there are 4 dash types. after the cleaning only 2 will remain: minus and em dash
-			.replace(/[-|—]{2,}/g, '—')                             // `--` | `------`
-			.replace(/\.{4,}/g, '...')                              // `.......`
-			.replace(/([!?]{3})[!?]+/g, '$1')                       // `неужели!!!!!???!!?!?`
-			.replace(/ ([([]+) /g, ' $1')                           // `сюжет ( видео`
-			.replace(/ ([)\].!?;]+)( |$)/g, '$1$2')                 // `вставка ) отличный` | `конечно ...`
-			.replace(new RegExp(sign, 'g'), '\n');
-	}
-	
-	function cleanUpTextSimple(raw) {
-		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
-		return raw
-			.trim()
-			.replace(/\n|\r/gm, sign)
-			.replace(/\s+/g, ' ')
-			.replace(new RegExp('\\s*'+sign+'\\s*', 'g'), sign)     // `      \n    `
-			.replace(new RegExp(sign, 'g'), '\n');
-	}
-	
 	function splitWordIfNeeded(str) {
 		var dashIndex = str.indexOf("-"), uscoreIndex = str.indexOf("_"), slashIndex = str.indexOf("/");
 		if (str.length > 13 || str.length > 9 && (dashIndex > -1 || uscoreIndex > -1 || slashIndex > -1)) {
@@ -665,7 +638,7 @@
 	
 	app.advancedParser = function(raw) {
 		var timeStart = new Date(),
-			res = app.parse4(cleanUpText(raw));
+			res = app.parse4(raw);
 		
 		app.event('Parsing time', 'Advanced', app.roundExp(new Date() - timeStart));
 		
@@ -674,7 +647,7 @@
 	
 	app.simpleParser = function(raw) {
 		var timeStart = new Date(),
-			paragraphs = cleanUpTextSimple(raw).split('\n'),
+			paragraphs = raw.split('\n'),
 			data = [], index = 0,
 			words, wlen, token, i, k;
 		

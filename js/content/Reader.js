@@ -2,6 +2,33 @@
 
 (function(app) {
 	
+	function cleanUpTextSimple(raw) {
+		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
+		return raw
+			.trim()
+			.replace(/\n|\r/gm, sign)
+			.replace(/\s+/g, ' ')
+			.replace(new RegExp('\\s*'+sign+'\\s*', 'g'), sign)     // `      \n    `
+			.replace(new RegExp(sign, 'g'), '\n');
+	}
+	
+	function cleanUpTextAdvanced(raw) {
+		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
+		return raw
+			.trim()
+			.replace(/\n|\r/gm, sign)
+			.replace(/\s+/g, ' ')
+			.replace(new RegExp('\\s*'+sign+'\\s*', 'g'), sign)     // `      \n    `
+			.replace(/ \- /g, ' — ')                                // replace minus with em dash
+			.replace(/–|―/g, '—')                                   // there are 4 dash types. after the cleaning only 2 will remain: minus and em dash
+			.replace(/[-|—]{2,}/g, '—')                             // `--` | `------`
+			.replace(/\.{4,}/g, '...')                              // `.......`
+			.replace(/([!?]{3})[!?]+/g, '$1')                       // `неужели!!!!!???!!?!?`
+			.replace(/ ([([]+) /g, ' $1')                           // `сюжет ( видео`
+			.replace(/ ([)\].!?;]+)( |$)/g, '$1$2')                 // `вставка ) отличный` | `конечно ...`
+			.replace(new RegExp(sign, 'g'), '\n');
+	}
+	
 	
 	app.Reader = function(raw) {
 		
@@ -19,11 +46,15 @@
 			
 			if (app.get('entityAnalysis')) {
 				_cache_seqSimple && (tokenStartIndex = _cache_seqSimple.getToken().startIndex);
-				currentSeq = _cache_seqAdvanced = _cache_seqAdvanced || new app.Sequencer(raw, app.advancedParser(raw));
+				
+				_cache_rawAdvanced = _cache_rawAdvanced || cleanUpTextAdvanced(raw);
+				currentSeq = _cache_seqAdvanced = _cache_seqAdvanced || new app.Sequencer(_cache_rawAdvanced, app.advancedParser(_cache_rawAdvanced));
 			}
 			else {
 				_cache_seqAdvanced && (tokenStartIndex = _cache_seqAdvanced.getToken().startIndex);
-				currentSeq = _cache_seqSimple = _cache_seqSimple || new app.Sequencer(raw, app.simpleParser(raw));
+				
+				_cache_rawSimple = _cache_rawSimple || cleanUpTextSimple(raw);
+				currentSeq = _cache_seqSimple = _cache_seqSimple || new app.Sequencer(_cache_rawSimple, app.simpleParser(_cache_rawSimple));
 			}
 			
 			view.setSequenser(currentSeq);
@@ -36,6 +67,7 @@
 			isDestroyed,
 			view = new app.View(),
 			currentSeq,
+			_cache_rawSimple, _cache_rawAdvanced,
 			_cache_seqSimple, _cache_seqAdvanced;
 		
 		
@@ -49,6 +81,7 @@
 			_cache_seqSimple && _cache_seqSimple.destroy();
 			
 			currentSeq = _cache_seqAdvanced = _cache_seqSimple =
+			_cache_rawAdvanced = _cache_rawSimple =
 			view = null;
 			
 			app.trigger(api, 'destroy');
