@@ -20,19 +20,22 @@
 	}
 	
 	
+	function onReaderDestroy() {
+		settings = reader = null;
+		app.isReaderStarted = false;
+	}
+	
 	function onDisconnect() {
 		app.off(window, "keydown", onKeyDown);
 		app.stopContentSelection();
-		reader && reader.close();
+		reader && reader.destroy();
 	}
 	
 	function onMessage(msg, sender, callback) {
 		switch (msg.type) {
 			case 'popupSettings':
-				if (settings && reader) {
-					settings[msg.key] = msg.value;
-					reader.onPopupSettings(msg.key, msg.value);
-				}
+				settings && (settings[msg.key] = msg.value);
+				app.trigger(app, 'popupSettings', [msg.key, msg.value]);
 				callback();
 				break;
 			case 'getSelection':
@@ -154,11 +157,39 @@
 	
 	
 	app.on = function(elem, event, fn) {
-		elem.addEventListener(event, fn);
+		if (elem.nodeName || elem === window)
+			elem.addEventListener(event, fn);
+		else {
+			var events = elem.__events__ = elem.__events__ || {};
+			events[event] = events[event] || [];
+			events[event].push(fn);
+		}
 	}
 	
 	app.off = function(elem, event, fn) {
-		elem.removeEventListener(event, fn);
+		if (elem.nodeName || elem === window)
+			elem.removeEventListener(event, fn);
+		else {
+			var callbacks = elem.__events__ && elem.__events__[event],
+				cb, i = -1;
+			if (callbacks) {
+				while (cb = callbacks[++i]) {
+					if (cb === fn) {
+						callbacks.splice(i,1);
+						i--;
+					}
+				}
+			}
+		}
+	}
+	
+	app.trigger = function(elem, event, args) {
+		var callbacks = elem.__events__ && elem.__events__[event], i;
+		if (callbacks) {
+			for (i = 0; i < callbacks.length; i++) {
+				callbacks[i].apply(elem, [{type: event}].concat(args || []));
+			}
+		}
 	}
 	
 	
@@ -172,26 +203,6 @@
 	}
 	
 	
-	app.startReader = function(text) {
-		text = text != null ? text : getSelection();
-		
-		if (!text.length || app.isReaderStarted) return;
-		app.isReaderStarted = true;
-		
-		init(function() {
-			reader = new app.Reader(
-				new app.Parser(text)
-			);
-			app.event('Text', 'Length', app.roundExp(text.length));
-		});
-	}
-	
-	app.onReaderClose = function() {
-		settings = reader = null;
-		app.isReaderStarted = false;
-	}
-	
-	
 	app.sendMessageToExtension = function(data, callback) {
 		chrome.extension.sendMessage(data, callback || function() {});
 	}
@@ -200,12 +211,26 @@
 		app.sendMessageToExtension({type: "isPopupOpen"}, callback);
 	}
 	
+	app.event = function(category, action, label) {
+		app.sendMessageToExtension({type: 'trackEvent', category: category, action: action, label: label});
+	}
+	
 	app.t = function() {
 		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
 	}
 	
-	app.event = function(category, action, label) {
-		app.sendMessageToExtension({type: 'trackEvent', category: category, action: action, label: label});
+	
+	app.startReader = function(text) {
+		text = text != null ? text : getSelection();
+		
+		if (!text.length || app.isReaderStarted) return;
+		app.isReaderStarted = true;
+		
+		init(function() {
+			reader = new app.Reader(text);
+			app.on(reader, 'destroy', onReaderDestroy);
+			app.event('Text', 'Length', app.roundExp(text.length));
+		});
 	}
 	
 	

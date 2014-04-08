@@ -201,6 +201,10 @@
 		return true;
 	}
 	
+	PlainToken.prototype.getComplexity = function() {
+		return 1;
+	}
+	
 	PlainToken.prototype.toString = function() {
 		return this.value;
 	}
@@ -280,6 +284,8 @@
 			child = api.childs[i];
 			api.total += child.value ? 1 : child.total;
 		}
+		
+		api._cache_complexity = null;
 	}
 	
 	
@@ -338,6 +344,17 @@
 		}
 		
 		return !!t.length;
+	}
+	
+	Token.prototype.getComplexity = function() {
+		var api = this;
+		
+		if (!api._cache_complexity) {
+			var types = api.getTypes();
+			return api._cache_complexity = api.total > 1 || types[0] !== CHAR_COMMON || isDigits(api.toString()) || api.toHyphenated().length > 1 ? 2 : 1;
+		}
+		
+		return api._cache_complexity;
 	}
 	
 	
@@ -580,17 +597,14 @@
 	
 	app.parse4 = function(raw) {
 		
-		function create(createEmpty) {
+		function create() {
 			if (token4 && token4.length && data[data.length-1] !== token4) {
 				data.push(token4);
 			}
 			
 			token4 = new Token();
-			
-			if (!createEmpty) {
-				token4.push(token3);
-				data.push(token4);
-			}
+			token4.push(token3);
+			data.push(token4);
 		}
 		
 		function push() {
@@ -649,8 +663,18 @@
 	}
 	
 	
+	app.advancedParser = function(raw) {
+		var timeStart = new Date(),
+			res = app.parse4(cleanUpText(raw));
+		
+		app.event('Parsing time', 'Advanced', app.roundExp(new Date() - timeStart));
+		
+		return res;
+	}
+	
 	app.simpleParser = function(raw) {
-		var paragraphs = raw.split('\n'),
+		var timeStart = new Date(),
+			paragraphs = cleanUpTextSimple(raw).split('\n'),
 			data = [], index = 0,
 			words, wlen, token, i, k;
 		
@@ -681,6 +705,8 @@
 			}
 		}
 		
+		app.event('Parsing time', 'Simple', app.roundExp(new Date() - timeStart));
+		
 		return data;
 	}
 	
@@ -706,145 +732,6 @@
 		}
 		
 		return point;
-	}
-	
-	
-	app.Parser = function(raw) {
-		
-		var api = this,
-			_cache_simpleData, _cache_simpleText,
-			_cache_advancedData, _cache_advancedText,
-			data = [],
-			wid = -1;
-		
-		
-		api.length = 0;
-		
-		
-		api.word = function() {
-			return data[wid = Math.max(Math.min(wid, data.length-1), 0)];
-		}
-		
-		api.nextWord = function() {
-			wid++;
-			return api.word();
-		}
-		
-		api.prevWord = function() {
-			wid--;
-			return api.word();
-		}
-		
-		api.nextSentense = function() {
-			while (++wid < data.length && !data[wid].isSentenceEnd) {}
-			wid++;
-			return api.word();
-		}
-		
-		api.prevSentense = function() {
-			wid--;
-			while (--wid >= 0 && !data[wid].isSentenceEnd) {}
-			wid++;
-			return api.word();
-		}
-		
-		api.lastWord = function() {
-			wid = data.length-1;
-			return api.word();
-		}
-		
-		api.firstWord = function() {
-			wid = 0;
-			return api.word();
-		}
-		
-		api.wordAtIndex = function(index) {
-			wid = data.length-1;
-			
-			for (var i = 0; i < data.length; i++) {
-				if (data[i].endIndex >= index) {
-					wid = i;
-					break;
-				}
-			}
-			
-			return api.word();
-		}
-		
-		
-		api.isLastWord = function() {
-			return wid >= data.length-1;
-		}
-		
-		api.isFirstWord = function() {
-			return wid <= 0;
-		}
-		
-		api.isPenultWord = function() {
-			return wid === data.length-2;
-		}
-		
-		api.isSentenceStart = function() {
-			return !wid || data[wid-1].isSentenceEnd;
-		}
-		
-		api.isSentenceEnd = function() {
-			return data[wid].isSentenceEnd;
-		}
-		
-		api.isDelayed = function() {
-			var token = api.word(),
-				types = token.getTypes && token.getTypes(),
-				type = types ? types[0] : token.type;
-			
-			return types && token.total > 1 || type !== CHAR_COMMON || isDigits(token.toString()) || token.toHyphenated().length > 1;
-		}
-		
-		
-		api.getContext = function(charsLimit) {
-			var token = api.word();
-			return {
-				before: api.text.substring(charsLimit ? Math.max(token.startIndex-charsLimit, 0) : 0, token.startIndex),
-				after: api.text.substring(token.endIndex, charsLimit ? Math.min(token.endIndex+charsLimit, api.text.length) : api.text.length)
-			};
-		}
-		
-		
-		api.destroy = function() {
-			var i;
-			
-			if (_cache_advancedData)
-				for (i = 0; i < _cache_advancedData.length; i++) {
-					_cache_advancedData[i].destroy();
-					_cache_advancedData[i] = null;
-				}
-			
-			if (_cache_simpleData)
-				for (i = 0; i < _cache_simpleData.length; i++) {
-					_cache_simpleData[i].destroy();
-					_cache_simpleData[i] = null;
-				}
-			
-			raw =
-			api.text = _cache_advancedText = _cache_simpleText =
-			data = _cache_advancedData = _cache_simpleData =
-			null;
-		}
-		
-		
-		api.parse = function() {
-			if (app.get('entityAnalysis')) {
-				api.text = _cache_advancedText = _cache_advancedText || cleanUpText(raw);
-				data = _cache_advancedData = _cache_advancedData || app.parse4(_cache_advancedText);
-			}
-			else {
-				api.text = _cache_simpleText = _cache_simpleText || cleanUpTextSimple(raw);
-				data = _cache_simpleData = _cache_simpleData || app.simpleParser(_cache_simpleText);
-			}
-			
-			api.length = data.length;
-		}
-		
 	}
 	
 	

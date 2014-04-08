@@ -14,6 +14,8 @@
 			"js": [
 				"js/content/main.js",
 				"js/content/Parser.js",
+				"js/content/Sequencer.js",
+				"js/content/View.js",
 				"js/content/Reader.js",
 				"js/content/ContentSelector.js"
 			],

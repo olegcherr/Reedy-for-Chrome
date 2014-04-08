@@ -91,6 +91,9 @@
 .e-FastReader-wrapper[dark-theme=true][transparent-bg=true] .e-FastReader-context {
 	color: #878787;
 }
+.e-FastReader-wrapper[is-running=true] .e-FastReader-context {
+	display: none;
+}
 .e-FastReader-context_before {
 	margin-bottom: 28px;
 	bottom: 50%;
@@ -323,6 +326,10 @@
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-info {
 	color: #bfbfbf;
 }
+.e-FastReader-wrapper[autostart=true] .e-FastReader-info,
+.e-FastReader-wrapper[was-launched=true] .e-FastReader-info {
+	display: none;
+}
 .e-FastReader-info > span {
 	display: block;
 	padding: 15px 0;
@@ -356,7 +363,6 @@
 
 .e-FastReader-panel {
 	position: absolute;
-	display: none;
 	width: 100%;
 	left: 0;
 	color: #8a8a8a;
@@ -366,6 +372,10 @@
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-panel {
 	background: #000;
+}
+.e-FastReader-wrapper[is-running=true] .e-FastReader-panel,
+.e-FastReader-wrapper[autostart=true][was-launched=false] .e-FastReader-panel {
+	display: none;
 }
 .e-FastReader-panel_top {
 	top: 0;

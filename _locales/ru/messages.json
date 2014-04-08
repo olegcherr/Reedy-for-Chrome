@@ -97,9 +97,6 @@
 		"message": ""
 	},
 	
-	"loading": {
-		"message": "Загрузка ..."
-	},
 	"clickToStart": {
 		"message": "Кликните по экрану или нажмите пробел.<span>← клик вне области чтения закроет FastReader →</span>"
 	},
