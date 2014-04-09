@@ -3,16 +3,12 @@
 exports = (function() {
 	
 	function test(raw, expected) {
-		var parser = new window.fastReader.Parser(raw);
-		parser.parse();
-		var hephenated = parser.nextWord().toHyphenated();
-		assert.equalArray(hephenated, expected, raw);
+		var tokens = window.fastReader.advancedParser(raw);
+		assert.equalArray(tokens[0].toHyphenated(), expected, raw);
 	}
 	
 	
 	var assert = require('../assert.js');
-	
-	require('../../js/content/Parser.js');
 	
 	
 	assert.profile('hypens');

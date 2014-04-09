@@ -5,7 +5,14 @@ var fs              = require('fs'),
 	argv            = process.argv,
 	test2run        = argv[2],
 	
-	tests           = fs.readdirSync('./tests');
+	tests           = fs.readdirSync('./tests'),
+	
+	noop = function(ret) {
+		if (ret)
+			return function() {
+				return ret;
+			};
+	};
 
 
 colors.setTheme({
@@ -16,43 +23,31 @@ colors.setTheme({
 });
 
 
-window = (function() {
-	
-	var settings = {
-		fontSize: 4, // 1-7
-		wpm: 200,
-		autostart: false,
-		darkTheme: false,
-		transparentBg: false,
-		vPosition: 4,
-		focusMode: true,
-		smartSlowing: true,
-		entityAnalysis: true,
-		emptySentenceEnd: true
-	};
-	
-	return {
-		fastReader: {
-			flatten: function(array) {
-				var res = [];
-				
-				(function flat(arr) {
-					if (toString.call(arr) === '[object Array]')
-						arr.forEach(flat);
-					else
-						res.push(arr);
-				})(array);
-				
-				return res;
-			},
-			
-			get: function(key) {
-				return settings[key];
-			}
-		}
-	};
-	
-})();
+window = {
+	addEventListener: noop
+};
+document = {
+	createElement: noop({}),
+	querySelector: noop,
+	querySelectorAll: noop
+};
+chrome = {
+	extension: {
+		connect: noop({
+			onDisconnect: {addListener: noop}
+		}),
+		sendMessage: noop,
+		onMessage: {addListener: noop}
+	}
+};
+
+
+require('../js/content/main.js');
+require('../js/content/Parser.js');
+require('../js/content/Sequencer.js');
+require('../js/content/View.js');
+require('../js/content/Reader.js');
+require('../js/content/ContentSelector.js');
 
 
 tests.forEach(function(name) {

@@ -4,8 +4,6 @@ exports = (function() {
 	
 	var assert = require('../assert.js');
 	
-	require('../../js/content/Parser.js');
-	
 	
 	var Token = window.fastReader.Token,
 		PlainToken = window.fastReader.PlainToken,

@@ -9,8 +9,6 @@ exports = (function() {
 	
 	var assert = require('../assert.js');
 	
-	require('../../js/content/Parser.js');
-	
 	
 	assert.profile('hypens');
 	
