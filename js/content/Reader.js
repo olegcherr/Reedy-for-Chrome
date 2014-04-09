@@ -75,6 +75,9 @@
 			if (isDestroyed) return;
 			isDestroyed = true;
 			
+			app.off(app, 'popupSettings', onPopupSettings);
+			app.off(view, 'close', onViewClose);
+			
 			view.close();
 			
 			_cache_seqAdvanced && _cache_seqAdvanced.destroy();

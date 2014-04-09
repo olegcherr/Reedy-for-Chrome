@@ -385,6 +385,7 @@
 			
 			sequenser.pause();
 			
+			app.off(app, 'popupSettings', onPopupSettings);
 			app.off(window, "resize", onWindowResize);
 			app.off(window, "popstate", onWindowPopstate);
 			app.off($wrapper, "keydown", onKeydown);
