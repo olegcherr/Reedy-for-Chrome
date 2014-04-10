@@ -29,10 +29,13 @@
 	},
 	
 	"tab_reading": {
-		"message": "Параметры чтения"
+		"message": "Чтение"
 	},
 	"tab_parsing": {
-		"message": "Обработка текста"
+		"message": "Текст"
+	},
+	"tab_appearance": {
+		"message": "Отображение"
 	},
 	
 	
@@ -92,6 +95,21 @@
 	},
 	
 	
+	"progressBar": {
+		"message": "Прогресс бар"
+	},
+	"progressBarDescr": {
+		"message": "Отображать текущий прогресс чтения."
+	},
+	
+	"timeLeft": {
+		"message": "Оставшееся время"
+	},
+	"timeLeftDescr": {
+		"message": "Показывать расчётное время до конца чтения."
+	},
+	
+	
 	
 	"____READER_________________________________________________________": {
 		"message": ""
@@ -144,6 +162,19 @@
 	},
 	"ctrl_firstWord": {
 		"message": "В начало [alt+left]"
+	},
+	
+	"tileLeft_h": {
+		"message": "ч"
+	},
+	"tileLeft_min": {
+		"message": "мин"
+	},
+	"tileLeft_left": {
+		"message": "осталось"
+	},
+	"tileLeft_lessThanMin": {
+		"message": "меньше минуты"
 	},
 	
 	

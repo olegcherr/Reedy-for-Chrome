@@ -141,7 +141,7 @@
 
 
 
-/* === Focus ===================== */
+/* === Word ===================== */
 
 .e-FastReader-wordWrap {
 	box-sizing: border-box;
@@ -227,6 +227,10 @@
 	color: #ff5757;
 }
 
+
+
+/* === Focus ===================== */
+
 .e-FastReader-wrapper .e-FastReader-focusLines {
 	box-sizing: border-box;
 	position: absolute;
@@ -302,6 +306,62 @@
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-focusLines,
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-focusDashes {
 	border-color: #575757;
+}
+
+
+
+/* === Progress ===================== */
+
+.e-FastReader-progressBg {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	background: rgba(48, 48, 48, .1);
+}
+.e-FastReader-wrapper[font-size="7"] .e-FastReader-progressBg {
+	bottom: -6px;
+	height: 4px;
+}
+.e-FastReader-wrapper[font-size="6"] .e-FastReader-progressBg,
+.e-FastReader-wrapper[font-size="5"] .e-FastReader-progressBg,
+.e-FastReader-wrapper[font-size="4"] .e-FastReader-progressBg {
+	bottom: -5px;
+	height: 3px;
+}
+.e-FastReader-wrapper[font-size="3"] .e-FastReader-progressBg,
+.e-FastReader-wrapper[font-size="2"] .e-FastReader-progressBg {
+	bottom: -4px;
+	height: 2px;
+}
+.e-FastReader-wrapper[font-size="1"] .e-FastReader-progressBg {
+	bottom: -3px;
+	height: 1px;
+}
+.e-FastReader-wrapper[progress-bar=false] .e-FastReader-progressBg,
+.e-FastReader-wrapper[is-running=false] .e-FastReader-progressBg {
+	display: none;
+}
+.e-FastReader-progressBar {
+	width: 100px;
+	height: 100%;
+	background: #309c37;
+}
+
+.e-FastReader-timeWrap {
+	position: absolute;
+	right: 0;
+	bottom: -33px;
+	font-size: 12px;
+	font-weight: bold;
+}
+.e-FastReader-wrapper[time-left=false] .e-FastReader-timeWrap,
+.e-FastReader-wrapper[is-running=false] .e-FastReader-timeWrap {
+	display: none;
+}
+.e-FastReader-timeWrap > i {
+	font-size: 8px;
+	font-weight: normal;
+	text-transform: uppercase;
 }
 
 

@@ -162,6 +162,14 @@ fn = function() {
 //	x = Math.max(Math.min(num, max), min);
 	x = norm(num, min, max);
 }*/
+// TODO
+/*ITERATIONS = 1e7;
+var arr = [1,2,3,7,8,9,10,1,2,3,7,8,9,10,1,2,3,7,8,9,10,11,12,13,10,11,12,13,14], x;
+fn = function() {
+	for (var i = 0, len = arr.length; i < len; i++) {
+		x = arr[i];
+	}
+}*/
 
 
 

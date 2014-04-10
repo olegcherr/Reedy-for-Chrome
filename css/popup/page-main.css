@@ -24,7 +24,7 @@
 .p-tabs-tab {
 	float: left;
 	padding: 10px 0 9px;
-	width: 50%;
+	width: 33.33%;
 	text-align: center;
 	white-space: nowrap;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
@@ -41,19 +41,23 @@
 }
 .p-tabs-arrow {
 	position: absolute;
-	margin-left: -7px;
-	bottom: -14px;
+	margin-left: -6px;
+	bottom: -10px;
 	width: 0;
 	height: 0;
-	border: 7px solid transparent;
+	border: solid transparent;
+	border-width: 5px 6px;
 	border-top-color: #4dbd85;
 	-webkit-transition: left 200ms;
 }
 [active-tab="1"] .p-tabs-arrow {
-	left: 25%;
+	left: 16.67%;
 }
 [active-tab="2"] .p-tabs-arrow {
-	left: 75%;
+	left: 50%;
+}
+[active-tab="3"] .p-tabs-arrow {
+	left: 83.33%;
 }
 
 .p-content {

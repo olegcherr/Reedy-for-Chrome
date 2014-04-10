@@ -34,6 +34,9 @@
 	"tab_parsing": {
 		"message": "Text processing"
 	},
+	"tab_appearance": {
+		"message": "Appearance"
+	},
 	
 	
 	
@@ -92,6 +95,21 @@
 	},
 	
 	
+	"progressBar": {
+		"message": "Progress bar"
+	},
+	"progressBarDescr": {
+		"message": "Display the current progress of reading."
+	},
+	
+	"timeLeft": {
+		"message": "Remaining time"
+	},
+	"timeLeftDescr": {
+		"message": "Show the estimated time until the end of reading."
+	},
+	
+	
 	
 	"____READER_________________________________________________________": {
 		"message": ""
@@ -144,6 +162,19 @@
 	},
 	"ctrl_firstWord": {
 		"message": "First word [alt+left]"
+	},
+	
+	"tileLeft_h": {
+		"message": "h"
+	},
+	"tileLeft_min": {
+		"message": "min"
+	},
+	"tileLeft_left": {
+		"message": "left"
+	},
+	"tileLeft_lessThanMin": {
+		"message": "less than a minute"
 	},
 	
 	

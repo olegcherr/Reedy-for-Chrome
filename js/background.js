@@ -98,7 +98,10 @@
 			
 			entityAnalysis: true,
 			hyphenation: true,
-			emptySentenceEnd: true
+			emptySentenceEnd: true,
+			
+			progressBar: true,
+			timeLeft: true
 		};
 	
 	

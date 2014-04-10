@@ -9,7 +9,7 @@ exports = (function() {
 		PlainToken = window.fastReader.PlainToken,
 		token, token2, token3, token4, token5;
 	
-	assert.profile('token: total');
+	assert.profile('Token');
 	
 	/////////////////////////////////////////////////////
 	

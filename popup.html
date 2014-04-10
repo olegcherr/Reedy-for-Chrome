@@ -24,6 +24,7 @@
 		<div class="p-tabs g-clrfix">
 			<div i18n="tab_reading" tab-id="1" active="true" class="j-tab p-tabs-tab"></div>
 			<div i18n="tab_parsing" tab-id="2" active="false" class="j-tab p-tabs-tab"></div>
+			<div i18n="tab_appearance" tab-id="3" active="false" class="j-tab p-tabs-tab"></div>
 			<i class="p-tabs-arrow"></i>
 		</div>
 	</div>
@@ -93,6 +94,27 @@
 			</td>
 			<td class="p-item-right">
 				<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
+			</td>
+		</tr>
+	</table>
+	
+	<table content-id="3" active="false" class="j-content p-content" cellspacing="0">
+		<tr>
+			<td class="p-item-left">
+				<b i18n="progressBar"></b>
+				<span i18n="progressBarDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="progressBar"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="p-item-left">
+				<b i18n="timeLeft"></b>
+				<span i18n="timeLeftDescr"></span>
+			</td>
+			<td class="p-item-right">
+				<input class="j-checkbox" type="checkbox" name="timeLeft"/>
 			</td>
 		</tr>
 	</table>

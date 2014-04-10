@@ -50,8 +50,9 @@
 	app.View = function() {
 		
 		function onPopupSettings(e, key, value) {
+			updateWrapper();
+			
 			if (key === 'focusMode') {
-				updateWrapper();
 				updateFocusPoint();
 				updateWord();
 			}
@@ -66,6 +67,8 @@
 			
 			updateWord(str);
 			updateContext();
+			updateProgressBar();
+			updateTimeLeft();
 		}
 		
 		function onSequencerPlay() {
@@ -274,6 +277,8 @@
 			$wrapper.setAttribute('font-size', app.get('fontSize'));
 			$wrapper.setAttribute('focus-mode', app.get('focusMode'));
 			$wrapper.setAttribute('v-position', app.get('vPosition'));
+			$wrapper.setAttribute('progress-bar', app.get('progressBar'));
+			$wrapper.setAttribute('time-left', app.get('timeLeft'));
 		}
 		
 		function updatePanels() {
@@ -317,6 +322,30 @@
 			focusPoint = Math.floor(rect.left + Math.floor(rect.width)/2);
 		}
 		
+		function updateProgressBar() {
+			$progressBar.style.width = Math.round(sequenser.getProgress()*1000)/10+'%';
+		}
+		
+		function updateTimeLeft() {
+			var timeLeft = sequenser.getTimeLeft(),
+				mins = timeLeft / 1000/60,
+				text = '';
+			
+			if (mins <= 1) {
+				text = '<i>'+app.t('tileLeft_lessThanMin')+'</i>';
+			}
+			else {
+				var hours = mins / 60;
+				
+				if (hours >= 1)
+					text = Math.round(hours) + ' <i>' + app.t('tileLeft_h') + '</i> ';
+				
+				text += Math.ceil(mins%60) + ' <i>' + app.t('tileLeft_min') + ' ' + app.t('tileLeft_left') + '</i> ';
+			}
+			
+			$timeWrap.innerHTML = text;
+		}
+		
 		
 		
 		var api = this,
@@ -333,10 +362,15 @@
 			$pane               = createElement('div', cls('pane'), $wrapper),
 			
 			$contextBefore      = createElement('div', cls('context', 'context_before'), $pane),
+			
 			$wordWrap           = createElement('div', cls('wordWrap'), $pane),
 			$word               = createElement('div', cls('word'), $wordWrap),
 			$focusLines         = createElement('div', cls('focusLines'), $wordWrap),
 			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
+			$progressBg         = createElement('div', cls('progressBg'), $wordWrap),
+			$progressBar        = createElement('div', cls('progressBar'), $progressBg),
+			$timeWrap           = createElement('div', cls('timeWrap'), $wordWrap),
+			
 			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
 			
 			$info               = createElement('div', cls('info'), $pane, app.t('clickToStart')),

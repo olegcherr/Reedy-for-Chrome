@@ -93,6 +93,23 @@
 			}
 		}
 		
+		function normIndex() {
+			api.index = app.norm(api.index, 0, length-1);
+		}
+		
+		function changeIndex(reduce) {
+			var indexBefore = api.index;
+			reduce ? api.index-- : api.index++;
+			normIndex();
+			
+			if (api.index !== indexBefore) {
+				complexityElapsed = app.norm(complexityElapsed + api.getToken().getComplexity() * (reduce ? -1 : 1), 0, complexityTotal);
+				return true;
+			}
+			
+			return false;
+		}
+		
 		
 		
 		var api = this,
@@ -100,6 +117,12 @@
 			length = data.length,
 			token = data[0],
 			wpm = 0, startWpm = 0,
+			complexityFirstToren = token.getComplexity(),
+			complexityElapsed = complexityFirstToren,
+			complexityTotal = (function(length, i, res) {
+			for (; i < length && (res += data[i].getComplexity()); i++) {}
+			return res;
+		})(length, 0, 0),
 			timeout;
 		
 		
@@ -135,7 +158,7 @@
 		
 		
 		api.getToken = function() {
-			return data[api.index = app.norm(api.index, 0, length-1)];
+			return data[api.index];
 		}
 		
 		api.getContext = function(charsLimit) {
@@ -148,49 +171,74 @@
 		
 		
 		api.toNextToken = function() {
-			api.index++;
-			app.trigger(api, 'update');
+			if (changeIndex())
+				app.trigger(api, 'update');
 		}
 		
 		api.toPrevToken = function() {
-			api.index--;
-			app.trigger(api, 'update');
+			if (changeIndex(true))
+				app.trigger(api, 'update');
 		}
 		
 		api.toNextSentence = function() {
-			while (++api.index < length && !data[api.index].isSentenceEnd) {}
-			api.index++;
+			while (changeIndex()) {
+				if (data[api.index-1].isSentenceEnd)
+					break;
+			}
+			
 			app.trigger(api, 'update');
 		}
 		
 		api.toPrevSentence = function() {
-			api.index--;
-			while (--api.index >= 0 && !data[api.index].isSentenceEnd) {}
-			api.index++;
-			app.trigger(api, 'update');
-		}
-		
-		api.toLastToken = function() {
-			api.index = length-1;
-			app.trigger(api, 'update');
-		}
-		
-		api.toFirstToken = function() {
-			api.index = 0;
-			app.trigger(api, 'update');
-		}
-		
-		api.toTokenAtIndex = function(index) {
-			api.index = length-1;
-			
-			for (var i = 0; i < length; i++) {
-				if (data[i].endIndex >= index) {
-					api.index = i;
+			var startIndex = api.index;
+			changeIndex(true);
+			while (changeIndex(true)) {
+				if (data[api.index].isSentenceEnd && (startIndex - api.index > 1 || !data[api.index-1] || data[api.index-1].isSentenceEnd)) {
+					if (startIndex - api.index > 1) {
+						changeIndex();
+					}
 					break;
 				}
 			}
 			
 			app.trigger(api, 'update');
+		}
+		
+		api.toLastToken = function() {
+			api.index = length-1;
+			complexityElapsed = complexityTotal;
+			
+			normIndex();
+			app.trigger(api, 'update');
+		}
+		
+		api.toFirstToken = function() {
+			api.index = 0;
+			complexityElapsed = complexityFirstToren;
+			
+			normIndex();
+			app.trigger(api, 'update');
+		}
+		
+		api.toTokenAtIndex = function(index) {
+			api.index = -1;
+			complexityElapsed = 0;
+			
+			while (changeIndex()) {
+				if (data[api.index].endIndex >= index)
+					break;
+			}
+			
+			app.trigger(api, 'update');
+		}
+		
+		
+		api.getProgress = function() {
+			return api.index/length;
+		}
+		
+		api.getTimeLeft = function() {
+			return (complexityTotal - complexityElapsed) * (60000 / app.get('wpm'));
 		}
 		
 		
