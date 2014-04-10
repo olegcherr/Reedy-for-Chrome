@@ -301,7 +301,7 @@
 .e-FastReader-wrapper[focus-mode=false] .e-FastReader-focusDashes,
 .e-FastReader-wrapper[is-running=false] .e-FastReader-focusLines,
 .e-FastReader-wrapper[is-running=false] .e-FastReader-focusDashes {
-	visibility: hidden;
+	visibility: hidden; /* can't use `display:none` because of the need to find out its coordinates */
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-focusLines,
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-focusDashes {
@@ -435,6 +435,68 @@
 
 
 
+/* === Scroll bar ===================== */
+.e-FastReader-scrollerWrap {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	padding: 0 10px;
+	width: 12px;
+	z-index: 3;
+}
+.e-FastReader-scrollerBg {
+	position: absolute;
+	right: 10px;
+	top: 60px;
+	bottom: 82px;
+	width: 12px;
+	background: rgba(48, 48, 48, .1);
+	border-radius: 20px;
+	-webkit-transition: background-color 1s;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-scrollerBg {
+	background: rgba(255, 255, 255, .07);
+}
+.e-FastReader-wrapper[was-launched=false] .e-FastReader-scrollerBg,
+.e-FastReader-wrapper[is-running=true] .e-FastReader-scrollerBg {
+	display: none;
+}
+.e-FastReader-scrollerBarWrap {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 100px;
+	width: 100%;
+}
+.e-FastReader-scrollerBar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100px;
+	background: rgba(48, 48, 48, .42);
+	border-radius: 20px;
+	-webkit-transition: background-color 1s;
+}
+.e-FastReader-scrollerBar:hover {
+	background: rgba(48, 48, 48, .55);
+}
+.e-FastReader-scrollerBar:active {
+	background: rgba(48, 48, 48, .65);
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-scrollerBar {
+	background: rgba(255, 255, 255, .2);
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-scrollerBar:hover {
+	background: rgba(255, 255, 255, .25);
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-scrollerBar:active {
+	background: rgba(255, 255, 255, .15);
+}
+
+
+
 /* === Panels ===================== */
 
 .e-FastReader-panel {
@@ -443,7 +505,7 @@
 	left: 0;
 	color: #8a8a8a;
 	background: #dbdbdb;
-	z-index: 3;
+	z-index: 4;
 	-webkit-transition: background-color 1s;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-panel {

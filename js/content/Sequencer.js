@@ -115,6 +115,7 @@
 		var api = this,
 			wasLaunchedSinceOpen = false,
 			length = data.length,
+			textLength = raw.length,
 			token = data[0],
 			wpm = 0, startWpm = 0,
 			complexityFirstToren = token.getComplexity(),
@@ -232,9 +233,13 @@
 			app.trigger(api, 'update');
 		}
 		
+		api.toProgress = function(val) {
+			api.toTokenAtIndex(textLength*val);
+		}
+		
 		
 		api.getProgress = function() {
-			return api.index/length;
+			return api.index/(length-1);
 		}
 		
 		api.getTimeLeft = function() {

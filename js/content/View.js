@@ -69,6 +69,7 @@
 			updateContext();
 			updateProgressBar();
 			updateTimeLeft();
+			updateScrollBar();
 		}
 		
 		function onSequencerPlay() {
@@ -110,6 +111,60 @@
 					app.event('Reader', 'Close', 'Close area');
 				}
 			});
+		}
+		
+		
+		function onScrollerBarMousedown(e) {
+			app.stopEvent(e);
+			
+			var rectBarWrap = app.offset($scrollerBarWrap),
+				rectBar = app.offset($scrollerBar),
+				top = +$scrollerBar.style.top.replace('%','') || 0,
+				lastPos = top,
+				startY = e.pageY;
+			
+			function onMousemove(e) {
+				var diff = e.pageY - startY,
+					pos = app.norm(Math.round((rectBar.top+diff-rectBarWrap.top)/rectBarWrap.height*100), 0, 100);
+				
+				if (lastPos !== pos) {
+					lastPos = pos;
+					sequenser.toProgress(pos/100);
+				}
+				
+				$scrollerBar.style.top = pos+'%';
+			}
+			
+			function onMouseup() {
+				app.off(document, "mousemove", onMousemove);
+				app.off(document, "mouseup", onMouseup);
+			}
+			
+			
+			app.on(document, "mousemove", onMousemove);
+			app.on(document, "mouseup", onMouseup);
+		}
+		
+		function onScrollerBgMousedown(e) {
+			app.stopEvent(e);
+			
+			function doUpdate(e) {
+				sequenser.toProgress((e.pageY-rectBg.top)/$scrollerBg.scrollHeight);
+			}
+			
+			function onMouseup() {
+				app.off(document, "mousemove", doUpdate);
+				app.off(document, "mouseup", onMouseup);
+			}
+			
+			
+			var rectBg = app.offset($scrollerBg);
+			
+			doUpdate(e);
+			
+			
+			app.on(document, "mousemove", doUpdate);
+			app.on(document, "mouseup", onMouseup);
 		}
 		
 		
@@ -359,6 +414,11 @@
 			$timeLeft_word.innerHTML = $timeLeft_panel.innerHTML = text;
 		}
 		
+		function updateScrollBar() {
+			if (!sequenser.isRunning)
+				$scrollerBar.style.top = Math.round(sequenser.getProgress()*100)+'%';
+		}
+		
 		
 		
 		var api = this,
@@ -390,6 +450,11 @@
 			
 			$closingAreaLeft    = createElement('div', cls('closingArea','closingArea_left'), $wrapper),
 			$closingAreaRight   = createElement('div', cls('closingArea','closingArea_right'), $wrapper),
+			
+			$scrollerWrap       = createElement('div', cls('scrollerWrap'), $wrapper),
+			$scrollerBg         = createElement('div', cls('scrollerBg'), $scrollerWrap),
+			$scrollerBarWrap    = createElement('div', cls('scrollerBarWrap'), $scrollerBg),
+			$scrollerBar        = createElement('div', cls('scrollerBar'), $scrollerBarWrap),
 			
 			// Top panel
 			$topPanel           = createElement('div', cls('panel', 'panel_top'), $wrapper),
@@ -488,15 +553,16 @@
 		app.on(window, "resize", onWindowResize);
 		app.on(window, "popstate", onWindowPopstate);
 		
+		
 		app.on($wrapper, "keydown", onKeydown);
+		
 		
 		app.on($pane, "click", onPaneClick);
 		app.on($closingAreaLeft, "click", onClosingAreaClick);
 		app.on($closingAreaRight, "click", onClosingAreaClick);
 		
-		app.on($pane, "wheel", onPaneWheel);
-		app.on($closingAreaLeft, "wheel", onPaneWheel);
-		app.on($closingAreaRight, "wheel", onPaneWheel);
+		app.on($scrollerBar, "mousedown", onScrollerBarMousedown);
+		app.on($scrollerBg, "mousedown", onScrollerBgMousedown);
 		
 		app.on($ctrlStart, "click", onStartCtrl);
 		app.on($ctrlNextWord, "click", onNextWordCtrl);
@@ -518,6 +584,12 @@
 		app.on($menuBtnTheme, "click", onThemeCtrl);
 		app.on($menuBtnBackground, "click", onBackgroundCtrl);
 		app.on($menuBtnClose, "click", onCloseCtrl);
+		
+		
+		app.on($pane, "wheel", onPaneWheel);
+		app.on($closingAreaLeft, "wheel", onPaneWheel);
+		app.on($closingAreaRight, "wheel", onPaneWheel);
+		app.on($scrollerWrap, "wheel", onPaneWheel);
 		
 	};
 	
