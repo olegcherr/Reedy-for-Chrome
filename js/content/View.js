@@ -95,7 +95,7 @@
 			}
 			
 			app.isPopupOpen(function(res) {
-				res || sequenser.toggle();
+				res || sequencer.toggle();
 			});
 		}
 		
@@ -130,7 +130,7 @@
 				
 				if (lastPos !== pos) {
 					lastPos = pos;
-					sequenser.toProgress(pos/100);
+					sequencer.toProgress(pos/100);
 				}
 				
 				$scrollerBar.style.top = pos+'%';
@@ -150,7 +150,7 @@
 			app.stopEvent(e);
 			
 			function doUpdate(e) {
-				sequenser.toProgress((e.pageY-rectBg.top)/$scrollerBg.scrollHeight);
+				sequencer.toProgress((e.pageY-rectBg.top)/$scrollerBg.scrollHeight);
 			}
 			
 			function onMouseup() {
@@ -170,37 +170,37 @@
 		
 		
 		function onStartCtrl() {
-			sequenser.toggle();
+			sequencer.toggle();
 		}
 		
 		function onNextWordCtrl() {
-			sequenser.pause();
-			sequenser.toNextToken();
+			sequencer.pause();
+			sequencer.toNextToken();
 		}
 		
 		function onPrevWordCtrl() {
-			sequenser.pause();
-			sequenser.toPrevToken();
+			sequencer.pause();
+			sequencer.toPrevToken();
 		}
 		
 		function onNextSentenceCtrl() {
-			sequenser.pause();
-			sequenser.toNextSentence();
+			sequencer.pause();
+			sequencer.toNextSentence();
 		}
 		
 		function onPrevSentenceCtrl() {
-			sequenser.pause();
-			sequenser.toPrevSentence();
+			sequencer.pause();
+			sequencer.toPrevSentence();
 		}
 		
 		function onLastWordCtrl() {
-			sequenser.pause();
-			sequenser.toLastToken();
+			sequencer.pause();
+			sequencer.toLastToken();
 		}
 		
 		function onFirstWordCtrl() {
-			sequenser.pause();
-			sequenser.toFirstToken();
+			sequencer.pause();
+			sequencer.toFirstToken();
 		}
 		
 		
@@ -283,7 +283,7 @@
 				case 32: // space
 				case 13: // enter
 					app.stopEvent(e);
-					sequenser.toggle();
+					sequencer.toggle();
 					break;
 				case 39: // right
 					app.stopEvent(e);
@@ -329,7 +329,7 @@
 		
 		function updateWrapper() {
 			$wrapper.setAttribute('was-launched', wasLaunchedSinceOpen);
-			$wrapper.setAttribute('is-running', !!sequenser && sequenser.isRunning);
+			$wrapper.setAttribute('is-running', !!sequencer && sequencer.isRunning);
 			$wrapper.setAttribute('dark-theme', app.get('darkTheme'));
 			$wrapper.setAttribute('transparent-bg', app.get('transparentBg'));
 			$wrapper.setAttribute('font-size', app.get('fontSize'));
@@ -344,8 +344,8 @@
 		}
 		
 		function updateContext() {
-			if (sequenser && !sequenser.isRunning) {
-				var context = sequenser.getContext(CONTEXT_CHARS_LIMIT);
+			if (sequencer && !sequencer.isRunning) {
+				var context = sequencer.getContext(CONTEXT_CHARS_LIMIT);
 				$contextBefore.innerHTML = app.htmlEncode(context.before).replace(/\n/g, "<br/>");
 				$contextAfter.innerHTML = app.htmlEncode(context.after).replace(/\n/g, "<br/>");
 			}
@@ -359,7 +359,7 @@
 				return;
 			}
 			
-			str = str || sequenser.getToken().toString();
+			str = str || sequencer.getToken().toString();
 			
 			$word.style.left = '';
 			
@@ -381,11 +381,11 @@
 		}
 		
 		function updateProgressBar() {
-			$progressBar.style.width = Math.round(sequenser.getProgress()*1000)/10+'%';
+			$progressBar.style.width = Math.round(sequencer.getProgress()*1000)/10+'%';
 		}
 		
 		function updateTimeLeft() {
-			var timeLeft = sequenser.getTimeLeft(),
+			var timeLeft = sequencer.getTimeLeft(),
 				sec = timeLeft/1000,
 				min = sec/60,
 				parts = [], text;
@@ -416,8 +416,8 @@
 		}
 		
 		function updateScrollBar() {
-			if (!sequenser.isRunning)
-				$scrollerBar.style.top = Math.round(sequenser.getProgress()*100)+'%';
+			if (!sequencer.isRunning)
+				$scrollerBar.style.top = Math.round(sequencer.getProgress()*100)+'%';
 		}
 		
 		
@@ -428,7 +428,7 @@
 			focusPoint = 0,
 			bodyOverflowBefore = $body.style.overflow,
 			urlOnOpen = location+'',
-			sequenser,
+			sequencer,
 			
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
@@ -497,7 +497,7 @@
 			if (isClosed) return;
 			isClosed = true;
 			
-			sequenser.pause();
+			sequencer.pause();
 			
 			app.off(app, 'popupSettings', onPopupSettings);
 			app.off(window, "resize", onWindowResize);
@@ -522,16 +522,16 @@
 			app.trigger(api, 'close');
 		}
 		
-		api.setSequenser = function(seq) {
-			sequenser = seq;
+		api.setSequencer = function(seq) {
+			sequencer = seq;
 			
-			app.off(sequenser, 'play', onSequencerPlay);
-			app.off(sequenser, 'pause', onSequencerPause);
-			app.off(sequenser, 'update', onSequencerUpdate);
+			app.off(sequencer, 'play', onSequencerPlay);
+			app.off(sequencer, 'pause', onSequencerPause);
+			app.off(sequencer, 'update', onSequencerUpdate);
 			
-			app.on(sequenser, 'play', onSequencerPlay);
-			app.on(sequenser, 'pause', onSequencerPause);
-			app.on(sequenser, 'update', onSequencerUpdate);
+			app.on(sequencer, 'play', onSequencerPlay);
+			app.on(sequencer, 'pause', onSequencerPause);
+			app.on(sequencer, 'update', onSequencerUpdate);
 		}
 		
 		

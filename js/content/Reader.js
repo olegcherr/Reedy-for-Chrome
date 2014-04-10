@@ -41,33 +41,61 @@
 			api.destroy();
 		}
 		
+		function onSequencerUpdate() {
+			if (!isConfigSent && currentSeq.index === Math.round(currentSeq.length / 3 * 2)) {
+				isConfigSent = true;
+				
+				app.event('Config', 'WPM',                  app.get('wpm'));
+				app.event('Config', 'Font size',            app.get('fontSize'));
+				app.event('Config', 'Vertical position',    app.get('vPosition'));
+				app.event('Config', 'Dark theme',           app.get('darkTheme'));
+				app.event('Config', 'Transparent bg',       app.get('transparentBg'));
+				
+				app.event('Config', 'Autostart',            app.get('autostart'));
+				app.event('Config', 'Focus mode',           app.get('focusMode'));
+				app.event('Config', 'Gradual acceleration', app.get('gradualAccel'));
+				app.event('Config', 'Smart slowing',        app.get('smartSlowing'));
+				
+				app.event('Config', 'Entity analysis',      app.get('entityAnalysis'));
+				app.event('Config', 'Hyphenation',          app.get('hyphenation'));
+				app.event('Config', 'Empty sentence end',   app.get('emptySentenceEnd'));
+				
+				app.event('Config', 'Progress bar',         app.get('progressBar'));
+				app.event('Config', 'Time left',            app.get('timeLeft'));
+			}
+		}
+		
 		function updateSequencer() {
 			var tokenStartIndex = -1;
 			
 			if (app.get('entityAnalysis')) {
 				_cache_seqSimple && (tokenStartIndex = _cache_seqSimple.getToken().startIndex);
 				
-				_cache_rawAdvanced = _cache_rawAdvanced || cleanUpTextAdvanced(raw);
-				currentSeq = _cache_seqAdvanced = _cache_seqAdvanced || new app.Sequencer(_cache_rawAdvanced, app.advancedParser(_cache_rawAdvanced));
+				currentText = _cache_textAdvanced = _cache_textAdvanced || cleanUpTextAdvanced(raw);
+				currentSeq = _cache_seqAdvanced = _cache_seqAdvanced || new app.Sequencer(_cache_textAdvanced, app.advancedParser(_cache_textAdvanced));
 			}
 			else {
 				_cache_seqAdvanced && (tokenStartIndex = _cache_seqAdvanced.getToken().startIndex);
 				
-				_cache_rawSimple = _cache_rawSimple || cleanUpTextSimple(raw);
-				currentSeq = _cache_seqSimple = _cache_seqSimple || new app.Sequencer(_cache_rawSimple, app.simpleParser(_cache_rawSimple));
+				currentText = _cache_textSimple = _cache_textSimple || cleanUpTextSimple(raw);
+				currentSeq = _cache_seqSimple = _cache_seqSimple || new app.Sequencer(_cache_textSimple, app.simpleParser(_cache_textSimple));
 			}
 			
-			view.setSequenser(currentSeq);
+			view.setSequencer(currentSeq);
 			
 			tokenStartIndex > -1 && currentSeq.toTokenAtIndex(tokenStartIndex);
+			
+			app.off(currentSeq, 'update', onSequencerUpdate);
+			if (currentText.length > 3000 && currentSeq.length > 400)
+				app.on(currentSeq, 'update', onSequencerUpdate);
 		}
 		
 		
 		var api = this,
-			isDestroyed,
+			isDestroyed, isConfigSent,
 			view = new app.View(),
-			currentSeq,
-			_cache_rawSimple, _cache_rawAdvanced,
+			currentSeq, currentText,
+			_cache_textSimple, _cache_textAdvanced,
 			_cache_seqSimple, _cache_seqAdvanced;
 		
 		
@@ -83,8 +111,9 @@
 			_cache_seqAdvanced && _cache_seqAdvanced.destroy();
 			_cache_seqSimple && _cache_seqSimple.destroy();
 			
-			currentSeq = _cache_seqAdvanced = _cache_seqSimple =
-			_cache_rawAdvanced = _cache_rawSimple =
+			currentSeq = currentText =
+			_cache_seqAdvanced = _cache_seqSimple =
+			_cache_textAdvanced = _cache_textSimple =
 			view = null;
 			
 			app.trigger(api, 'destroy');
