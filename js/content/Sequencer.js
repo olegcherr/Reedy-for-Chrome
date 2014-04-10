@@ -136,9 +136,9 @@
 		api.play = function() {
 			if (api.isRunning) return;
 			api.isRunning = true;
+			wpm = 0;
 			
 			app.trigger(api, 'play');
-			
 			next(true);
 			
 			wasLaunchedSinceOpen = true;
