@@ -151,11 +151,13 @@
 		function onIncreaseWpmCtrl() {
 			app.set('wpm', app.norm(app.get('wpm')+WPM_STEP, MIN_WPM, MAX_WPM));
 			updatePanels();
+			updateTimeLeft();
 		}
 		
 		function onDecreaseWpmCtrl() {
 			app.set('wpm', app.norm(app.get('wpm')-WPM_STEP, MIN_WPM, MAX_WPM));
 			updatePanels();
+			updateTimeLeft();
 		}
 		
 		
@@ -328,22 +330,33 @@
 		
 		function updateTimeLeft() {
 			var timeLeft = sequenser.getTimeLeft(),
-				mins = timeLeft / 1000/60,
-				text = '';
+				sec = timeLeft/1000,
+				min = sec/60,
+				parts = [], text;
 			
-			if (mins <= 1) {
-				text = '<i>'+app.t('tileLeft_lessThanMin')+'</i>';
+			if (sec <= 10) {
+				text = app.t('timeLeft_lessThan', [app.t('timeLeft_sec', [10])]);
+			}
+			else if (min < 10) {
+				if (min >= 1)
+					parts.push(app.t('timeLeft_min', [Math.floor(min)]));
+				
+				if (sec = Math.floor((sec%60)/10)*10)
+					parts.push(app.t('timeLeft_sec', [sec]));
+				
+				text = app.t('timeLeft_left', [parts.join(' ')])
 			}
 			else {
-				var hours = mins / 60;
+				if (min >= 60)
+					parts.push(app.t('timeLeft_h', [Math.floor(min/60)]));
 				
-				if (hours >= 1)
-					text = Math.round(hours) + ' <i>' + app.t('tileLeft_h') + '</i> ';
+				if (min = Math.floor((min%60)/10)*10)
+					parts.push(app.t('timeLeft_min', [min]));
 				
-				text += Math.ceil(mins%60) + ' <i>' + app.t('tileLeft_min') + ' ' + app.t('tileLeft_left') + '</i> ';
+				text = app.t('timeLeft_left', [parts.join(' ')])
 			}
 			
-			$timeWrap.innerHTML = text;
+			$timeLeft_word.innerHTML = $timeLeft_panel.innerHTML = text;
 		}
 		
 		
@@ -369,7 +382,7 @@
 			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
 			$progressBg         = createElement('div', cls('progressBg'), $wordWrap),
 			$progressBar        = createElement('div', cls('progressBar'), $progressBg),
-			$timeWrap           = createElement('div', cls('timeWrap'), $wordWrap),
+			$timeLeft_word      = createElement('div', cls('timeLeft','timeLeft_word'), $wordWrap),
 			
 			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
 			
@@ -389,6 +402,7 @@
 			$wpmText            = createElement('span', null, $wpmAdjust),
 			$ctrlDecWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_minus'), $wpmAdjust, null, app.t('ctrl_decSpeed')),
 			$ctrlIncWpm         = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_plus'), $wpmAdjust, null, app.t('ctrl_incSpeed')),
+			$timeLeft_panel     = createElement('div', cls('timeLeft','timeLeft_panel'), $topPanelLeft),
 			
 			$topPanelRight      = createElement('div', cls('topPanelRight'), $topPanel),
 			$menuGroup1         = createElement('div', cls('menuGroup'), $topPanelRight),

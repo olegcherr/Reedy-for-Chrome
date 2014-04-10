@@ -164,17 +164,35 @@
 		"message": "В начало [home]"
 	},
 	
-	"tileLeft_h": {
-		"message": "ч"
+	"timeLeft_h": {
+		"message": "$val$ <i>ч</i>",
+		"placeholders": {
+			"val": { "content": "$1" }
+		}
 	},
-	"tileLeft_min": {
-		"message": "мин"
+	"timeLeft_min": {
+		"message": "$val$ <i>мин</i>",
+		"placeholders": {
+			"val": { "content": "$1" }
+		}
 	},
-	"tileLeft_left": {
-		"message": "осталось"
+	"timeLeft_sec": {
+		"message": "$val$ <i>сек</i>",
+		"placeholders": {
+			"val": { "content": "$1" }
+		}
 	},
-	"tileLeft_lessThanMin": {
-		"message": "меньше минуты"
+	"timeLeft_lessThan": {
+		"message": "<i>менее</i> $str$",
+		"placeholders": {
+			"str": { "content": "$1" }
+		}
+	},
+	"timeLeft_left": {
+		"message": "<i>осталось</i> $str$",
+		"placeholders": {
+			"str": { "content": "$1" }
+		}
 	},
 	
 	

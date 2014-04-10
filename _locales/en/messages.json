@@ -164,17 +164,45 @@
 		"message": "First word [home]"
 	},
 	
-	"tileLeft_h": {
-		"message": "h"
+	"timeLeft_h": {
+		"message": "$val$ <i>h/i>",
+		"placeholders": {
+			"val": {
+				"content": "$1"
+			}
+		}
 	},
-	"tileLeft_min": {
-		"message": "min"
+	"timeLeft_min": {
+		"message": "$val$ <i>min</i>",
+		"placeholders": {
+			"val": {
+				"content": "$1"
+			}
+		}
 	},
-	"tileLeft_left": {
-		"message": "left"
+	"timeLeft_sec": {
+		"message": "$val$ <i>sec</i>",
+		"placeholders": {
+			"val": {
+				"content": "$1"
+			}
+		}
 	},
-	"tileLeft_lessThanMin": {
-		"message": "less than a minute"
+	"timeLeft_lessThan": {
+		"message": "<i>less than</i> $str$",
+		"placeholders": {
+			"str": {
+				"content": "$1"
+			}
+		}
+	},
+	"timeLeft_left": {
+		"message": "$str$ <i>left</i>",
+		"placeholders": {
+			"str": {
+				"content": "$1"
+			}
+		}
 	},
 	
 	

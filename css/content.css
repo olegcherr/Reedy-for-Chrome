@@ -310,6 +310,36 @@
 
 
 
+/* === Time left ===================== */
+
+.e-FastReader-timeLeft {
+	font-size: 12px;
+	font-weight: bold;
+}
+.e-FastReader-timeLeft_panel {
+	position: relative;
+	float: left;
+	padding: 17px 15px 18px;
+}
+.e-FastReader-timeLeft_word {
+	position: absolute;
+	right: 0;
+	bottom: -33px;
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-timeLeft_word {
+	color: #6b6b6b;
+}
+.e-FastReader-wrapper[time-left=false] .e-FastReader-timeLeft_word,
+.e-FastReader-wrapper[is-running=false] .e-FastReader-timeLeft_word {
+	display: none;
+}
+.e-FastReader-timeLeft > i {
+	font-size: 11px;
+	font-weight: normal;
+}
+
+
+
 /* === Progress ===================== */
 
 .e-FastReader-progressBg {
@@ -317,6 +347,9 @@
 	left: 0;
 	width: 100%;
 	background: rgba(48, 48, 48, .1);
+}
+.e-FastReader-wrapper[dark-theme=true] .e-FastReader-progressBg {
+	background: rgba(255, 255, 255, .07);
 }
 .e-FastReader-wrapper[font-size="7"] .e-FastReader-progressBg {
 	bottom: -6px;
@@ -345,23 +378,6 @@
 	width: 100px;
 	height: 100%;
 	background: #309c37;
-}
-
-.e-FastReader-timeWrap {
-	position: absolute;
-	right: 0;
-	bottom: -33px;
-	font-size: 12px;
-	font-weight: bold;
-}
-.e-FastReader-wrapper[time-left=false] .e-FastReader-timeWrap,
-.e-FastReader-wrapper[is-running=false] .e-FastReader-timeWrap {
-	display: none;
-}
-.e-FastReader-timeWrap > i {
-	font-size: 8px;
-	font-weight: normal;
-	text-transform: uppercase;
 }
 
 
