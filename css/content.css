@@ -436,6 +436,7 @@
 
 
 /* === Scroll bar ===================== */
+
 .e-FastReader-scrollerWrap {
 	position: absolute;
 	right: 0;
@@ -453,7 +454,6 @@
 	width: 12px;
 	background: rgba(48, 48, 48, .1);
 	border-radius: 20px;
-	-webkit-transition: background-color 1s;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-scrollerBg {
 	background: rgba(255, 255, 255, .07);
@@ -477,7 +477,6 @@
 	height: 100px;
 	background: rgba(48, 48, 48, .42);
 	border-radius: 20px;
-	-webkit-transition: background-color 1s;
 }
 .e-FastReader-scrollerBar:hover {
 	background: rgba(48, 48, 48, .55);
