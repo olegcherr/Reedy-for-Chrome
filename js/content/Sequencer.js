@@ -65,7 +65,7 @@
 				}, 500);
 			}
 			else {
-				justRun || api.toNextToken();
+				justRun || api.toNextToken(true);
 				token = api.getToken();
 				
 				function doUpdate() {
@@ -171,8 +171,8 @@
 		}
 		
 		
-		api.toNextToken = function() {
-			if (changeIndex())
+		api.toNextToken = function(noEvent) {
+			if (changeIndex() && !noEvent)
 				app.trigger(api, 'update');
 		}
 		
