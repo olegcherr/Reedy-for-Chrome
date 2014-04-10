@@ -46,6 +46,9 @@ exports = (function() {
 		
 		sequencer.toPrevSentence();
 		checkSequencer(sequencer, raw, data, indexes[++i]);
+		
+		sequencer.toPrevSentence();
+		checkSequencer(sequencer, raw, data, indexes[++i]);
 	}
 	
 	function testTokenAtIndex(raw) {
@@ -99,11 +102,11 @@ exports = (function() {
 	
 	/////////////////////////////////////////////////////
 	
-	testSent('Hello',                               [0, 0, 0]);
-	testSent('just a word',                         [2, 2, 0]);
-	testSent('Hello! How are you?',                 [1, 3, 1]);
-	testSent('Hello! How are you?\n- I\'m fine!',   [1, 4, 1]);
-	testSent('Hello! How?\nFine!',                  [1, 2, 1]);
+	testSent('Hello',                               [0, 0, 0, 0]);
+	testSent('just a word',                         [2, 2, 0, 0]);
+	testSent('Hello! How are you?',                 [1, 3, 1, 0]);
+	testSent('Hello! How are you?\n- I\'m fine!',   [1, 4, 1, 0]);
+	testSent('Hello! How?\nFine!',                  [1, 2, 1, 0]);
 	
 	/////////////////////////////////////////////////////
 	

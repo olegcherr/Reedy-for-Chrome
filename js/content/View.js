@@ -80,6 +80,7 @@
 			updateWrapper();
 			updateContext();
 			updateWord(); // update is needed if paused on an "empty word" at the end of a sentence
+			updateScrollBar();
 		}
 		
 		

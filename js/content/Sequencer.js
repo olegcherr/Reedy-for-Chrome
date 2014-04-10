@@ -103,7 +103,7 @@
 			normIndex();
 			
 			if (api.index !== indexBefore) {
-				complexityElapsed = app.norm(complexityElapsed + api.getToken().getComplexity() * (reduce ? -1 : 1), 0, complexityTotal);
+				complexityElapsed = app.norm(complexityElapsed + api.getToken().getComplexity() * (reduce ? -1 : 1), complexityFirstToren, complexityTotal);
 				return true;
 			}
 			
@@ -192,7 +192,7 @@
 		
 		api.toPrevSentence = function() {
 			var startIndex = api.index;
-			changeIndex(true);
+			
 			while (changeIndex(true)) {
 				if (data[api.index].isSentenceEnd && (startIndex - api.index > 1 || !data[api.index-1] || data[api.index-1].isSentenceEnd)) {
 					if (startIndex - api.index > 1) {
