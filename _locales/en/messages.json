@@ -152,7 +152,7 @@
 		"message": "Next sentence [ctrl+right]"
 	},
 	"ctrl_lastWord": {
-		"message": "Last word [alt+right]"
+		"message": "Last word [end]"
 	},
 	"ctrl_prevWord": {
 		"message": "Previous word [left]"
@@ -161,7 +161,7 @@
 		"message": "Previous sentence [ctrl+left]"
 	},
 	"ctrl_firstWord": {
-		"message": "First word [alt+left]"
+		"message": "First word [home]"
 	},
 	
 	"tileLeft_h": {

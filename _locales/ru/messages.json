@@ -152,7 +152,7 @@
 		"message": "Следующее предложение [ctrl+right]"
 	},
 	"ctrl_lastWord": {
-		"message": "В конец [alt+right]"
+		"message": "В конец [end]"
 	},
 	"ctrl_prevWord": {
 		"message": "Предыдущее слово [left]"
@@ -161,7 +161,7 @@
 		"message": "Предыдущее предложение [ctrl+left]"
 	},
 	"ctrl_firstWord": {
-		"message": "В начало [alt+left]"
+		"message": "В начало [home]"
 	},
 	
 	"tileLeft_h": {
