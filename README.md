@@ -16,18 +16,23 @@ Chrome Web Store: https://chrome.google.com/webstore/detail/fastreader/ihbdojmgg
 * Select the text on the page;
 * Click the right button and choose FastReader. You can also use the «Alt+S» shortcut while the text is selected.
 
+Also you can launch FastReader without text selection.
+Just press Alt+S and hover your mouse over the block containing the text you want to read. The block will be highlighted in green. Click to start reading.
+
 ### Features
 
-* The speed is up to 2000 words per minute;
+* The speed is up to 2000 words per minute with a possible gradual acceleration;
 * Entity analysis – display general entities (i.e. phone numbers and initials) as a single word;
 * Smart slowing – slow down the speed at a punctuation mark;
 * Focus mode – the focus point is shifted closer to the beginning of a word;
 * Adjustable position of the reading area;
 * Light and dark themes, background transparency;
+* Progress bar and time left till the end of reading;
 * Automatical start of the reading;
 * Different font sizes;
 * Navigating through the words and sentences;
 * Quick preview of the context during a pause;
+* Scrollbar for the easy navigation through the text;
 * Simple and intuitive interface.
 
 ### Shortcuts
