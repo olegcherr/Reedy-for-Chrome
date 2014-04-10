@@ -218,7 +218,7 @@
 	position: relative;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-word {
-	color: #9f9f9f;
+	color: #b8b8b8;
 }
 .e-FastReader-word > span {
 	color: #f00;
