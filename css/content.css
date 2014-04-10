@@ -89,7 +89,7 @@
 	color: #6b6b6b;
 }
 .e-FastReader-wrapper[dark-theme=true][transparent-bg=true] .e-FastReader-context {
-	color: #878787;
+	color: #8a8a8a;
 }
 .e-FastReader-wrapper[is-running=true] .e-FastReader-context {
 	display: none;
@@ -400,7 +400,7 @@
 	color: #575757;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-info {
-	color: #bfbfbf;
+	color: #b8b8b8;
 }
 .e-FastReader-wrapper[autostart=true] .e-FastReader-info,
 .e-FastReader-wrapper[was-launched=true] .e-FastReader-info {
