@@ -101,7 +101,7 @@
 			emptySentenceEnd: true,
 			
 			progressBar: true,
-			timeLeft: true
+			timeLeft: false
 		};
 	
 	
