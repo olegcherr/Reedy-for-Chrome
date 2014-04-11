@@ -46,7 +46,7 @@
 				callback();
 			else
 				getCurrentTab(function(tab) {
-					if (!/^chrome/.test(tab.url)) {
+					if (!/^chrome|chrome\.google\.com/.test(tab.url)) {
 						install();
 						setTimeout(function() {
 							isInstalled(function(res) {
