@@ -149,6 +149,7 @@
 	left: 50%;
 	top: 50%;
 	height: 100%;
+	line-height: 1;
 	text-align: center;
 	white-space: nowrap;
 }
@@ -164,7 +165,6 @@
 	width: 1027px;
 	height: 210px;
 	font-size: 74px;
-	line-height: 74px;
 }
 .e-FastReader-wrapper[font-size="6"] .e-FastReader-wordWrap {
 	margin: -85px 0 0 -416px;
@@ -172,7 +172,6 @@
 	width: 833px;
 	height: 170px;
 	font-size: 60px;
-	line-height: 60px;
 }
 .e-FastReader-wrapper[font-size="5"] .e-FastReader-wordWrap {
 	margin: -65px 0 0 -319px;
@@ -180,7 +179,6 @@
 	width: 639px;
 	height: 130px;
 	font-size: 46px;
-	line-height: 46px;
 }
 .e-FastReader-wrapper[font-size="4"] .e-FastReader-wordWrap {
 	margin: -51px 0 0 -250px;
@@ -188,7 +186,6 @@
 	width: 500px;
 	height: 102px;
 	font-size: 36px;
-	line-height: 36px;
 }
 .e-FastReader-wrapper[font-size="3"] .e-FastReader-wordWrap {
 	margin: -40px 0 0 -194px;
@@ -196,7 +193,6 @@
 	width: 389px;
 	height: 79px;
 	font-size: 28px;
-	line-height: 28px;
 }
 .e-FastReader-wrapper[font-size="2"] .e-FastReader-wordWrap {
 	margin: -31px 0 0 -153px;
@@ -204,7 +200,6 @@
 	width: 306px;
 	height: 62px;
 	font-size: 22px;
-	line-height: 22px;
 }
 .e-FastReader-wrapper[font-size="1"] .e-FastReader-wordWrap {
 	margin: -23px 0 0 -111px;
@@ -212,7 +207,6 @@
 	width: 223px;
 	height: 45px;
 	font-size: 16px;
-	line-height: 16px;
 }
 .e-FastReader-word {
 	position: relative;
@@ -323,8 +317,17 @@
 }
 .e-FastReader-timeLeft_word {
 	position: absolute;
+	margin: 0 0 -0.5%;
 	right: 0;
-	bottom: -33px;
+	bottom: -17px;
+}
+.e-FastReader-wrapper[font-size="2"] .e-FastReader-timeLeft_word {
+	font-size: 11px;
+	opacity: .9;
+}
+.e-FastReader-wrapper[font-size="1"] .e-FastReader-timeLeft_word {
+	font-size: 10px;
+	opacity: .8;
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-timeLeft_word {
 	color: #6b6b6b;
@@ -334,7 +337,7 @@
 	display: none;
 }
 .e-FastReader-timeLeft > i {
-	font-size: 11px;
+	font-size: 91.7%;
 	font-weight: normal;
 }
 
