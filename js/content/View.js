@@ -523,11 +523,13 @@
 		}
 		
 		api.setSequencer = function(seq) {
-			sequencer = seq;
+			if (sequencer) {
+				app.off(sequencer, 'play', onSequencerPlay);
+				app.off(sequencer, 'pause', onSequencerPause);
+				app.off(sequencer, 'update', onSequencerUpdate);
+			}
 			
-			app.off(sequencer, 'play', onSequencerPlay);
-			app.off(sequencer, 'pause', onSequencerPause);
-			app.off(sequencer, 'update', onSequencerUpdate);
+			sequencer = seq;
 			
 			app.on(sequencer, 'play', onSequencerPlay);
 			app.on(sequencer, 'pause', onSequencerPause);

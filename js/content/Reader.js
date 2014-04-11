@@ -68,6 +68,8 @@
 		function updateSequencer() {
 			var tokenStartIndex = -1;
 			
+			currentSeq && currentSeq.pause();
+			
 			if (app.get('entityAnalysis')) {
 				_cache_seqSimple && (tokenStartIndex = _cache_seqSimple.getToken().startIndex);
 				
