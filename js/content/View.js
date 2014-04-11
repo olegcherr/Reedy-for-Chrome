@@ -534,6 +534,8 @@
 			app.on(sequencer, 'play', onSequencerPlay);
 			app.on(sequencer, 'pause', onSequencerPause);
 			app.on(sequencer, 'update', onSequencerUpdate);
+			
+			updateTimeLeft();
 		}
 		
 		
