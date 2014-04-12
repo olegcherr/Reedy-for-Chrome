@@ -75,7 +75,9 @@
 		}
 		
 		function onSequencerPlay() {
+			wasLaunchedSinceOpen = true;
 			updateWrapper();
+			updateWord();
 		}
 		
 		function onSequencerPause() {
