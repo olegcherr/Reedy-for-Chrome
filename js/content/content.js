@@ -22,7 +22,7 @@
 	
 	function onReaderDestroy() {
 		settings = reader = null;
-		app.isReaderStarted = false;
+		app.isReaderStarted(false);
 	}
 	
 	function onDisconnect() {
@@ -39,8 +39,17 @@
 				callback();
 				break;
 			case 'getSelection':
-				callback(getSelection());
-				break;
+				// Since the content script is being installed in all the frames on the page,
+				// we shold give a priority to the one who have a text selection.
+				var sel = getSelection();
+				setTimeout(function() {
+					// Try-catch is needed because any second call of the callback throws an exception
+					try {
+						callback(sel);
+					}
+					catch(e) { }
+				}, sel ? 0 : 200);
+				return true;
 			case 'startReading':
 				app.startReader();
 				callback();
@@ -77,7 +86,20 @@
 		settings, reader;
 	
 	
-	app.isReaderStarted = false;
+	app._isReaderStarted = false;
+	
+	app.isReaderStarted = function(val) {
+		try {
+			if (typeof val === 'boolean')
+				window.top.fastReader._isReaderStarted = val;
+			
+			return window.top.fastReader._isReaderStarted;
+		}
+		catch(e) {
+			// If an iframe is not accessible, we don't try to launch on it
+			return true;
+		}
+	}
 	
 	
 	app.get = function(key) {
@@ -91,10 +113,23 @@
 	
 	
 	app.startReader = function(text) {
+		if (app.isReaderStarted()) return;
+		
 		text = text != null ? text : getSelection();
 		
-		if (!text.length || app.isReaderStarted) return;
-		app.isReaderStarted = true;
+		if (!text) {
+			var frames = document.querySelectorAll('iframe,frame'), i;
+			for (i = 0; i < frames.length; i++) {
+				// Iframe's window might be inaccessible due to privacy policy
+				try {
+					frames[i].contentWindow.fastReader.startReader();
+				}
+				catch(e) { }
+			}
+			return;
+		}
+		
+		app.isReaderStarted(true);
 		
 		init(function() {
 			reader = new app.Reader(text);

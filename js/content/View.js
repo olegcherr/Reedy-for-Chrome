@@ -2,10 +2,6 @@
 
 (function(app) {
 	
-	function querySelector(selector, $context) {
-		return ($context || document).querySelector(selector);
-	}
-	
 	function createElement(tagName, className, $appendTo, html, title) {
 		var $elem = document.createElement(tagName);
 		className != null && ($elem.className = className);
@@ -44,7 +40,13 @@
 		MIN_VPOS            = 1,
 		MAX_VPOS            = 5,
 		
-		$body = querySelector('body');
+		// Don't use `document.body` because if the `body` is presented as `frameset` the extension will not be shown.
+		$body = (function() {
+			try {
+				return window.top.document.querySelector('body');
+			}
+			catch(e) { }
+		})();
 	
 	
 	app.View = function() {

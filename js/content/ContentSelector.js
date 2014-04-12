@@ -140,7 +140,7 @@
 	
 	
 	app.startContentSelection = function() {
-		if (isStarted || app.isReaderStarted) return;
+		if (isStarted || app.isReaderStarted()) return;
 		isStarted = true;
 		isJustStarted = true;
 		
