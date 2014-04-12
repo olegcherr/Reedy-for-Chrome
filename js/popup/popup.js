@@ -151,7 +151,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		app.trackJSError(e, 'JS Popup');
 	});
 	
-	chrome.extension.connect({name: "Popup"});
+	chrome.runtime.connect({name: "Popup"});
 	
 	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
 	

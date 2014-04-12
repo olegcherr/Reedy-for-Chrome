@@ -73,7 +73,7 @@
 	
 	
 	
-	var port = chrome.extension.connect({name: "Content"}), // Be careful! Port doesn't allow bg scripts to get sleep.
+	var port = chrome.runtime.connect({name: "Content"}), // Be careful! Port doesn't allow bg scripts to get sleep.
 		settings, reader;
 	
 	
@@ -109,7 +109,7 @@
 	
 	
 	
-	chrome.extension.onMessage.addListener(onMessage);
+	chrome.runtime.onMessage.addListener(onMessage);
 	port.onDisconnect.addListener(onDisconnect);
 	
 	app.on(window, "keydown", onKeyDown);

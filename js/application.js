@@ -124,7 +124,7 @@
 	
 	
 	app.sendMessageToExtension = function(data, callback) {
-		chrome.extension.sendMessage(data, callback || function() {});
+		chrome.runtime.sendMessage(data, callback || function() {});
 	}
 	
 	app.event = function(category, action, label) {

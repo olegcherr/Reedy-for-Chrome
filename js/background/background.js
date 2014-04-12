@@ -174,7 +174,7 @@
 	});
 	
 	
-	chrome.extension.onMessage.addListener(function(msg, sender, callback) {
+	chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
 		switch (msg.type) {
 			case 'getSettings':
 				app.getSettings(msg.key, callback);
@@ -196,7 +196,7 @@
 		}
 	});
 	
-	chrome.extension.onConnect.addListener(function(port) {
+	chrome.runtime.onConnect.addListener(function(port) {
 		if (port.name === "Popup") {
 			isPopupOpen = true;
 			port.onDisconnect.addListener(function() {

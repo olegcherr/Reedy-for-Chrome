@@ -32,7 +32,7 @@ document = {
 	querySelectorAll: noop
 };
 chrome = {
-	extension: {
+	runtime: {
 		connect: noop({
 			onDisconnect: {addListener: noop}
 		}),
