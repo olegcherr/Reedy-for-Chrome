@@ -25,12 +25,6 @@
 		app.isReaderStarted(false);
 	}
 	
-	function onDisconnect() {
-		app.off(window, "keydown", onKeyDown);
-		app.stopContentSelection();
-		reader && reader.destroy();
-	}
-	
 	function onMessage(msg, sender, callback) {
 		switch (msg.type) {
 			case 'popupSettings':
@@ -82,8 +76,7 @@
 	
 	
 	
-	var port = chrome.runtime.connect({name: "Content"}), // Be careful! Port doesn't allow bg scripts to get sleep.
-		settings, reader;
+	var settings, reader;
 	
 	
 	app._isReaderStarted = false;
@@ -145,7 +138,6 @@
 	
 	
 	chrome.runtime.onMessage.addListener(onMessage);
-	port.onDisconnect.addListener(onDisconnect);
 	
 	app.on(window, "keydown", onKeyDown);
 	
