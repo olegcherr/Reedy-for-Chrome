@@ -42,12 +42,13 @@ chrome = {
 };
 
 
-require('../js/content/main.js');
+require('../js/application.js');
 require('../js/content/Parser.js');
 require('../js/content/Sequencer.js');
 require('../js/content/View.js');
 require('../js/content/Reader.js');
 require('../js/content/ContentSelector.js');
+require('../js/content/content.js');
 
 
 tests.forEach(function(name) {

@@ -106,19 +106,6 @@
 	
 	
 	
-	app.each = function(arr, fn) {
-		for (var i = 0; i < arr.length && fn(arr[i]) !== false; i++) {}
-	}
-	
-	app.on = function($elem, event, fn) {
-		$elem.addEventListener(event, fn);
-	}
-	
-	app.off = function($elem, event, fn) {
-		$elem.removeEventListener(event, fn);
-	}
-	
-	
 	app.event = function(category, action, label) {
 		getUUID(function(UUID) {
 			if (isDevMode)
@@ -138,10 +125,6 @@
 			msg += ' ('+filename+' -> '+e.lineno+':'+e.colno+')';
 		}
 		app.event('Error', context, msg);
-	}
-	
-	app.t = function() {
-		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
 	}
 	
 	
@@ -256,4 +239,4 @@
 	
 	
 	
-})(window);
+})(window.fastReader);

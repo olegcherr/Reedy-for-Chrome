@@ -1,6 +1,6 @@
 
 
-chrome.runtime.getBackgroundPage(function(app) {
+(function(app) {
 	
 	function createElement(tagName, className, $appendTo, html) {
 		var $elem = document.createElement(tagName);
@@ -64,4 +64,4 @@ chrome.runtime.getBackgroundPage(function(app) {
 	}
 	
 	
-});
+})(window.fastReader);

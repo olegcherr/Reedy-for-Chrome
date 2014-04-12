@@ -1,6 +1,6 @@
 
 
-chrome.runtime.getBackgroundPage(function(app) {
+chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	function querySelector(selector) {
 		return document.querySelector(selector);
@@ -114,7 +114,8 @@ chrome.runtime.getBackgroundPage(function(app) {
 	
 	
 	
-	var $body = querySelector('body'),
+	var app = bgWindow.fastReader,
+		$body = querySelector('body'),
 		$startReadingBtn = querySelector('.j-startReadingBtn'),
 		$startSelectorBtn = querySelector('.j-startContentSelectorBtn'),
 		$views = querySelectorAll('[view-name]'),

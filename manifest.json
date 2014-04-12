@@ -12,12 +12,13 @@
 			"matches": ["*://*/*", "file:///*"],
 			"css": ["css/content.css"],
 			"js": [
-				"js/content/main.js",
+				"js/application.js",
 				"js/content/Parser.js",
 				"js/content/Sequencer.js",
 				"js/content/View.js",
 				"js/content/Reader.js",
-				"js/content/ContentSelector.js"
+				"js/content/ContentSelector.js",
+				"js/content/content.js"
 			],
 			"all_frames": true,
 			"run_at": "document_end"
@@ -47,8 +48,11 @@
 	},
 	"background": {
 		"scripts": [
-			"js/analytics.js",
-			"js/background.js"
+			"js/application.js",
+			"js/Checkbox.js",
+			"js/Range.js",
+			"js/background/analytics.js",
+			"js/background/background.js"
 		],
 		"persistent": false
 	}
