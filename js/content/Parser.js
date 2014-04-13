@@ -377,7 +377,8 @@
 		CHAR_QUOTE      = 9,
 		CHAR_SLASH      = 10,
 		CHAR_PLUS       = 11,
-		CHAR_COMMON     = 12,
+		CHAR_BULLET     = 12,
+		CHAR_COMMON     = 13,
 		
 		CHAR_MAP        = {
 			'.': CHAR_DOT,
@@ -405,7 +406,11 @@
 			'”': CHAR_QUOTE,
 			'/': CHAR_SLASH,
 			'\\': CHAR_SLASH,
-			'+': CHAR_PLUS
+			'+': CHAR_PLUS,
+			'•': CHAR_BULLET,
+			'∙': CHAR_BULLET,
+			'◦': CHAR_BULLET,
+			'‣': CHAR_BULLET
 		},
 		
 		CHARS_INTO_WORD = [CHAR_DASH, CHAR_DOT],
