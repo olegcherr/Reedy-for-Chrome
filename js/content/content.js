@@ -26,6 +26,8 @@
 	}
 	
 	function onMessage(msg, sender, callback) {
+		if (!app.isStartAllowed()) return;
+		
 		switch (msg.type) {
 			case 'popupSettings':
 				settings && (settings[msg.key] = msg.value);
@@ -52,10 +54,19 @@
 				app.startContentSelection();
 				callback();
 				break;
+			case 'closeReader':
+				app.destroyReader();
+				callback();
+				break;
+			case 'isReaderStarted':
+				callback(app.isReaderStarted());
+				break;
 		}
 	}
 	
 	function onKeyDown(e) {
+		if (!app.isStartAllowed()) return;
+		
 		switch (e.keyCode) {
 			case 83: // S
 				if (e.altKey) {
@@ -81,6 +92,16 @@
 	
 	app._isReaderStarted = false;
 	
+	app.isStartAllowed = function() {
+		try {
+			return !!window.top.fastReader;
+		}
+		catch(e) {
+			// If an iframe is not accessible, we don't try to launch on it
+			return false;
+		}
+	}
+	
 	app.isReaderStarted = function(val) {
 		try {
 			if (typeof val === 'boolean')
@@ -89,8 +110,7 @@
 			return window.top.fastReader._isReaderStarted;
 		}
 		catch(e) {
-			// If an iframe is not accessible, we don't try to launch on it
-			return true;
+			return false;
 		}
 	}
 	
@@ -106,7 +126,7 @@
 	
 	
 	app.startReader = function(text, selectionText) {
-		if (app.isReaderStarted()) return;
+		if (!app.isStartAllowed() || app.isReaderStarted()) return;
 		
 		text = text != null ? text : getSelection() || selectionText;
 		
@@ -129,6 +149,10 @@
 			app.on(reader, 'destroy', onReaderDestroy);
 			app.event('Text', 'Length', app.roundExp(text.length));
 		});
+	}
+	
+	app.destroyReader = function() {
+		reader && reader.destroy();
 	}
 	
 	app.isPopupOpen = function(callback) {

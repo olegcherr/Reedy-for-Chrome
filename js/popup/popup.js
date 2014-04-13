@@ -52,6 +52,11 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		startSelector();
 	}
 	
+	function onCloseReaderClick() {
+		app.event('Reader', 'Close', 'Popup');
+		closeReader();
+	}
+	
 	
 	function onKeyDown(e) {
 		switch (e.keyCode) {
@@ -78,6 +83,11 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	function startSelector() {
 		app.sendMessageToSelectedTab({type: 'startSelector'});
+		window.close();
+	}
+	
+	function closeReader() {
+		app.sendMessageToSelectedTab({type: 'closeReader'});
 		window.close();
 	}
 	
@@ -118,6 +128,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		$body = querySelector('body'),
 		$startReadingBtn = querySelector('.j-startReadingBtn'),
 		$startSelectorBtn = querySelector('.j-startContentSelectorBtn'),
+		$closeReaderBtn = querySelector('.j-closeReaderBtn'),
 		$views = querySelectorAll('[view-name]'),
 		$tabs = querySelectorAll('.j-tab'),
 		$content = querySelectorAll('.j-content');
@@ -167,14 +178,29 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	app.getSettings(null, initControls);
 	
-	getTextSelection(function(text) {
-		$startReadingBtn.setAttribute('hidden', !text.length);
-		$startSelectorBtn.setAttribute('hidden', !!text.length);
+	/**
+	 * Preparing buttons
+	 * `getTextSelection` - is a pretty diffcult method, so we check for the reader state at first
+	 */
+	app.sendMessageToSelectedTab({type: 'isReaderStarted'}, function(isReaderStarted) {
+		if (isReaderStarted) {
+			$startReadingBtn.setAttribute('hidden', true);
+			$startSelectorBtn.setAttribute('hidden', true);
+			$closeReaderBtn.setAttribute('hidden', false);
+		}
+		else {
+			$closeReaderBtn.setAttribute('hidden', true);
+			getTextSelection(function(text) {
+				$startReadingBtn.setAttribute('hidden', !text.length);
+				$startSelectorBtn.setAttribute('hidden', !!text.length);
+			});
+		}
 	});
 	
 	
 	app.on($startReadingBtn, "click", onStartReadingClick);
 	app.on($startSelectorBtn, "click", onStartSelectorClick);
+	app.on($closeReaderBtn, "click", onCloseReaderClick);
 	
 	app.each(querySelectorAll('a[href^=http]'), function($elem) {
 		app.on($elem, 'click', onExternalLinkClick);

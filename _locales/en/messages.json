@@ -27,6 +27,9 @@
 	"startContentSelectorBtn": {
 		"message": "Select an element on the page"
 	},
+	"closeReaderBtn": {
+		"message": "Finish reading"
+	},
 	
 	"tab_reading": {
 		"message": "Reading"
