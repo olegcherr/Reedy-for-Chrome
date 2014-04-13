@@ -461,8 +461,8 @@
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-scrollerBg {
 	background: rgba(255, 255, 255, .07);
 }
-.e-FastReader-wrapper[was-launched=false] .e-FastReader-scrollerBg,
-.e-FastReader-wrapper[is-running=true] .e-FastReader-scrollerBg {
+.e-FastReader-wrapper[was-launched=false] .e-FastReader-scrollerWrap,
+.e-FastReader-wrapper[is-running=true] .e-FastReader-scrollerWrap {
 	display: none;
 }
 .e-FastReader-scrollerBarWrap {
