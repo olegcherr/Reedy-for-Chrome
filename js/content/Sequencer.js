@@ -97,13 +97,13 @@
 			api.index = app.norm(api.index, 0, length-1);
 		}
 		
-		function changeIndex(reduce) {
+		function changeIndex(back) {
 			var indexBefore = api.index;
-			reduce ? api.index-- : api.index++;
+			back ? api.index-- : api.index++;
 			normIndex();
 			
 			if (api.index !== indexBefore) {
-				complexityElapsed = app.norm(complexityElapsed + api.getToken().getComplexity() * (reduce ? -1 : 1), complexityFirstToren, complexityTotal);
+				complexityRemain = app.norm(complexityRemain + data[back ? api.index+1 : api.index].getComplexity() * (back ? 1 : -1), 0, complexityTotal-complexityFirstToren);
 				return true;
 			}
 			
@@ -119,11 +119,11 @@
 			token = data[0],
 			wpm = 0, startWpm = 0,
 			complexityFirstToren = token.getComplexity(),
-			complexityElapsed = complexityFirstToren,
 			complexityTotal = (function(length, i, res) {
-			for (; i < length && (res += data[i].getComplexity()); i++) {}
-			return res;
-		})(length, 0, 0),
+				for (; i < length && (res += data[i].getComplexity()); i++) {}
+				return res;
+			})(length, 0, 0),
+			complexityRemain = complexityTotal-complexityFirstToren,
 			timeout;
 		
 		
@@ -207,7 +207,7 @@
 		
 		api.toLastToken = function() {
 			api.index = length-1;
-			complexityElapsed = complexityTotal;
+			complexityRemain = 0;
 			
 			normIndex();
 			app.trigger(api, 'update');
@@ -215,7 +215,7 @@
 		
 		api.toFirstToken = function() {
 			api.index = 0;
-			complexityElapsed = complexityFirstToren;
+			complexityRemain = complexityTotal-complexityFirstToren;
 			
 			normIndex();
 			app.trigger(api, 'update');
@@ -223,7 +223,7 @@
 		
 		api.toTokenAtIndex = function(index) {
 			api.index = -1;
-			complexityElapsed = 0;
+			complexityRemain = complexityTotal;
 			
 			while (changeIndex()) {
 				if (data[api.index].endIndex >= index)
@@ -243,7 +243,7 @@
 		}
 		
 		api.getTimeLeft = function() {
-			return (complexityTotal - complexityElapsed) * (60000 / app.get('wpm'));
+			return complexityRemain * (60000 / app.get('wpm'));
 		}
 		
 		

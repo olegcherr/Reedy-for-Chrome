@@ -324,7 +324,7 @@
 		
 		if (!api._cache_complexity) {
 			var types = api.getTypes();
-			return api._cache_complexity = api.total > 1 || types[0] !== CHAR_COMMON || isDigits(api.toString()) || api.toHyphenated().length > 1 ? 2 : 1;
+			return api._cache_complexity = api.isSentenceEnd || api.total > 1 || types[0] !== CHAR_COMMON || isDigits(api.toString()) || api.toHyphenated().length > 1 ? 2 : 1;
 		}
 		
 		return api._cache_complexity;

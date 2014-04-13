@@ -2,11 +2,6 @@
 
 exports = (function() {
 	
-	function checkSequencer(sequencer, raw, data, index) {
-		assert.equal(sequencer.index, index, '[Index] '+raw);
-		assert.equal(sequencer.getTimeLeft(), getTimeLeft(data, index), '[Time left] '+raw);
-	}
-	
 	function getTimeLeft(data, fromIndex) {
 		for (var i = 0, res = 0; i < data.length; i++) {
 			if (i > fromIndex) {
@@ -14,6 +9,11 @@ exports = (function() {
 			}
 		}
 		return res;
+	}
+	
+	function checkSequencer(sequencer, raw, data, index) {
+		assert.equal(sequencer.index, index, '[Index] '+raw);
+		assert.equal(sequencer.getTimeLeft(), getTimeLeft(data, index), '[Time left] '+raw);
 	}
 	
 	
@@ -95,12 +95,16 @@ exports = (function() {
 	
 	/////////////////////////////////////////////////////
 	
+	console.log('==== Part 1');
+	
 	test('Hello',                                   [0, 0, 0]);
 	test('just a word',                             [1, 2, 0]);
 	test('Hello! How are you?',                     [1, 3, 0]);
 	test('Hello! How are you?\n- I\'m fine!',       [1, 5, 0]);
 	
 	/////////////////////////////////////////////////////
+	
+	console.log('==== Part 2');
 	
 	testSent('Hello',                               [0, 0, 0, 0]);
 	testSent('just a word',                         [2, 2, 0, 0]);
@@ -109,6 +113,8 @@ exports = (function() {
 	testSent('Hello! How?\nFine!',                  [1, 2, 1, 0]);
 	
 	/////////////////////////////////////////////////////
+	
+	console.log('==== Part 3');
 	
 	testTokenAtIndex('Hello',                                   [0,0], [1,0], [10,0]);
 	testTokenAtIndex('Hello! How are you?\n- I\'m fine!',       [0,0], [1,0], [6,0], [7,1], [21,4], [50,5]);
