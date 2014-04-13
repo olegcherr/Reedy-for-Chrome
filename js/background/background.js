@@ -120,14 +120,14 @@
 	
 	function onInstalled(details) {
 		if (details.reason === "install") {
-			chrome.tabs.query({}, function(tabs) {
-				for (var i = 0; i < tabs.length; i++) {
-					install(tabs[i].id);
-				}
-			});
-			
 			// Let the UUID to be generated
 			setTimeout(function() {
+				chrome.tabs.query({}, function(tabs) {
+					for (var i = 0; i < tabs.length; i++) {
+						install(tabs[i].id);
+					}
+				});
+				
 				app.event('Extension', 'Installed', version);
 			}, 500);
 		}
