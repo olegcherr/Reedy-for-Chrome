@@ -30,7 +30,8 @@
 	"permissions": [
 		"storage",
 		"activeTab",
-		"contextMenus"
+		"contextMenus",
+		"<all_urls>"
 	],
 	"icons": {
 		"16": "icons/icon16.png",
