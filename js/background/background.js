@@ -1,4 +1,10 @@
 
+/**
+ * Notes
+ * - Manifest's permission `tabs` is needed to get access
+ * to the `url`, `title`, and `favIconUrl` properties of a tab,
+ * that is not active at the moment.
+ */
 
 (function(app) {
 	
@@ -69,6 +75,62 @@
 		chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
 			tabs[0] && callback(tabs[0]);
 		});
+	}
+	
+	
+	function onMessage(msg, sender, callback) {
+		switch (msg.type) {
+			case 'getSettings':
+				app.getSettings(msg.key, callback);
+				return true;
+			case 'setSettings':
+				app.setSettings(msg.key, msg.value, callback);
+				return true;
+			case 'isPopupOpen':
+				callback(isPopupOpen);
+				break;
+			case 'trackEvent':
+				app.event(msg.category, msg.action, msg.label);
+				callback();
+				break;
+			case 'trackJSError':
+				app.trackJSError(msg, msg.context);
+				callback();
+				break;
+		}
+	}
+	
+	function onConnect(port) {
+		if (port.name === "Popup") {
+			isPopupOpen = true;
+			port.onDisconnect.addListener(function() {
+				isPopupOpen = false;
+			});
+		}
+	}
+	
+	function onClicked(data) {
+		if (data.menuItemId == 'fastReaderMenu') {
+			installAndRun(function() {
+				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader();'});
+				app.event('Reader', 'Open', 'Context menu');
+			});
+		}
+	}
+	
+	function onInstalled(details) {
+		if (details.reason === "install") {
+			chrome.tabs.query({}, function(tabs) {
+				for (var i = 0; i < tabs.length; i++) {
+					install(tabs[i].id);
+				}
+			});
+			
+			// Let the UUID to be generated
+			setTimeout(function() {
+				app.event('Extension', 'Installed', version);
+			}, 500);
+		}
 	}
 	
 	
@@ -174,36 +236,9 @@
 	});
 	
 	
-	chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
-		switch (msg.type) {
-			case 'getSettings':
-				app.getSettings(msg.key, callback);
-				return true;
-			case 'setSettings':
-				app.setSettings(msg.key, msg.value, callback);
-				return true;
-			case 'isPopupOpen':
-				callback(isPopupOpen);
-				break;
-			case 'trackEvent':
-				app.event(msg.category, msg.action, msg.label);
-				callback();
-				break;
-			case 'trackJSError':
-				app.trackJSError(msg, msg.context);
-				callback();
-				break;
-		}
-	});
+	chrome.runtime.onMessage.addListener(onMessage);
 	
-	chrome.runtime.onConnect.addListener(function(port) {
-		if (port.name === "Popup") {
-			isPopupOpen = true;
-			port.onDisconnect.addListener(function() {
-				isPopupOpen = false;
-			});
-		}
-	});
+	chrome.runtime.onConnect.addListener(onConnect);
 	
 	
 	chrome.contextMenus.create({
@@ -212,30 +247,10 @@
 		contexts: ["selection"]
 	});
 	
-	chrome.contextMenus.onClicked.addListener(function (data) {
-		if (data.menuItemId == 'fastReaderMenu') {
-			installAndRun(function() {
-				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader();'});
-				app.event('Reader', 'Open', 'Context menu');
-			});
-		}
-	});
+	chrome.contextMenus.onClicked.addListener(onClicked);
 	
 	
-	chrome.runtime.onInstalled.addListener(function(details) {
-		if (details.reason === "install") {
-			chrome.tabs.query({}, function(tabs) {
-				for (var i = 0; i < tabs.length; i++) {
-					install(tabs[i].id);
-				}
-			});
-			
-			// Let the UUID to be generated
-			setTimeout(function() {
-				app.event('Extension', 'Installed', version);
-			}, 500);
-		}
-	});
+	chrome.runtime.onInstalled.addListener(onInstalled);
 	
 	
 	
