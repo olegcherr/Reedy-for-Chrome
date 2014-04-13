@@ -3,6 +3,10 @@
 		"message": "en"
 	},
 	
+	"developersHomePage": {
+		"message": "https://www.facebook.com/olegcherr"
+	},
+	
 	"contextMenu": {
 		"message": "Read this with FastReader"
 	},

@@ -3,6 +3,10 @@
 		"message": "ru"
 	},
 	
+	"developersHomePage": {
+		"message": "https://vk.com/olegcherr"
+	},
+	
 	"contextMenu": {
 		"message": "Запустить FastReader"
 	},
