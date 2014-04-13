@@ -150,7 +150,7 @@
 			wpm: 300,
 			fontSize: 3, // 1-7
 			vPosition: 4, // 1-5
-			darkTheme: true,
+			darkTheme: false,
 			transparentBg: false,
 			
 			autostart: false,
