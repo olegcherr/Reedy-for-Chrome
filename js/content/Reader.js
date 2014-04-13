@@ -16,10 +16,10 @@
 		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
 		return raw
 			.trim()
+			.replace(/ (\.|,|!|\?)(\s)/g, '$1$2')                   // ` , ` | ` . . . ` | ` .\n`
 			.replace(/\n|\r/gm, sign)
 			.replace(/\s+/g, ' ')
 			.replace(new RegExp('\\s*'+sign+'\\s*', 'g'), sign)     // `      \n    `
-			.replace(/ (\.|,|!|\?) /g, '$1 ')                       // ` , ` | ` . . . `
 			.replace(/ \- /g, ' — ')                                // replace minus with em dash
 			.replace(/‐/g, '-')                                     // short dash will be replaced with minus
 			.replace(/–|―/g, '—')                                   // there are 4 dash types. after the cleaning only 2 will remain: minus and em dash
