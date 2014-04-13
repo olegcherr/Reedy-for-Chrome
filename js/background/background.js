@@ -112,7 +112,7 @@
 	function onClicked(data) {
 		if (data.menuItemId == 'fastReaderMenu') {
 			installAndRun(function() {
-				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader();'});
+				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader(null, ' + JSON.stringify(data.selectionText) + ');'});
 				app.event('Reader', 'Open', 'Context menu');
 			});
 		}

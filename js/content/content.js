@@ -105,10 +105,10 @@
 	}
 	
 	
-	app.startReader = function(text) {
+	app.startReader = function(text, selectionText) {
 		if (app.isReaderStarted()) return;
 		
-		text = text != null ? text : getSelection();
+		text = text != null ? text : getSelection() || selectionText;
 		
 		if (!text) {
 			var frames = document.querySelectorAll('iframe,frame'), i;
