@@ -13,22 +13,21 @@
 	}
 	
 	function cleanUpTextAdvanced(raw) {
-		var sign = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
+		var NL = '~NL'+(+(new Date())+'').slice(-5)+'NL~';
 		return raw
 			.trim()
-			.replace(/ (\.|,|!|\?)(\s)/g, '$1$2')                   // ` , ` | ` . . . ` | ` .\n`
-			.replace(/\n|\r/gm, sign)
+			.replace(/\n|\r/gm, NL)
 			.replace(/\s+/g, ' ')
-			.replace(new RegExp('\\s*'+sign+'\\s*', 'g'), sign)     // `      \n    `
-			.replace(/ \- /g, ' — ')                                // replace minus with em dash
-			.replace(/‐/g, '-')                                     // short dash will be replaced with minus
-			.replace(/–|―/g, '—')                                   // there are 4 dash types. after the cleaning only 2 will remain: minus and em dash
-			.replace(/[-|—]{2,}/g, '—')                             // `--` | `------`
-			.replace(/\.{4,}/g, '...')                              // `.......`
-			.replace(/([!?]{3})[!?]+/g, '$1')                       // `неужели!!!!!???!!?!?`
-			.replace(/ ([([]+) /g, ' $1')                           // `сюжет ( видео`
-			.replace(/ ([)\].!?;]+)( |$)/g, '$1$2')                 // `вставка ) отличный` | `конечно ...`
-			.replace(new RegExp(sign, 'g'), '\n');
+			.replace(new RegExp('\\s*'+NL+'\\s*', 'g'), NL)                     // `      \n    `
+			.replace(/‐/g, '-')                                                 // short dash will be replaced with minus
+			.replace(/ \- /g, ' — ')                                            // replace minus between words with em dash
+			.replace(/–|―/g, '—')                                               // there are 4 dash types. after the cleaning only 2 will remain: minus and em dash
+			.replace(/[-|—]{2,}/g, '—')                                         // `--` | `------`
+			.replace(new RegExp('( |^|'+NL+')([([«]+) ', 'g'), '$1$2')          // `сюжет ( видео`
+			.replace(new RegExp(' ([)\\].,!?;»]+)( |$|'+NL+')', 'g'), '$1$2')   // `вставка ) отличный` | `конечно ...` | ` , ` | ` .\n`
+			.replace(/\.{4,}/g, '...')                                          // `.......`
+			.replace(/([!?]{3})[!?]+/g, '$1')                                   // `неужели!!!!!???!!?!?`
+			.replace(new RegExp(NL, 'g'), '\n');
 	}
 	
 	
