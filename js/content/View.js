@@ -61,13 +61,13 @@
 		}
 		
 		
-		function onSequencerUpdate(e, str, sequel) {
+		function onSequencerUpdate(e, str, hyphenated) {
 			if (!wasLaunchedSinceOpen) {
 				wasLaunchedSinceOpen = true;
 				updateWrapper();
 			}
 			
-			updateWord(str, sequel);
+			updateWord(str, hyphenated);
 			updateContext();
 			updateProgressBar();
 			updateTimeLeft();
@@ -355,7 +355,7 @@
 			}
 		}
 		
-		function updateWord(str, sequel) {
+		function updateWord(str, hyphenated) {
 			if (!wasLaunchedSinceOpen) return;
 			
 			if (str === false) {
@@ -364,25 +364,43 @@
 			}
 			
 			str = str || sequencer.getToken().toString();
-			sequel = sequel
-				? sequel
-				: app.get('sequel') ? sequencer.getSequel().join(' ') : '';
 			
-			$word.style.left = '';
 			
-			if (app.get('focusMode')) {
+			var focusMode = app.get('focusMode'),
+				html;
+			
+			if (focusMode) {
 				var pivot = app.calcPivotPoint(str);
-				$word.innerHTML =
+				html =
 					app.htmlEncode(str.substr(0, pivot))
 					+'<span>'+app.htmlEncode(str[pivot])+'</span>'
-					+app.htmlEncode(str.substr(pivot+1))
-					+' <i>'+app.htmlEncode(sequel)+'</i>';
-				
-				var letterRect = $word.querySelector('span').getBoundingClientRect();
-				$word.style.left = Math.round(focusPoint - letterRect.left - letterRect.width/2)+'px';
+					+app.htmlEncode(str.substr(pivot+1));
 			}
 			else {
-				$word.innerHTML = app.htmlEncode(str)+' <i>'+app.htmlEncode(sequel)+'</i>';
+				html = app.htmlEncode(str);
+			}
+			
+			
+			if (app.get('sequel')) {
+				html += '<i>';
+				
+				if (hyphenated && hyphenated.length)
+					html += hyphenated.join('');
+				
+				html += ' ';
+				html += sequencer.getSequel().join(' ');
+				html += '</i>';
+			}
+			else if (hyphenated && hyphenated.length) {
+				html += '-';
+			}
+			
+			$word.style.left = '';
+			$word.innerHTML = html;
+			
+			if (focusMode) {
+				var letterRect = $word.querySelector('span').getBoundingClientRect();
+				$word.style.left = Math.round(focusPoint - letterRect.left - letterRect.width/2)+'px';
 			}
 		}
 		
@@ -449,7 +467,8 @@
 			$contextBefore      = createElement('div', cls('context', 'context_before'), $pane),
 			
 			$wordWrap           = createElement('div', cls('wordWrap'), $pane),
-			$word               = createElement('div', cls('word'), $wordWrap),
+			$wordWrap2          = createElement('div', cls('wordWrap2'), $wordWrap),
+			$word               = createElement('div', cls('word'), $wordWrap2),
 			$focusLines         = createElement('div', cls('focusLines'), $wordWrap),
 			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
 			$progressBg         = createElement('div', cls('progressBg'), $wordWrap),

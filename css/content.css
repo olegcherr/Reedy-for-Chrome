@@ -152,6 +152,9 @@
 	line-height: 1;
 	text-align: center;
 	white-space: nowrap;
+}
+.e-FastReader-wordWrap2 {
+	height: 100%;
 	overflow: hidden;
 }
 .e-FastReader-wrapper[is-running=true] .e-FastReader-wordWrap {

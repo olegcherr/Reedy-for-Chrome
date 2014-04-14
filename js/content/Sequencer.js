@@ -74,11 +74,11 @@
 				function doUpdate() {
 					var sequel = app.get('sequel'),
 						hyphenated = app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
-						dash = sequel ? '' : '-', part;
+						part;
 					
 					(function go() {
 						if (part = hyphenated.shift()) {
-							app.trigger(api, 'update', [part+(hyphenated.length ? dash : ''), sequel ? hyphenated.concat(api.getSequel()).join(' ') : '']);
+							app.trigger(api, 'update', [part, hyphenated]);
 							timeout = setTimeout(go, getTiming(token.getComplexity()));
 						}
 						else {
