@@ -163,7 +163,8 @@
 			emptySentenceEnd: true,
 			
 			progressBar: true,
-			timeLeft: false
+			timeLeft: false,
+			sequel: true
 		};
 	
 	

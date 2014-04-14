@@ -61,13 +61,13 @@
 		}
 		
 		
-		function onSequencerUpdate(e, str) {
+		function onSequencerUpdate(e, str, sequel) {
 			if (!wasLaunchedSinceOpen) {
 				wasLaunchedSinceOpen = true;
 				updateWrapper();
 			}
 			
-			updateWord(str);
+			updateWord(str, sequel);
 			updateContext();
 			updateProgressBar();
 			updateTimeLeft();
@@ -355,7 +355,7 @@
 			}
 		}
 		
-		function updateWord(str) {
+		function updateWord(str, sequel) {
 			if (!wasLaunchedSinceOpen) return;
 			
 			if (str === false) {
@@ -364,18 +364,25 @@
 			}
 			
 			str = str || sequencer.getToken().toString();
+			sequel = sequel
+				? sequel
+				: app.get('sequel') ? sequencer.getSequel().join(' ') : '';
 			
 			$word.style.left = '';
 			
 			if (app.get('focusMode')) {
 				var pivot = app.calcPivotPoint(str);
-				$word.innerHTML = app.htmlEncode(str.substr(0, pivot))+'<span>'+app.htmlEncode(str[pivot])+'</span>'+app.htmlEncode(str.substr(pivot+1));
+				$word.innerHTML =
+					app.htmlEncode(str.substr(0, pivot))
+					+'<span>'+app.htmlEncode(str[pivot])+'</span>'
+					+app.htmlEncode(str.substr(pivot+1))
+					+' <i>'+app.htmlEncode(sequel)+'</i>';
 				
 				var letterRect = $word.querySelector('span').getBoundingClientRect();
 				$word.style.left = Math.round(focusPoint - letterRect.left - letterRect.width/2)+'px';
 			}
 			else {
-				$word.innerHTML = app.htmlEncode(str);
+				$word.innerHTML = app.htmlEncode(str)+' <i>'+app.htmlEncode(sequel)+'</i>';
 			}
 		}
 		

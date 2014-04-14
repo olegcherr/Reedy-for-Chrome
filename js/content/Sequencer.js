@@ -72,12 +72,13 @@
 				token = api.getToken();
 				
 				function doUpdate() {
-					var hyphenated = app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
-						i = -1;
+					var sequel = app.get('sequel'),
+						hyphenated = app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
+						dash = sequel ? '' : '-', part;
 					
 					(function go() {
-						if (hyphenated[++i]) {
-							app.trigger(api, 'update', [hyphenated[i]+(i < hyphenated.length-1 ? '-' : '')]);
+						if (part = hyphenated.shift()) {
+							app.trigger(api, 'update', [part+(hyphenated.length ? dash : ''), sequel ? hyphenated.concat(api.getSequel()).join(' ') : '']);
 							timeout = setTimeout(go, getTiming(token.getComplexity()));
 						}
 						else {
@@ -171,6 +172,21 @@
 				before: raw.substring(charsLimit ? Math.max(token.startIndex-charsLimit, 0) : 0, token.startIndex).trim(),
 				after: raw.substring(token.endIndex, charsLimit ? Math.min(token.endIndex+charsLimit, raw.length) : raw.length).trim()
 			};
+		}
+		
+		api.getSequel = function() {
+			if (api.getToken().isSentenceEnd)
+				return [];
+			
+			var fromIndex = api.index+1,
+				res = [], t, i;
+			
+			for (i = 0; i < 10 && (t = data[fromIndex+i]); i++) {
+				res.push(t.toString());
+				if (t.isSentenceEnd) break;
+			}
+			
+			return res;
 		}
 		
 		

@@ -152,6 +152,7 @@
 	line-height: 1;
 	text-align: center;
 	white-space: nowrap;
+	overflow: hidden;
 }
 .e-FastReader-wrapper[is-running=true] .e-FastReader-wordWrap {
 	background: #e6e6e6;
@@ -219,6 +220,13 @@
 }
 .e-FastReader-wrapper[dark-theme=true] .e-FastReader-word > span {
 	color: #ff5757;
+}
+.e-FastReader-word > i {
+	font-style: normal;
+	opacity: .35;
+}
+.e-FastReader-wrapper[is-running=false] .e-FastReader-word > i {
+	display: none;
 }
 
 
