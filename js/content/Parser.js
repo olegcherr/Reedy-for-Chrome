@@ -147,7 +147,6 @@
 		
 		api.startIndex =
 		api.endIndex = 0;
-		api.textLength = 0;
 		
 		api.hasSpaceAfter =
 		api.hasSpaceBefore =
@@ -175,7 +174,14 @@
 	}
 	
 	PlainToken.prototype.getComplexity = function() {
-		return 1;
+		var api = this;
+		
+		if (!api._cache_complexity) {
+			var len = api.value.length;
+			return api._cache_complexity = len < 4 || len > 7 ? 1.5 : 1;
+		}
+		
+		return api._cache_complexity;
 	}
 	
 	PlainToken.prototype.toString = function() {
@@ -323,8 +329,16 @@
 		var api = this;
 		
 		if (!api._cache_complexity) {
-			var types = api.getTypes();
-			return api._cache_complexity = api.isSentenceEnd || api.total > 1 || types[0] !== CHAR_COMMON || isDigits(api.toString()) || api.toHyphenated().length > 1 ? 2 : 1;
+			var types = api.getTypes(),
+				res = 1;
+			
+			if (api.isSentenceEnd || api.total > 1 || types[0] !== CHAR_COMMON || isDigits(api.toString()) || api.toHyphenated().length > 1)
+				res += 1.1;
+			
+			if (api.textLength < 4 || api.textLength > 7)
+				res += .3;
+			
+			return api._cache_complexity = res;
 		}
 		
 		return api._cache_complexity;

@@ -12,7 +12,8 @@
 	
 	
 	
-	var INIT_WPM_REDUCE_0   = 0.5,  // from 0 to 1 - wpm reduce factor for the FIRST start (more value means higher start wpm)
+	var SENTENCE_END_COMPL  = 2.1,
+		INIT_WPM_REDUCE_0   = 0.5,  // from 0 to 1 - wpm reduce factor for the FIRST start (more value means higher start wpm)
 		INIT_WPM_REDUCE_1   = 0.6,  // from 0 to 1 - wpm reduce factor for the FOLLOWING starts (more value means higher start wpm)
 		ACCEL_CURVE         = 3,    // from 0 to infinity - more value means more smooth acceleration curve
 		PI2                 = Math.PI/2;
@@ -20,7 +21,7 @@
 	
 	app.Sequencer = function(raw, data) {
 		
-		function getTiming(isDelayed) {
+		function getTiming(complexity) {
 			var gradualAccel = app.get('gradualAccel'),
 				targetWpm = app.get('wpm'), res;
 			
@@ -48,8 +49,10 @@
 			if (gradualAccel && !wasLaunchedSinceOpen)
 				res /= 1.5;
 			
-			if (!wasLaunchedSinceOpen || isDelayed && app.get('smartSlowing'))
+			if (!wasLaunchedSinceOpen)
 				res *= 2;
+			else if (app.get('smartSlowing'))
+				res *= complexity;
 			
 			return res;
 		}
@@ -75,7 +78,7 @@
 					(function go() {
 						if (hyphenated[++i]) {
 							app.trigger(api, 'update', [hyphenated[i]+(i < hyphenated.length-1 ? '-' : '')]);
-							timeout = setTimeout(go, getTiming(token.getComplexity() === 2));
+							timeout = setTimeout(go, getTiming(token.getComplexity()));
 						}
 						else {
 							next();
@@ -85,7 +88,7 @@
 				
 				if (!justRun && api.index && data[api.index-1].isSentenceEnd && app.get('emptySentenceEnd')) {
 					app.trigger(api, 'update', [false]);
-					timeout = setTimeout(doUpdate, getTiming(true));
+					timeout = setTimeout(doUpdate, getTiming(SENTENCE_END_COMPL));
 				}
 				else {
 					doUpdate();

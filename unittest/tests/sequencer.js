@@ -13,7 +13,7 @@ exports = (function() {
 	
 	function checkSequencer(sequencer, raw, data, index) {
 		assert.equal(sequencer.index, index, '[Index] '+raw);
-		assert.equal(sequencer.getTimeLeft(), getTimeLeft(data, index), '[Time left] '+raw);
+		assert.equal(Math.round(sequencer.getTimeLeft()), getTimeLeft(data, index), '[Time left] '+raw);
 	}
 	
 	
@@ -21,8 +21,7 @@ exports = (function() {
 		var data = parser(raw),
 			sequencer = new Sequencer(raw, data), i = -1;
 		
-		assert.equal(sequencer.index, 0, '[Index] '+raw);
-		assert.equal(sequencer.getTimeLeft(), getTimeLeft(data, 0), '[Time left] '+raw);
+		checkSequencer(sequencer, raw, data, 0);
 		
 		sequencer.toNextToken();
 		checkSequencer(sequencer, raw, data, indexes[++i]);
