@@ -335,8 +335,12 @@
 			if (api.isSentenceEnd || api.total > 1 || types[0] !== CHAR_COMMON || isDigits(api.toString()) || api.toHyphenated().length > 1)
 				res += 1.1;
 			
-			if (api.textLength < 4 || api.textLength > 7)
+			if (api.textLength < 4 || api.textLength > 7) {
 				res += .3;
+				
+				if (api.textLength > 10 && api.textLength < 14)
+					res += .4;
+			}
 			
 			return api._cache_complexity = res;
 		}
