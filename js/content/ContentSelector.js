@@ -132,6 +132,7 @@
 	var isStarted = false,
 		isHLighterAttached = false,
 		isJustStarted = false,
+		$html = document.documentElement,
 		$body = document.body,
 		$hlighter = app.createElement('div', 'e-FastReader-hlighter'),
 		hlStyle = $hlighter.style,
@@ -150,9 +151,9 @@
 		hlStyle.height = 0;
 		
 		
-		app.on($body, 'mousemove', onMouseMove);
-		app.on($body, 'mousedown', onMouseDown);
-		app.on($body, 'contextmenu', onContextMenu);
+		app.on($html, 'mousemove', onMouseMove);
+		app.on($html, 'mousedown', onMouseDown);
+		app.on($html, 'contextmenu', onContextMenu);
 		
 		app.on(window, 'keydown', onKeyDown);
 		
@@ -169,9 +170,9 @@
 		if (!isStarted) return;
 		isStarted = false;
 		
-		app.off($body, 'mousemove', onMouseMove);
-		app.off($body, 'mousedown', onMouseDown);
-		app.off($body, 'contextmenu', onContextMenu);
+		app.off($html, 'mousemove', onMouseMove);
+		app.off($html, 'mousedown', onMouseDown);
+		app.off($html, 'contextmenu', onContextMenu);
 		
 		app.off(window, 'keydown', onKeyDown);
 		
