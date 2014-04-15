@@ -177,8 +177,17 @@
 		var api = this;
 		
 		if (!api._cache_complexity) {
-			var len = api.value.length;
-			return api._cache_complexity = len < 4 || len > 7 ? 1.5 : 1;
+			var len = api.value.length,
+				res = 1;
+			
+			if (len < 4 || len > 7) {
+				res += .5;
+				
+				if (len > 10)
+					res += .5;
+			}
+			
+			return api._cache_complexity = res;
 		}
 		
 		return api._cache_complexity;
