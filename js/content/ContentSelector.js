@@ -151,7 +151,8 @@
 		hlStyle.height = 0;
 		
 		
-		app.on($html, 'mousemove', onMouseMove);
+		app.on($html, 'mousemove', onMouseMove); // `move` is needed for the possibility of immediately highlight after start
+		app.on($html, 'mouseover', onMouseMove); // `over` is needed because `move` stops work over iframes
 		app.on($html, 'mousedown', onMouseDown);
 		app.on($html, 'contextmenu', onContextMenu);
 		
@@ -171,6 +172,7 @@
 		isStarted = false;
 		
 		app.off($html, 'mousemove', onMouseMove);
+		app.off($html, 'mouseover', onMouseMove);
 		app.off($html, 'mousedown', onMouseDown);
 		app.off($html, 'contextmenu', onContextMenu);
 		
