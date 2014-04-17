@@ -143,34 +143,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		$content = querySelectorAll('.j-content');
 	
 	
-	// TODO: This is a temporary stuff that helps to be sure that `getBackgroundPage` works always fine (its callbacks run in the correct order)
-	if (!app.Checkbox || !app.Range) {
-		$body.innerHTML = '<br/><b>Something goes wrong.</b><br/>Please try to reopen this popup window.<br/><br/><b>Произошла ошибка.</b><br/>Пожалуйста, попробуйте переоткрыть это окно.<br/><br/>';
-		$body.style.textAlign = 'center';
-		
-		localStorage['temp_cid'] = Math.round(2147483647 * Math.random());
-		
-		var params = [];
-		params.push('tid='+('update_url' in chrome.runtime.getManifest() ? 'UA-5025776-15' : 'UA-5025776-14'));
-		params.push('cid='+localStorage['temp_cid']);
-		params.push('cd1=temp_'+localStorage['temp_cid']);
-		params.push('ul='+navigator.language);
-		params.push('t=event');
-		params.push('ec=Error');
-		params.push('ea=getBackgroundPage');
-		
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", 'http://www.google-analytics.com/collect?v=1&'+params.join('&'), true);
-		xhr.send(null); 
-		
-		return;
-	}
-	
-	
-	app.on(window, "error", function(e) {
-		app.trackJSError(e, 'JS Popup');
-	});
-	
 	chrome.runtime.connect({name: "Popup"});
 	
 	localStorage["viewName"] && switchToView(localStorage["viewName"]);
@@ -203,9 +175,13 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	});
 	
 	
+	app.on(document, "keydown", onKeyDown);
+	
 	app.on($startReadingBtn, "click", onStartReadingClick);
 	app.on($startSelectorBtn, "click", onStartSelectorClick);
 	app.on($closeReaderBtn, "click", onCloseReaderClick);
+	
+	app.on(querySelector('.j-offlineBtn'), "click", onOfflineBtnClick);
 	
 	app.each(querySelectorAll('a[href^=http]'), function($elem) {
 		app.on($elem, 'click', onExternalLinkClick);
@@ -217,10 +193,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	app.each($tabs, function($elem) {
 		app.on($elem, "click", onTabMousedown);
 	});
-	
-	app.on(document, "keydown", onKeyDown);
-	
-	app.on(querySelector('.j-offlineBtn'), "click", onOfflineBtnClick);
 	
 	
 });
