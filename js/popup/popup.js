@@ -218,7 +218,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		app.on($elem, "click", onTabMousedown);
 	});
 	
-	app.on(window, "keydown", onKeyDown);
+	app.on(document, "keydown", onKeyDown);
 	
 	app.on(querySelector('.j-offlineBtn'), "click", onOfflineBtnClick);
 	
