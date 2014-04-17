@@ -37,7 +37,10 @@ chrome = {
 			onDisconnect: {addListener: noop}
 		}),
 		sendMessage: noop,
-		onMessage: {addListener: noop}
+		onMessage: {addListener: noop},
+		getURL: function(str) {
+			return 'chrome-extension://hkjeifcldmplecgaaehmbccbdbfmknpe/'+str;
+		}
 	}
 };
 
