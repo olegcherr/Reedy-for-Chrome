@@ -121,8 +121,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 			$view.setAttribute('active', $view.getAttribute('view-name') === name);
 		});
 		$body.setAttribute('active-view', name);
-		
-		localStorage["viewName"] = name;
 	}
 	
 	function initControls(settings) {
@@ -152,7 +150,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	chrome.runtime.connect({name: "Popup"});
 	
-	localStorage["viewName"] && switchToView(localStorage["viewName"]);
 	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
 	
 	app.localizeElements(document);
