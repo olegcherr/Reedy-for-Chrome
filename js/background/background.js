@@ -50,12 +50,12 @@
 	}
 	
 	function installAndRun(callback) {
-		isTabAlive(function(res, tabId) {
-			if (res)
+		isTabAlive(function(isAlive, tabId) {
+			if (isAlive)
 				callback(tabId);
 			else
-				getCurrentTab(function(tab) {
-					if (!/^chrome|chrome\.google\.com\/webstore/.test(tab.url)) {
+				app.isSystemTab(function(isSystem, tab) {
+					if (!isSystem) {
 						install();
 						setTimeout(function() {
 							isTabAlive(function(res) {
@@ -221,6 +221,12 @@
 	app.sendMessageToSelectedTab = function(data, callback) {
 		installAndRun(function(tabId) {
 			chrome.tabs.sendMessage(tabId, data, callback || noop);
+		});
+	}
+	
+	app.isSystemTab = function(callback) {
+		getCurrentTab(function(tab) {
+			callback(/^chrome|chrome\.google\.com\/webstore/.test(tab.url), tab);
 		});
 	}
 	

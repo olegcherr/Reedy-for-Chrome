@@ -87,8 +87,15 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	}
 	
 	function startSelector() {
-		app.sendMessageToSelectedTab({type: 'startSelector'});
-		window.close();
+		app.isSystemTab(function(isSystem) {
+			if (isSystem) {
+				alert(app.t('cantLaunchOnSystemPages'));
+			}
+			else {
+				app.sendMessageToSelectedTab({type: 'startSelector'});
+				window.close();
+			}
+		});
 	}
 	
 	function closeReader() {

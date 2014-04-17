@@ -14,6 +14,9 @@
 	"cantParse": {
 		"message": "FastReader не может обработать выделенный текст."
 	},
+	"cantLaunchOnSystemPages": {
+		"message": "Расширения Google Chrome не могут быть запущены на системных страницах, а также в Chrome WebStore."
+	},
 	
 	
 	
