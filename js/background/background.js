@@ -173,7 +173,7 @@
 			
 			progressBar: true,
 			timeLeft: false,
-			sequel: true
+			sequel: false
 		};
 	
 	
