@@ -40,28 +40,33 @@
 		}
 	}
 	
-	function isInstalled(callback) {
-		chrome.tabs.executeScript(null, {code: '!!window.fastReader;'}, function(res) {
-			callback(res && res[0]);
+	function isTabAlive(callback) {
+		getCurrentTab(function(tab) {
+			chrome.tabs.sendMessage(tab.id, {type: 'isAlive'}, function(res) {
+				// If tab will not respond `res` will be `undefined`
+				callback(!!res, tab.id);
+			});
 		});
 	}
 	
 	function installAndRun(callback) {
-		isInstalled(function(res) {
+		isTabAlive(function(res, tabId) {
 			if (res)
-				callback();
+				callback(tabId);
 			else
 				getCurrentTab(function(tab) {
 					if (!/^chrome|chrome\.google\.com\/webstore/.test(tab.url)) {
 						install();
 						setTimeout(function() {
-							isInstalled(function(res) {
+							isTabAlive(function(res) {
+								var url = tab.url.substring(0, 12);
+								
 								if (res) {
-									callback();
-									app.event('Extension', 'Runtime content script installation');
+									callback(tabId);
+									app.event('Extension', 'Runtime content script installation', url);
 								}
 								else {
-									app.event('Error', 'Can\'n install content scripts', tab.url.substring(0, 12));
+									app.event('Error', 'Can\'t install content scripts', url);
 								}
 							});
 						}, 200);
@@ -97,6 +102,10 @@
 				app.trackJSError(msg, msg.context);
 				callback();
 				break;
+			case 'onReaderStarted':
+				app.sendMessageToSelectedTab({type: 'onReaderStarted'});
+				callback();
+				break;
 		}
 	}
 	
@@ -111,10 +120,8 @@
 	
 	function onClicked(data) {
 		if (data.menuItemId == 'fastReaderMenu') {
-			installAndRun(function() {
-				chrome.tabs.executeScript(null, {code: 'window.fastReader && window.fastReader.startReader(null, ' + JSON.stringify(data.selectionText) + ');'});
-				app.event('Reader', 'Open', 'Context menu');
-			});
+			app.sendMessageToSelectedTab({type: 'startReading', selectionText: data.selectionText});
+			app.event('Reader', 'Open', 'Context menu');
 		}
 	}
 	
@@ -141,9 +148,11 @@
 	
 	var manifest = chrome.runtime.getManifest(),
 		version = manifest.version,
+		extensionId = chrome.i18n.getMessage("@@extension_id"),
+		
 		isDevMode = !('update_url' in manifest),
 		isPopupOpen = false,
-		extensionId = chrome.i18n.getMessage("@@extension_id"),
+		
 		noop = function() {},
 		UUID,
 		defaults = {
@@ -167,6 +176,9 @@
 			sequel: true
 		};
 	
+	
+	
+	app.offlineUrl = chrome.runtime.getURL("offline.html");
 	
 	
 	app.event = function(category, action, label) {
@@ -207,10 +219,8 @@
 	
 	
 	app.sendMessageToSelectedTab = function(data, callback) {
-		installAndRun(function() {
-			getCurrentTab(function(tab) {
-				chrome.tabs.sendMessage(tab.id, data, callback || noop);
-			});
+		installAndRun(function(tabId) {
+			chrome.tabs.sendMessage(tabId, data, callback || noop);
 		});
 	}
 	

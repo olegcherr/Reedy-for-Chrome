@@ -1,0 +1,37 @@
+
+
+.p-settings {
+	padding: 8px 0 0;
+}
+
+.p-settings-table {
+	display: none;
+	padding: 0 15px;
+	width: 100%;
+}
+.p-settings-table[active="true"] {
+	display: table;
+}
+
+.p-settings-cell {
+	border-bottom: 1px solid #ededed;
+}
+.p-settings-table tr:last-child > .p-settings-cell {
+	border-bottom: 0;
+}
+
+.p-settings-cell_left {
+	padding: 7px 0 9px;
+	border-bottom: 1px solid #ededed;
+}
+.p-settings-cell_left > span {
+	display: block;
+	padding: 0 0 0 1px;
+	color: #a3a3a3;
+	font-size: 11px;
+}
+.p-settings-cell_right {
+	padding: 0 0 0 13px;
+	text-align: center;
+	width: 42px;
+}

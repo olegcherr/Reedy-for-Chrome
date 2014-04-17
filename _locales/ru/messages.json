@@ -17,32 +17,43 @@
 	
 	
 	
-	"____POPUP_HEAD_________________________________________________________": {
+	"____POPUP_VIEWS_________________________________________________________": {
 		"message": ""
 	},
 	
-	"startReadingInfo": {
-		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите FastReader. Вы также можете использовать сочетание клавиш <b>Alt+S</b>."
+	"view_readability": {
+		"message": "Автоматический поиск текста"
+	},
+	"view_offline": {
+		"message": "Вставить свой текст"
+	},
+	"view_settings": {
+		"message": "Настройки"
+	},
+	"view_help": {
+		"message": "Как пользоваться"
+	},
+	"view_advices": {
+		"message": "Рекомендации"
 	},
 	
-	"startReadingBtn": {
+	
+	
+	"____POPUP_MAIN_________________________________________________________": {
+		"message": ""
+	},
+	
+	"main_startReadingInfo": {
+		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите <b>Запустить FastReader</b>.<br/>Либо просто нажмите <b>Alt+S</b>."
+	},
+	"main_startReadingBtn": {
 		"message": "Запустить FastReader"
 	},
-	"startContentSelectorBtn": {
+	"main_startContentSelectorBtn": {
 		"message": "Выбрать элемент на странице"
 	},
-	"closeReaderBtn": {
+	"main_closeReaderBtn": {
 		"message": "Завершить чтение"
-	},
-	
-	"tab_reading": {
-		"message": "Чтение"
-	},
-	"tab_parsing": {
-		"message": "Текст"
-	},
-	"tab_appearance": {
-		"message": "Отображение"
 	},
 	
 	
@@ -50,6 +61,17 @@
 	"____POPUP_SETTINGS_________________________________________________________": {
 		"message": ""
 	},
+	
+	"settings_reading": {
+		"message": "Чтение"
+	},
+	"settings_parsing": {
+		"message": "Текст"
+	},
+	"settings_appearance": {
+		"message": "Отображение"
+	},
+	
 	
 	"autostart": {
 		"message": "Автостарт"
@@ -114,6 +136,13 @@
 	},
 	"timeLeftDescr": {
 		"message": "Показывать расчётное время до конца чтения."
+	},
+	
+	"sequel": {
+		"message": "Продолжение текста"
+	},
+	"sequelDescr": {
+		"message": "Показывать текст, следующий за текущим словом."
 	},
 	
 	
@@ -204,11 +233,17 @@
 	
 	
 	
-	"____HELP_________________________________________________________": {
+	"____OFFLINE_________________________________________________________": {
 		"message": ""
 	},
 	
-	"helpTitle": {
-		"message": "Кратко о FastReader"
+	"offline_startReadingBtn": {
+		"message": "Запустить FastReader"
+	},
+	"offline_clearBtn": {
+		"message": "Очистить"
+	},
+	"offline_saveTextBtn": {
+		"message": "Сохранить текст"
 	}
 }

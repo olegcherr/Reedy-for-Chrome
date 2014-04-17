@@ -29,6 +29,12 @@
 		if (!app.isStartAllowed()) return;
 		
 		switch (msg.type) {
+			case 'isAlive':
+				isTopWindow && callback(true);
+				break;
+			case 'isOfflinePage':
+				isTopWindow && callback(app.isOfflinePage);
+				break;
 			case 'popupSettings':
 				settings && (settings[msg.key] = msg.value);
 				app.trigger(app, 'popupSettings', [msg.key, msg.value]);
@@ -47,7 +53,7 @@
 				}, sel ? 0 : 200);
 				return true;
 			case 'startReading':
-				app.startReader();
+				app.startReader(msg.text, msg.selectionText);
 				callback();
 				break;
 			case 'startSelector':
@@ -60,6 +66,10 @@
 				break;
 			case 'isReaderStarted':
 				callback(app.isReaderStarted());
+				break;
+			case 'onReaderStarted':
+				app.stopContentSelection();
+				callback();
 				break;
 		}
 	}
@@ -87,10 +97,13 @@
 	
 	
 	
-	var settings, reader;
+	var isTopWindow = window.top === window,
+		settings, reader;
 	
 	
 	app._isReaderStarted = false;
+	
+	app.isOfflinePage = false;
 	
 	app.isStartAllowed = function() {
 		try {
@@ -143,6 +156,7 @@
 		}
 		
 		app.isReaderStarted(true);
+		app.sendMessageToExtension({type: 'onReaderStarted'});
 		
 		init(function() {
 			reader = new app.Reader(text);

@@ -6,6 +6,9 @@
 		toString = Object.prototype.toString;
 	
 	
+	app.offlinePageUrl = chrome.runtime.getURL("offline.html");
+	
+	
 	app.proxy = function(context, fnName) {
 		return function() {
 			return context[fnName]();
@@ -134,6 +137,19 @@
 	app.t = function() {
 		return chrome.i18n.getMessage.apply(chrome.i18n, arguments);
 	}
+	
+	app.localizeElements = function(document) {
+		app.each(document.querySelectorAll('[i18n]'), function($elem) {
+			$elem.innerHTML = app.t($elem.getAttribute('i18n'));
+			$elem.removeAttribute('i18n');
+		});
+		app.each(document.querySelectorAll('[i18n-attr]'), function($elem) {
+			var m = $elem.getAttribute('i18n-attr').split('|');
+			$elem.setAttribute(m[0], app.t(m[1]));
+			$elem.removeAttribute('i18n-attr');
+		});
+	}
+	
 	
 	
 })();

@@ -61,7 +61,7 @@
 		traverseOffset = 0;
 		
 		timeout = setTimeout(function() {
-			$current = $source = e.target;
+			$current = $source = /FRAME$/i.test(e.target.nodeName) ? null : e.target;
 			updateHlighter();
 		}, isJustStarted ? 0 : 100);
 	}
@@ -141,7 +141,7 @@
 	
 	
 	app.startContentSelection = function() {
-		if (isStarted || app.isReaderStarted()) return;
+		if (isStarted || app.isOfflinePage || app.isReaderStarted()) return;
 		isStarted = true;
 		isJustStarted = true;
 		
@@ -179,6 +179,7 @@
 		removeHlighter();
 		
 		$current = $source = null;
+		traverseOffset = 0;
 	}
 	
 	

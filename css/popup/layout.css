@@ -1,18 +1,38 @@
 
 
-.l-footer {
-	padding: 10px 15px 9px;
-	color: #a3a3a3;
-	font-size: 11px;
+.l-view {
+	display: none;
+	border-radius: 2px;
 }
-.l-footer-right {
-	float: right;
+.l-view[active="true"] {
+	display: block;
 }
-.l-footer a {
-	color: #a3a3a3;
-	font-weight: bold;
-	text-decoration: underline;
+
+.l-view-head {
+	position: relative;
+	padding: 15px 20px 15px 0;
+	font-size: 14px;
+	text-align: center;
+	text-transform: uppercase;
+	border-bottom: 1px solid #e8e8e8;
 }
-.l-footer a:hover {
-	text-decoration: none;
+.l-view-head_mod1 {
+	border-bottom: 1px solid #c4c4c4;
+}
+
+.l-view-backBtn {
+	position: absolute;
+	right: 11px;
+	top: 11px;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png") -36px -16px;
+	opacity: .35;
+}
+.l-view-backBtn:hover {
+	opacity: .5;
+}
+.l-view-backBtn:active {
+	opacity: .65;
 }

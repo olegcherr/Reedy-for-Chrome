@@ -1,86 +1,79 @@
 
 
-.p-head {
-	position: relative;
-	margin: 0 0 8px;
-	padding: 11px 0 0;
-	background: #ededed url("chrome-extension://__MSG_@@extension_id__/img/bg_popupHead.jpg") center bottom;
-}
-.p-head-content {
-	padding: 0 15px 15px;
-	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
-}
-.p-head-btnWrapper {
-	position: relative;
-	margin: 8px 0 0;
-	text-align: center;
-}
-.p-head-helpBtn {
-	position: absolute;
-	right: 0;
-	top: 3px;
+.l-view[view-name="main"] {
+	padding: 24px 0 9px;
+	background: #e8e8e8;
 }
 
-.p-tabs-tab {
-	float: left;
-	padding: 10px 0 9px;
-	width: 33.33%;
-	text-align: center;
-	white-space: nowrap;
-	text-shadow: 0 0 1px rgba(0, 0, 0, .15);
-	background: rgba(255, 255, 255, .5);
-	border-bottom: 5px solid #db5a78;
-	cursor: pointer;
+
+.p-mainHead {
+	margin: 0 30px 30px;
 }
-.p-tabs-tab:hover {
-	background: rgba(255, 255, 255, .65);
-}
-.p-tabs-tab[active="true"] {
-	border-bottom-color: #4dbd85;
-	background: rgba(255, 255, 255, 1);
-}
-.p-tabs-arrow {
-	position: absolute;
-	margin-left: -6px;
-	bottom: -10px;
-	width: 0;
-	height: 0;
-	border: solid transparent;
-	border-width: 5px 6px;
-	border-top-color: #4dbd85;
-	-webkit-transition: left 200ms;
-}
-[active-tab="1"] .p-tabs-arrow {
-	left: 16.67%;
-}
-[active-tab="2"] .p-tabs-arrow {
-	left: 50%;
-}
-[active-tab="3"] .p-tabs-arrow {
-	left: 83.33%;
+.p-mainHead-text {
+	margin: 0 0 10px;
 }
 
-.p-content {
-	display: none;
-	padding: 0 15px;
-	width: 100%;
+
+.p-mainMenu {
+	margin: 0 30px 40px;
+	border-top: 1px solid #d0d0d0;
 }
-.p-content[active="true"] {
-	display: table;
-}
-.p-item-left {
-	padding: 7px 0 9px;
-	border-bottom: 1px solid #ededed;
-}
-.p-item-left > span {
-	display: block;
-	padding: 0 0 0 1px;
-	color: #a3a3a3;
+.p-mainMenu-item {
+	position: relative;
+	padding: 13px 0 12px 35px;
 	font-size: 11px;
+	text-transform: uppercase;
+	white-space: nowrap;
+	border-bottom: 1px solid #d0d0d0;
+	cursor: pointer;
+	-webkit-transition: background-color 100ms;
 }
-.p-item-right {
-	padding: 0 0 0 13px;
+.p-mainMenu-item:hover {
+	background: rgba(0, 0, 0, .025);
+}
+.p-mainMenu-item:active {
+	background: rgba(0, 0, 0, .065);
+	-webkit-transition: none;
+}
+.p-mainMenu-item:before {
+	content: "";
+	position: absolute;
+	left: 10px;
+	top: 12px;
+	width: 16px;
+	height: 16px;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
+	opacity: .8;
+}
+.p-mainMenu-item_readability:before {
+	background-position: -34px 0;
+}
+.p-mainMenu-item_offline:before {
+	background-position: -50px 0;
+}
+.p-mainMenu-item_settings:before {
+	background-position: -66px 0;
+}
+.p-mainMenu-item_help:before {
+	background-position: -82px 0;
+}
+.p-mainMenu-item_advices:before {
+	background-position: -98px 0;
+}
+
+
+.p-mainFooter {
+	color: #8a8a8a;
+	font-size: 11px;
 	text-align: center;
-	width: 42px;
-	border-bottom: 1px solid #ededed;
+}
+.p-mainFooter a {
+	color: #8a8a8a;
+	font-weight: bold;
+}
+.p-mainFooter a:hover {
+	text-decoration: none;
+}
+.p-mainFooter > span {
+	margin: 0 7px;
 }

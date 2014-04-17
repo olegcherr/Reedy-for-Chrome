@@ -57,6 +57,11 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		closeReader();
 	}
 	
+	function onOfflineBtnClick() {
+		app.event('Offline', 'Open');
+		window.open(app.offlineUrl);
+	}
+	
 	
 	function onKeyDown(e) {
 		switch (e.keyCode) {
@@ -92,22 +97,25 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	}
 	
 	function setActiveTab(id) {
-		localStorage["tabId"] = id;
-		
-		$body.setAttribute('active-tab', id);
+		$tabsWrap.setAttribute('active-tab', id);
 		
 		app.each($tabs, function($tab) {
 			$tab.setAttribute('active', $tab.getAttribute('tab-id') === id);
 		});
 		app.each($content, function($elem) {
-			$elem.setAttribute('active', $elem.getAttribute('content-id') === id);
+			$elem.setAttribute('active', $elem.getAttribute('tab-id') === id);
 		});
+		
+		localStorage["tabId"] = id;
 	}
 	
 	function switchToView(name) {
 		app.each($views, function($view) {
 			$view.setAttribute('active', $view.getAttribute('view-name') === name);
 		});
+		$body.setAttribute('active-view', name);
+		
+		localStorage["viewName"] = name;
 	}
 	
 	function initControls(settings) {
@@ -130,6 +138,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		$startSelectorBtn = querySelector('.j-startContentSelectorBtn'),
 		$closeReaderBtn = querySelector('.j-closeReaderBtn'),
 		$views = querySelectorAll('[view-name]'),
+		$tabsWrap = querySelector('.j-tabs'),
 		$tabs = querySelectorAll('.j-tab'),
 		$content = querySelectorAll('.j-content');
 	
@@ -150,7 +159,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		params.push('ec=Error');
 		params.push('ea=getBackgroundPage');
 		
-		xhr = new XMLHttpRequest();
+		var xhr = new XMLHttpRequest();
 		xhr.open("GET", 'http://www.google-analytics.com/collect?v=1&'+params.join('&'), true);
 		xhr.send(null); 
 		
@@ -164,17 +173,10 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	chrome.runtime.connect({name: "Popup"});
 	
+	localStorage["viewName"] && switchToView(localStorage["viewName"]);
 	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
 	
-	app.each(querySelectorAll('[i18n]'), function($elem) {
-		$elem.innerHTML = app.t($elem.getAttribute('i18n'));
-		$elem.removeAttribute('i18n');
-	});
-	app.each(querySelectorAll('[i18n-attr]'), function($elem) {
-		var m = $elem.getAttribute('i18n-attr').split('|');
-		$elem.setAttribute(m[0], app.t(m[1]));
-		$elem.removeAttribute('i18n-attr');
-	});
+	app.localizeElements(document);
 	
 	app.getSettings(null, initControls);
 	
@@ -184,15 +186,18 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	 */
 	app.sendMessageToSelectedTab({type: 'isReaderStarted'}, function(isReaderStarted) {
 		if (isReaderStarted) {
-			$startReadingBtn.setAttribute('hidden', true);
 			$startSelectorBtn.setAttribute('hidden', true);
 			$closeReaderBtn.setAttribute('hidden', false);
 		}
 		else {
-			$closeReaderBtn.setAttribute('hidden', true);
-			getTextSelection(function(text) {
-				$startReadingBtn.setAttribute('hidden', !text.length);
-				$startSelectorBtn.setAttribute('hidden', !!text.length);
+			app.sendMessageToSelectedTab({type: 'isOfflinePage'}, function(isOfflinePage) {
+				if (isOfflinePage)
+					$startSelectorBtn.setAttribute('hidden', true);
+				else
+					getTextSelection(function(text) {
+						$startReadingBtn.setAttribute('hidden', !text.length);
+						$startSelectorBtn.setAttribute('hidden', !!text.length);
+					});
 			});
 		}
 	});
@@ -210,10 +215,12 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	});
 	
 	app.each($tabs, function($elem) {
-		app.on($elem, "mousedown", onTabMousedown);
+		app.on($elem, "click", onTabMousedown);
 	});
 	
 	app.on(window, "keydown", onKeyDown);
+	
+	app.on(querySelector('.j-offlineBtn'), "click", onOfflineBtnClick);
 	
 	
 });

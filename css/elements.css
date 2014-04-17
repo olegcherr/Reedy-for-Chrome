@@ -1,23 +1,28 @@
 
 
-.e-view {
-	display: none;
+.e-markup {
+	padding: 15px 15px 20px;
+	max-height: 350px;
+	overflow: auto;
 }
-.e-view[active="true"] {
-	display: block;
+.e-markup strong {
+	color: #db5a78;
+	text-shadow: 0 0 1px rgba(219, 90, 120, .15);
 }
 
 
 .e-btn {
 	display: inline-block;
-	margin: 0 10px 0 0;
+	margin: 0 5px 0 0;
 	padding: 7px 10px 8px;
 	text-align: center;
 	border-radius: 3px;
 	cursor: pointer;
+	-webkit-user-select: none;
 }
-.e-btn:active {
-	box-shadow: inset 0 2px 0 rgba(0, 0, 0, .15);
+.e-btn_right {
+	float: right;
+	margin: 0 0 0 5px;
 }
 .e-btn[hidden="true"] {
 	display: none;
@@ -27,26 +32,75 @@
 	text-shadow: 0 0 1px rgba(255, 255, 255, .2);
 	background: #4dbd85;
 }
-
-
-.e-switchBtn {
-	width: 26px;
-	height: 26px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
-	opacity: .5;
-	cursor: pointer;
+.e-btn_theme1:hover {
+	background: #4db880;
 }
-.e-switchBtn:hover {
+.e-btn_theme1:active {
+	box-shadow: inset 0 2px 0 rgba(0, 0, 0, .15);
+}
+.e-btn_theme2 {
+	color: #303030;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .1);
+	background: #c4c4c4;
+	opacity: .85;
+}
+.e-btn_theme2:hover {
+	opacity: 1;
+}
+.e-btn_theme2:active {
+	box-shadow: inset 0 2px 0 rgba(0, 0, 0, .15);
+}
+.e-btn_theme3 {
+	text-decoration: underline;
 	opacity: .65;
 }
-.e-switchBtn:active {
-	opacity: .8;
+.e-btn_theme3:hover {
+	text-decoration: none;
 }
-.e-switchBtn_help {
-	background-position: -16px 0;
+.e-btn_theme3:active {
+	opacity: 1;
 }
-.e-switchBtn_close {
-	background-position: -42px 0;
+
+
+.e-tabs {
+	position: relative;
+	background: #f7f7f7;
+	border-bottom: 1px solid #e8e8e8;
+}
+.e-tabs-tab {
+	float: left;
+	padding: 10px 0 9px;
+	width: 33.33%;
+	text-align: center;
+	white-space: nowrap;
+	border-bottom: 2px solid #f7f7f7;
+	cursor: pointer;
+}
+.e-tabs-tab:hover {
+	border-color: #e8e8e8;
+}
+.e-tabs-tab[active="true"] {
+	border-color: #4dbd85;
+}
+.e-tabs-arrow {
+	position: absolute;
+	margin-left: -6px;
+	bottom: -10px;
+	width: 0;
+	height: 0;
+	border: solid transparent;
+	border-width: 5px 6px;
+	border-top-color: #4dbd85;
+	-webkit-transition: left 200ms;
+}
+[active-tab="1"] .e-tabs-arrow {
+	left: 16.67%;
+}
+[active-tab="2"] .e-tabs-arrow {
+	left: 50%;
+}
+[active-tab="3"] .e-tabs-arrow {
+	left: 83.33%;
 }
 
 

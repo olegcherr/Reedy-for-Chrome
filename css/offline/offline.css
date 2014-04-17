@@ -1,0 +1,42 @@
+
+
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	padding: 0 20px;
+	font: 12px/1.334 Tahoma, Geneva, Verdana, sans-serif;
+	color: #303030;
+	cursor: default;
+	background: #e8e8e8;
+}
+
+
+.l-container {
+	margin: auto;
+	min-width: 400px;
+	max-width: 800px;
+}
+
+.l-header {
+	padding: 0 0 13px;
+}
+.l-header > h1 {
+	margin: 12px 0 -4px;
+	font-size: 24px;
+	font-weight: normal;
+}
+.l-header > span {
+	color: #8a8a8a;
+}
+
+textarea {
+	box-sizing: border-box;
+	margin: 0 0 10px;
+	width: 100%;
+	border: 1px solid #c4c4c4;
+	border-radius: 2px;
+	resize: vertical;
+	vertical-align: top;
+}

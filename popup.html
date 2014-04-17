@@ -3,140 +3,157 @@
 <head>
 	<meta charset="utf-8"/>
 	<title>FastReader – Settings</title>
+	<link href="css/elements.css" rel="stylesheet" type="text/css"/>
 	<link href="css/popup/main.css" rel="stylesheet" type="text/css"/>
 	<link href="css/popup/layout.css" rel="stylesheet" type="text/css"/>
-	<link href="css/popup/elements.css" rel="stylesheet" type="text/css"/>
 	<link href="css/popup/page-main.css" rel="stylesheet" type="text/css"/>
-	<link href="css/popup/page-help.css" rel="stylesheet" type="text/css"/>
+	<link href="css/popup/page-settings.css" rel="stylesheet" type="text/css"/>
 </head>
-<body i18n-attr="locale|locale" active-tab="1">
+<body i18n-attr="locale|locale" active-view="main">
 
-<div class="e-view" view-name="main" active="true">
-	<div class="p-head">
-		<div class="p-head-content">
-			<span i18n="startReadingInfo"></span>
-			<div class="p-head-btnWrapper">
-				<span class="j-startContentSelectorBtn e-btn e-btn_theme1" i18n="startContentSelectorBtn"></span>
-				<span class="j-startReadingBtn e-btn e-btn_theme1" i18n="startReadingBtn" hidden="true"></span>
-				<span class="j-closeReaderBtn e-btn e-btn_theme1" i18n="closeReaderBtn" hidden="true"></span>
-				<i class="e-switchBtn e-switchBtn_help p-head-helpBtn" switch-to="help"></i>
-			</div>
-		</div>
-		<div class="p-tabs g-clrfix">
-			<div i18n="tab_reading" tab-id="1" active="true" class="j-tab p-tabs-tab"></div>
-			<div i18n="tab_parsing" tab-id="2" active="false" class="j-tab p-tabs-tab"></div>
-			<div i18n="tab_appearance" tab-id="3" active="false" class="j-tab p-tabs-tab"></div>
-			<i class="p-tabs-arrow"></i>
-		</div>
+<div class="l-view" view-name="main" active="true">
+	<div class="p-mainHead">
+		<div class="p-mainHead-text" i18n="main_startReadingInfo"></div>
+		<span class="j-startContentSelectorBtn e-btn e-btn_theme1" i18n="main_startContentSelectorBtn"></span>
+		<span class="j-startReadingBtn e-btn e-btn_theme1" i18n="main_startReadingBtn" hidden="true"></span>
+		<span class="j-closeReaderBtn e-btn e-btn_theme1" i18n="main_closeReaderBtn" hidden="true"></span>
 	</div>
 	
-	<table content-id="1" active="true" class="j-content p-content" cellspacing="0">
-		<tr>
-			<td class="p-item-left">
-				<b i18n="autostart"></b>
-				<span i18n="autostartDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="autostart"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="p-item-left">
-				<b i18n="focusMode"></b>
-				<span i18n="focusModeDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="focusMode"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="p-item-left">
-				<b i18n="gradualAccel"></b>
-				<span i18n="gradualAccelDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="gradualAccel"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="p-item-left">
-				<b i18n="smartSlowing"></b>
-				<span i18n="smartSlowingDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="smartSlowing"/>
-			</td>
-		</tr>
-	</table>
+	<div class="p-mainMenu">
+		<div class="p-mainMenu-item p-mainMenu-item_offline j-offlineBtn" i18n="view_offline"></div>
+		<div class="p-mainMenu-item p-mainMenu-item_settings" switch-to="settings" i18n="view_settings"></div>
+		<div class="p-mainMenu-item p-mainMenu-item_help" switch-to="help" i18n="view_help"></div>
+		<div class="p-mainMenu-item p-mainMenu-item_advices" switch-to="advices" i18n="view_advices"></div>
+	</div>
 	
-	<table content-id="2" active="false" class="j-content p-content" cellspacing="0">
-		<tr>
-			<td class="p-item-left">
-				<b i18n="entityAnalysis"></b>
-				<span i18n="entityAnalysisDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="entityAnalysis"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="p-item-left">
-				<b i18n="hyphenation"></b>
-				<span i18n="hyphenationDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="hyphenation"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="p-item-left">
-				<b i18n="emptySentenceEnd"></b>
-				<span i18n="emptySentenceEndDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
-			</td>
-		</tr>
-	</table>
-	
-	<table content-id="3" active="false" class="j-content p-content" cellspacing="0">
-		<tr>
-			<td class="p-item-left">
-				<b i18n="progressBar"></b>
-				<span i18n="progressBarDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="progressBar"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="p-item-left">
-				<b i18n="timeLeft"></b>
-				<span i18n="timeLeftDescr"></span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="timeLeft"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="p-item-left">
-				<b>Sequel</b>
-				<span>Show the continuation of the text</span>
-			</td>
-			<td class="p-item-right">
-				<input class="j-checkbox" type="checkbox" name="sequel"/>
-			</td>
-		</tr>
-	</table>
+	<div class="p-mainFooter">
+		<span>Made by <a i18n-attr="href|developersHomePage" href="#">Oleg Cherr</a></span>
+		<span>Inspired by <a href="https://play.google.com/store/apps/details?id=com.citriccode.fastreader">citriccode</a></span>
+	</div>
 </div>
 
-<div class="e-view" view-name="help" active="false">
-	<div class="p-help-title">
-		<span i18n="helpTitle"></span>
-		<i class="e-switchBtn e-switchBtn_close p-help-closeBtn" switch-to="main"></i>
+<div class="l-view" view-name="settings">
+	<div class="l-view-head">
+		<i class="l-view-backBtn" switch-to="main"></i>
+		<span i18n="view_settings"></span>
 	</div>
 	
-	<div class="p-help-content">
+	<div class="j-tabs e-tabs g-clrfix" active-tab="1">
+		<div i18n="settings_reading" tab-id="1" active="true" class="j-tab e-tabs-tab"></div>
+		<div i18n="settings_parsing" tab-id="2" class="j-tab e-tabs-tab"></div>
+		<div i18n="settings_appearance" tab-id="3" class="j-tab e-tabs-tab"></div>
+		<i class="e-tabs-arrow"></i>
+	</div>
+	
+	<div class="p-settings">
+		<table tab-id="1" active="true" class="j-content p-settings-table" cellspacing="0">
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="autostart"></b>
+					<span i18n="autostartDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="autostart"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="focusMode"></b>
+					<span i18n="focusModeDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="focusMode"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="gradualAccel"></b>
+					<span i18n="gradualAccelDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="gradualAccel"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="smartSlowing"></b>
+					<span i18n="smartSlowingDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="smartSlowing"/>
+				</td>
+			</tr>
+		</table>
+		
+		<table tab-id="2" class="j-content p-settings-table" cellspacing="0">
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="entityAnalysis"></b>
+					<span i18n="entityAnalysisDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="entityAnalysis"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="hyphenation"></b>
+					<span i18n="hyphenationDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="hyphenation"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="emptySentenceEnd"></b>
+					<span i18n="emptySentenceEndDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
+				</td>
+			</tr>
+		</table>
+		
+		<table tab-id="3" class="j-content p-settings-table" cellspacing="0">
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="progressBar"></b>
+					<span i18n="progressBarDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="progressBar"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="timeLeft"></b>
+					<span i18n="timeLeftDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="timeLeft"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="p-settings-cell p-settings-cell_left">
+					<b i18n="sequel"></b>
+					<span i18n="sequelDescr"></span>
+				</td>
+				<td class="p-settings-cell p-settings-cell_right">
+					<input class="j-checkbox" type="checkbox" name="sequel"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="l-view" view-name="help">
+	<div class="l-view-head">
+		<i class="l-view-backBtn" switch-to="main"></i>
+		<span i18n="view_help"></span>
+	</div>
+	
+	<div class="e-markup">
 		<div lng="ru">
 			С помощью FastReader вы сможете читать любые тексты гораздо быстрее прямо в браузере.
 			<br/><br/>
@@ -218,11 +235,68 @@
 	</div>
 </div>
 
-<div class="l-footer">
-	<div class="l-footer-right">
-		Inspired by <a href="https://play.google.com/store/apps/details?id=com.citriccode.fastreader">citriccode</a>
+<div class="l-view" view-name="advices">
+	<div class="l-view-head">
+		<i class="l-view-backBtn" switch-to="main"></i>
+		<span i18n="view_advices"></span>
 	</div>
-	Made by <a i18n-attr="href|developersHomePage" href="#">Oleg Cherr</a>
+	
+	<div class="e-markup">
+		<div lng="ru">
+			<strong>Рекомендации для начинающих.</strong>
+			<br/>
+			Начинайте читать со скоростью не более 300 слов в минуту. Читайте в спокойной обстановке. Читайте несложные тексты – художественную литературу, статьи общей тематики или даже тексты, которые вы уже читали ранее. Через некоторое время (может час, а может день) вы заметите, что текст на текущей скорости воспринимается довольно легко, и вы всё реже останавливаете чтение чтобы заново прочитать предыдущий отрывок. Теперь вы можете увеличить скорость на 50 слов в минуту.
+			<br/><br/>
+			
+			<strong>Рекомендации для всех.</strong>
+			<br/>
+			<b>1. Настройте программу</b> для максимально комфортного чтения. 
+			Подберите удобный для вас <b>размер шрифта</b> и положение текста на странице. 
+			Днём, под прямыми солнечными лучами или при глянцевой поверхности экрана лучше использовать <b>светлое оформление</b>. 
+			Вечером рекомендуется включать <b>тёмное</b>, так как это создаёт меньшую нагрузку на глаза.
+			<br/><br/>
+			<b>2. Не забывайте моргать.</b> 
+			Эта рекомендация относится не только к чтению. 
+			Допускать пересыхания поверхности глаз нельзя никогда. 
+			Тем, кто читает на высоких и сверхвысоких скоростях рекомендуется хотя бы пару раз в минуту останавливаться и зажмуриваться на пару секунд. 
+			Также можете пробовать моргать по одному глазу :)
+			<br/><br/>
+			<b>3. Прогрессируйте.</b> 
+			Не засиживайтесь месяцами на одной скорости. 
+			Повышайте скорость! Разгоняйте мозг!
+			<br/><br/>
+			
+			<strong>Наблюдаются проблемы с восприятием текста?</strong>
+			<br/>
+			Если вы слишком часто нажимаете на паузу чтобы перечитать предыдущий отрывок, то попробуйте последовать данным советам:
+			<br/><br/>
+			<b>1. Убедитесь, что у вас отсутствует артикуляция</b> – непроизвольные движения губ и языка при чтении текста. 
+			Старайтесь воспринимать текст <b>глазами</b>, не проговаривая его про себя. 
+			Кстати, данная технология скорочтения сама учит вас этому. 
+			Ведь чем выше скорость, тем сложнее успевать проговаривать слова. 
+			Поэтому со временем артикуляция всё равно уйдёт, даже если специально не прилагать к этому усилий.
+			<br/><br/>
+			<b>2. Первое время выбирайте несложные тексты</b>. 
+			Не нужно с самого начала пытаться читать статьи по физике или юриспруденции. 
+			Читайте художественную литературу, статьи общей тематики, тексты, содержание которых вам примерно знакомо. 
+			Когда глаза немного адаптируются, можете переходить на более сложные материалы.
+			<br/><br/>
+			<b>3. Подберите правильную скорость.</b> 
+			Не следует как завышать скорость, так и занижать. 
+			Определите «свою» скорость. 
+			Обратите внимание, что тексты разной сложности могут требовать корректировки вашей скорости. 
+			Чем сложнее материал, тем больше нужно времени для понимания прочитанного, тем ниже нужно устанавливать скорость чтения.
+			<br/><br/>
+			<b>4. Попробуйте разные настройки программы.</b> 
+			Например, новичкам, возможно, будет удобно читать со включенным показом <b>продолжения текста</b> (Настройки › Отображение › Продолжение текста).
+			<br/><br/>
+			
+			<strong>Приятного чтения!</strong>
+		</div>
+		<div lng="en">
+			Advices
+		</div>
+	</div>
 </div>
 
 <script src="js/popup/popup.js"></script>

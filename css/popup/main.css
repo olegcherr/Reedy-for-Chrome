@@ -1,14 +1,29 @@
 
 
+{color: #f7f7f7;}
+{color: #e8e8e8;}
+{color: #d0d0d0;}
+{color: #c4c4c4;}
+{color: #8a8a8a;}
+{color: #303030;}
+
+
+
 * {
 	margin: 0;
 	padding: 0;
 }
+
 body {
-	width: 320px;
+	width: 300px;
 	font: 12px/1.334 Tahoma, Geneva, Verdana, sans-serif;
 	color: #303030;
 	cursor: default;
+	background: #fff;
+}
+body[active-view="help"],
+body[active-view="advices"] {
+	width: 500px;
 }
 
 [lng] {
