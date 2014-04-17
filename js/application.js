@@ -3,7 +3,34 @@
 (function() {
 	
 	var app = window.fastReader = {},
-		toString = Object.prototype.toString;
+		toString = Object.prototype.toString,
+		
+		/**
+		 * Javascript: The Definitive Guide
+		 * https://www.inkling.com/read/javascript-definitive-guide-david-flanagan-6th/chapter-17/a-keymap-class-for-keyboard
+		 */
+		keyCodeToKeyName = {
+			8: "Backspace", 9: "Tab", 13: "Enter",
+			19: "Pause", 27: "Esc", 32: "Spacebar", 33: "PageUp",
+			34: "PageDown", 35: "End", 36: "Home", 37: "Left", 38: "Up", 39: "Right",
+			40: "Down", 45: "Insert", 46: "Del",
+			
+			48: "0", 49: "1", 50: "2", 51: "3", 52: "4", 53: "5", 54: "6", 55: "7", 56: "8", 57: "9",
+			
+			65: "A", 66: "B", 67: "C", 68: "D", 69: "E", 70: "F", 71: "G", 72: "H", 73: "I",
+			74: "J", 75: "K", 76: "L", 77: "M", 78: "N", 79: "O", 80: "P", 81: "Q", 82: "R",
+			83: "S", 84: "T", 85: "U", 86: "V", 87: "W", 88: "X", 89: "Y", 90: "Z",
+			
+			96: "0", 97: "1", 98: "2", 99: "3", 100: "4", 101: "5", 102: "6", 103: "7", 104: "8", 105: "9",
+			106: "Multiply", 107: "Add", 109: "Subtract", 110: "Decimal", 111: "Divide",
+			
+			112: "F1", 113: "F2", 114: "F3", 115: "F4", 116: "F5", 117: "F6",
+			118: "F7", 119: "F8", 120: "F9", 121: "F10", 122: "F11", 123: "F12",
+			124: "F13", 125: "F14", 126: "F15", 127: "F16", 128: "F17", 129: "F18",
+			130: "F19", 131: "F20", 132: "F21", 133: "F22", 134: "F23", 135: "F24",
+			
+			186: ";", 187: "=", 188: ",", 189: "-", 190: ".", 191: "/", 192: "`", 219: "[", 220: "\\", 221: "]", 222: "'"
+		};
 	
 	
 	app.offlinePageUrl = chrome.runtime.getURL("offline.html");
@@ -148,6 +175,37 @@
 			$elem.setAttribute(m[0], app.t(m[1]));
 			$elem.removeAttribute('i18n-attr');
 		});
+	}
+	
+	
+	app.shortcutDataToString = function(data, addSpaces) {
+		var res = [];
+		data.shiftKey && res.push('Shift');
+		data.ctrlKey && res.push('Ctrl');
+		data.altKey && res.push('Alt');
+		data.keyCode && res.push(keyCodeToKeyName[data.keyCode]);
+		return res.join(addSpaces ? ' + ' : '+');
+	}
+	
+	app.eventToShortcutData = function(e) {
+		return {
+			shiftKey: e.shiftKey,
+			ctrlKey: e.ctrlKey,
+			altKey: e.altKey,
+			keyCode: keyCodeToKeyName[e.keyCode] ? e.keyCode : null
+		};
+	}
+	
+	app.checkEventForShortcut = function(e, data) {
+		return e.shiftKey === data.shiftKey
+			&& e.ctrlKey === data.ctrlKey
+			&& e.altKey === data.altKey
+			&& keyCodeToKeyName[e.keyCode]
+			&& e.keyCode === data.keyCode;
+	}
+	
+	app.checkShortcut = function(data) {
+		return (data.ctrlKey || data.altKey) && !!keyCodeToKeyName[data.keyCode];
 	}
 	
 	

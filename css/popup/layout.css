@@ -7,6 +7,10 @@
 .l-view[active="true"] {
 	display: block;
 }
+.l-view[view-name="main"],
+.l-view[view-name="shortcut"] {
+	background: #e8e8e8;
+}
 
 .l-view-head {
 	position: relative;
@@ -17,7 +21,7 @@
 	border-bottom: 1px solid #e8e8e8;
 }
 .l-view-head_mod1 {
-	border-bottom: 1px solid #c4c4c4;
+	border-color: #c4c4c4;
 }
 
 .l-view-backBtn {

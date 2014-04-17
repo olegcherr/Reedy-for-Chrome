@@ -35,8 +35,16 @@ textarea {
 	box-sizing: border-box;
 	margin: 0 0 10px;
 	width: 100%;
+	font-size: inherit;
+	font-family: inherit;
+	line-height: inherit;
 	border: 1px solid #c4c4c4;
 	border-radius: 2px;
 	resize: vertical;
 	vertical-align: top;
+}
+textarea:focus {
+	border-color: #4dbd85;
+	box-shadow: 0 0 0 3px rgba(77, 189, 133, .1);
+	outline: 0;
 }

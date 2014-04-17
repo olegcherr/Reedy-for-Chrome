@@ -8,6 +8,7 @@
 	<link href="css/popup/layout.css" rel="stylesheet" type="text/css"/>
 	<link href="css/popup/page-main.css" rel="stylesheet" type="text/css"/>
 	<link href="css/popup/page-settings.css" rel="stylesheet" type="text/css"/>
+	<link href="css/popup/page-shortcut.css" rel="stylesheet" type="text/css"/>
 </head>
 <body i18n-attr="locale|locale" active-view="main">
 
@@ -22,6 +23,7 @@
 	<div class="p-mainMenu">
 		<div class="p-mainMenu-item p-mainMenu-item_offline j-offlineBtn" i18n="view_offline"></div>
 		<div class="p-mainMenu-item p-mainMenu-item_settings" switch-to="settings" i18n="view_settings"></div>
+		<div class="p-mainMenu-item p-mainMenu-item_shortcut" switch-to="shortcut" i18n="view_shortcut"></div>
 		<div class="p-mainMenu-item p-mainMenu-item_help" switch-to="help" i18n="view_help"></div>
 		<div class="p-mainMenu-item p-mainMenu-item_advices" switch-to="advices" i18n="view_advices"></div>
 	</div>
@@ -147,6 +149,27 @@
 	</div>
 </div>
 
+<div class="l-view" view-name="shortcut">
+	<div class="l-view-head l-view-head_mod1">
+		<i class="l-view-backBtn" switch-to="main"></i>
+		<span i18n="view_shortcut"></span>
+	</div>
+	
+	<div class="p-shortcut">
+		<div lng="ru">
+			Воспроизведите на клавиатуре требуемое сочетание клавиш и нажмите <b>Сохранить изменения</b>.
+			<br/><br/>
+			Обратите внимание, что в сочетании обязательно должна присутствовать клавиша <b>Alt</b> и/или <b>Ctrl</b>.
+		</div>
+		<div lng="en"></div>
+		
+		<input class="j-iShortcut p-shortcut-input" type="text" value=""/>
+		
+		<span class="j-saveShortcutBtn e-btn e-btn_theme1" i18n="saveChanges"></span>
+		<span class="j-cancelShotrcutBtn e-btn e-btn_theme2" i18n="cancel"></span>
+	</div>
+</div>
+
 <div class="l-view" view-name="help">
 	<div class="l-view-head">
 		<i class="l-view-backBtn" switch-to="main"></i>
@@ -163,11 +186,11 @@
 				<br/>
 				1. Выделите текст на странице.
 				<br/>
-				2. Кликните по нему правой кнопкой мыши и выберите пункт <b>Запустить FastReader</b>, либо просто нажмите <b>Alt+S</b>.
+				2. Кликните по нему правой кнопкой мыши и выберите пункт <b>Запустить FastReader</b>, либо просто нажмите <b class="j-shortcut">Alt+S</b>.
 			<br/><br/>
 			<strong>FastReader может работать и без выделения текста:</strong>
 				<br/>
-				1. Нажмите <b>Alt+S</b>.
+				1. Нажмите <b class="j-shortcut">Alt+S</b>.
 				<br/>
 				2. Наведите курсор на блок с текстом. Блок подсветится зелёным цветом.
 				<br/>
@@ -202,11 +225,11 @@
 				<br/>
 				1. Select the text on the page.
 				<br/>
-				2. Click the right mouse button and choose FastReader, or just press the <b>Alt+S</b> shortcut.
+				2. Click the right mouse button and choose FastReader, or just press the <b class="j-shortcut">Alt+S</b> shortcut.
 			<br/><br/>
 			<strong>Also you can launch FastReader without text selection:</strong>
 				<br/>
-				1. Press <b>Alt+S</b>.
+				1. Press <b class="j-shortcut">Alt+S</b>.
 				<br/>
 				2. Place the mouse over the text block. It will be highlighted in green.
 				<br/>

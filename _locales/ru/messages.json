@@ -18,9 +18,16 @@
 		"message": "Расширения Google Chrome не могут быть запущены на системных страницах, а также в Chrome WebStore."
 	},
 	
+	"saveChanges": {
+		"message": "Сохранить изменения"
+	},
+	"cancel": {
+		"message": "Отмена"
+	},
 	
 	
-	"____POPUP_VIEWS_________________________________________________________": {
+	
+	"____POPUP_________________________________________________________": {
 		"message": ""
 	},
 	
@@ -33,11 +40,18 @@
 	"view_settings": {
 		"message": "Настройки"
 	},
+	"view_shortcut": {
+		"message": "Сочетание клавиш"
+	},
 	"view_help": {
 		"message": "Как пользоваться"
 	},
 	"view_advices": {
 		"message": "Рекомендации"
+	},
+	
+	"wrongShortcut": {
+		"message": "Недопустимое сочетание"
 	},
 	
 	
@@ -47,7 +61,7 @@
 	},
 	
 	"main_startReadingInfo": {
-		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите <b>Запустить FastReader</b>.<br/>Либо просто нажмите <b>Alt+S</b>."
+		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите <b>Запустить FastReader</b>.<br/>Либо просто нажмите <b class='j-shortcut'>Alt+S</b>."
 	},
 	"main_startReadingBtn": {
 		"message": "Запустить FastReader"

@@ -18,9 +18,16 @@
 		"message": "Google Chrome Extensions can't be launched on system pages and in the Chrome WebStore."
 	},
 	
+	"saveChanges": {
+		"message": "Save changes"
+	},
+	"cancel": {
+		"message": "Cancel"
+	},
 	
 	
-	"____POPUP_VIEWS_________________________________________________________": {
+	
+	"____POPUP_________________________________________________________": {
 		"message": ""
 	},
 	
@@ -33,11 +40,18 @@
 	"view_settings": {
 		"message": "Settings"
 	},
+	"view_shortcut": {
+		"message": "Shortcut setup"
+	},
 	"view_help": {
 		"message": "How to use"
 	},
 	"view_advices": {
 		"message": "Recommendations"
+	},
+	
+	"wrongShortcut": {
+		"message": "Invalid combination"
 	},
 	
 	
@@ -47,7 +61,7 @@
 	},
 	
 	"main_startReadingInfo": {
-		"message": "To start reading select the text on the page, click the right mouse button and choose <b>Launch FastReader</b>.<br/>You can also use the <b>Alt+S</b> shortcut."
+		"message": "To start reading select the text on the page, click the right mouse button and choose <b>Launch FastReader</b>.<br/>You can also use the <b class='j-shortcut'>Alt+S</b> shortcut."
 	},
 	"main_startReadingBtn": {
 		"message": "Launch FastReader"

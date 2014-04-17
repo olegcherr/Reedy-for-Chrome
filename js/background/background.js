@@ -55,7 +55,7 @@
 				callback(tabId);
 			else
 				app.isSystemTab(function(isSystem, tab) {
-					if (!isSystem) {
+					if (!isSystem && tab.url) {
 						install();
 						setTimeout(function() {
 							isTabAlive(function(res) {
@@ -173,7 +173,14 @@
 			
 			progressBar: true,
 			timeLeft: false,
-			sequel: false
+			sequel: false,
+			
+			runShortcut: {
+				shiftKey: false,
+				ctrlKey: false,
+				altKey: true,
+				keyCode: 83
+			}
 		};
 	
 	
@@ -214,7 +221,7 @@
 		settings[key] = value;
 		chrome.storage.sync.set(settings, callback || noop);
 		
-		app.sendMessageToSelectedTab({type: 'popupSettings', key: key, value: value});
+		app.sendMessageToSelectedTab({type: 'settingsUpdate', key: key, value: value});
 	}
 	
 	

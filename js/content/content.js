@@ -35,9 +35,13 @@
 			case 'isOfflinePage':
 				isTopWindow && callback(app.isOfflinePage);
 				break;
-			case 'popupSettings':
+			case 'settingsUpdate':
 				settings && (settings[msg.key] = msg.value);
-				app.trigger(app, 'popupSettings', [msg.key, msg.value]);
+				app.trigger(app, 'settingsUpdate', [msg.key, msg.value]);
+				
+				if (msg.key === 'runShortcut')
+					runShortcut = msg.value;
+				
 				callback();
 				break;
 			case 'getSelection':
@@ -77,27 +81,24 @@
 	function onKeyDown(e) {
 		if (!app.isStartAllowed()) return;
 		
-		switch (e.keyCode) {
-			case 83: // S
-				if (e.altKey) {
-					app.stopEvent(e);
-					var text = getSelection();
-					if (text.length) {
-						app.startReader(text);
-						app.event('Reader', 'Open', 'Shortcut (Alt+S)');
-					}
-					else {
-						app.startContentSelection();
-						app.event('Content selector', 'Start', 'Shortcut (Alt+S)');
-					}
-				}
-				break;
+		if (app.checkEventForShortcut(e, runShortcut)) {
+			app.stopEvent(e);
+			var text = getSelection();
+			if (text.length) {
+				app.startReader(text);
+				app.event('Reader', 'Open', 'Shortcut');
+			}
+			else {
+				app.startContentSelection();
+				app.event('Content selector', 'Start', 'Shortcut');
+			}
 		}
 	}
 	
 	
 	
 	var isTopWindow = window.top === window,
+		runShortcut,
 		settings, reader;
 	
 	
@@ -176,6 +177,10 @@
 	
 	
 	chrome.runtime.onMessage.addListener(onMessage);
+	
+	app.sendMessageToExtension({type: 'getSettings', key: 'runShortcut'}, function(res) {
+		runShortcut = res;
+	});
 	
 	app.on(window, "keydown", onKeyDown);
 	

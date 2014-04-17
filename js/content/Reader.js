@@ -33,7 +33,7 @@
 	
 	app.Reader = function(raw) {
 		
-		function onPopupSettings(e, key, value) {
+		function onSettingsUpdate(e, key, value) {
 			if (key === 'entityAnalysis')
 				updateSequencer();
 		}
@@ -106,7 +106,7 @@
 			if (isDestroyed) return;
 			isDestroyed = true;
 			
-			app.off(app, 'popupSettings', onPopupSettings);
+			app.off(app, 'settingsUpdate', onSettingsUpdate);
 			app.off(view, 'close', onViewClose);
 			
 			view.close();
@@ -131,7 +131,7 @@
 			}, 500);
 		
 		
-		app.on(app, 'popupSettings', onPopupSettings);
+		app.on(app, 'settingsUpdate', onSettingsUpdate);
 		
 		app.on(view, 'close', onViewClose);
 		

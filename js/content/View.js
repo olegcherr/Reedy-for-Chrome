@@ -51,7 +51,7 @@
 	
 	app.View = function() {
 		
-		function onPopupSettings(e, key, value) {
+		function onSettingsUpdate(e, key, value) {
 			updateWrapper();
 			
 			if (key === 'focusMode') {
@@ -529,7 +529,7 @@
 			
 			sequencer.pause();
 			
-			app.off(app, 'popupSettings', onPopupSettings);
+			app.off(app, 'settingsUpdate', onSettingsUpdate);
 			app.off(window, "resize", onWindowResize);
 			app.off(window, "popstate", onWindowPopstate);
 			app.off($wrapper, "keydown", onKeydown);
@@ -583,7 +583,7 @@
 		
 		
 		
-		app.on(app, 'popupSettings', onPopupSettings);
+		app.on(app, 'settingsUpdate', onSettingsUpdate);
 		
 		app.on(window, "resize", onWindowResize);
 		app.on(window, "popstate", onWindowPopstate);

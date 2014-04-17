@@ -2,7 +2,6 @@
 
 .l-view[view-name="main"] {
 	padding: 24px 0 9px;
-	background: #e8e8e8;
 }
 
 
@@ -59,6 +58,9 @@
 }
 .p-mainMenu-item_advices:before {
 	background-position: -98px 0;
+}
+.p-mainMenu-item_shortcut:before {
+	background-position: -114px 0;
 }
 
 

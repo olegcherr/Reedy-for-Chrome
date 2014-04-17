@@ -63,20 +63,56 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	}
 	
 	
+	function onShortcutInputKeydown(e) {
+		app.stopEvent(e);
+		newShortcut = app.eventToShortcutData(e);
+		$iShortcut.value = app.shortcutDataToString(newShortcut, true);
+	}
+	
+	function onSaveShortcutBtn() {
+		if (newShortcut) {
+			if (app.checkShortcut(newShortcut)) {
+				runShortcut = newShortcut;
+				app.setSettings('runShortcut', newShortcut);
+				updateShortcutElems(newShortcut);
+				app.event('Run shortcut', 'Set', app.shortcutDataToString(newShortcut));
+			}
+			else {
+				alert(app.t('wrongShortcut'));
+				$iShortcut.focus();
+				app.event('Run shortcut', 'Set wrong', app.shortcutDataToString(newShortcut));
+				return;
+			}
+		}
+		
+		switchToView('main');
+	}
+	
+	function onCancelShortcutBtn() {
+		$iShortcut.value = app.shortcutDataToString(runShortcut, true);
+		switchToView('main');
+	}
+	
+	function updateShortcutElems(data) {
+		app.each(querySelectorAll('.j-shortcut'), function($elem) {
+			$elem.innerHTML = app.shortcutDataToString(data);
+		});
+	}
+	
+	
 	function onKeyDown(e) {
-		switch (e.keyCode) {
-			case 83: // S
-				e.altKey && getTextSelection(function(text) {
-					if (text.length) {
-						app.event('Reader', 'Open', 'Shortcut in popup (Alt+S)');
-						startReading();
-					}
-					else {
-						app.event('Content selector', 'Start', 'Shortcut in popup (Alt+S)');
-						startSelector();
-					}
-				});
-				break;
+		if (runShortcut && app.checkEventForShortcut(e, runShortcut)) {
+			app.stopEvent(e);
+			getTextSelection(function(text) {
+				if (text.length) {
+					app.event('Reader', 'Open', 'Shortcut in popup ');
+					startReading();
+				}
+				else {
+					app.event('Content selector', 'Start', 'Shortcut in popup');
+					startSelector();
+				}
+			});
 		}
 	}
 	
@@ -121,6 +157,9 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 			$view.setAttribute('active', $view.getAttribute('view-name') === name);
 		});
 		$body.setAttribute('active-view', name);
+		
+		if (name === 'shortcut')
+			$iShortcut.focus();
 	}
 	
 	function initControls(settings) {
@@ -133,11 +172,17 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 			$elem.value = settings[$elem.name];
 			new app.Range($elem, +$elem.getAttribute('min-value'), +$elem.getAttribute('max-value'), onRange);
 		});
+		
+		runShortcut = settings.runShortcut;
+		$iShortcut.value = app.shortcutDataToString(runShortcut, true);
+		updateShortcutElems(runShortcut);
 	}
 	
 	
 	
 	var app = bgWindow.fastReader,
+		runShortcut, newShortcut,
+		
 		$body = querySelector('body'),
 		$startReadingBtn = querySelector('.j-startReadingBtn'),
 		$startSelectorBtn = querySelector('.j-startContentSelectorBtn'),
@@ -145,16 +190,15 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		$views = querySelectorAll('[view-name]'),
 		$tabsWrap = querySelector('.j-tabs'),
 		$tabs = querySelectorAll('.j-tab'),
-		$content = querySelectorAll('.j-content');
+		$content = querySelectorAll('.j-content'),
+		$iShortcut = querySelector('.j-iShortcut'),
+		$saveShotrcutBtn = querySelector('.j-saveShortcutBtn'),
+		$cancelShotrcutBtn = querySelector('.j-cancelShotrcutBtn');
 	
 	
 	chrome.runtime.connect({name: "Popup"});
 	
-	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
-	
 	app.localizeElements(document);
-	
-	app.getSettings(null, initControls);
 	
 	/**
 	 * Preparing buttons
@@ -178,6 +222,10 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		}
 	});
 	
+	app.getSettings(null, initControls);
+	
+	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
+	
 	
 	app.on(document, "keydown", onKeyDown);
 	
@@ -197,6 +245,10 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	app.each($tabs, function($elem) {
 		app.on($elem, "click", onTabMousedown);
 	});
+	
+	app.on($iShortcut, "keydown", onShortcutInputKeydown);
+	app.on($saveShotrcutBtn, "click", onSaveShortcutBtn);
+	app.on($cancelShotrcutBtn, "click", onCancelShortcutBtn);
 	
 	
 });

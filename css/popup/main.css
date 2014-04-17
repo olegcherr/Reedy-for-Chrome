@@ -7,6 +7,9 @@
 {color: #8a8a8a;}
 {color: #303030;}
 
+{color: #4dbd85;}
+{color: #db5a78;}
+
 
 
 * {
@@ -32,6 +35,27 @@ body[active-view="advices"] {
 body[locale="en"] [lng="en"],
 body[locale="ru"] [lng="ru"] {
 	display: block;
+}
+
+
+input[type="text"], input[type="password"], textarea {
+	box-sizing: border-box;
+	width: 100%;
+	font-size: inherit;
+	font-family: inherit;
+	line-height: inherit;
+	border: 1px solid #c4c4c4;
+	border-radius: 3px;
+	vertical-align: top;
+}
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+	outline: 0;
+	border-color: #4dbd85;
+	box-shadow: 0 0 0 3px rgba(77, 189, 133, .1);
+}
+input[type="text"], input[type="password"] {
+	padding: 7px 7px 8px;
+	height: 31px;
 }
 
 
