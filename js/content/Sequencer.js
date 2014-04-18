@@ -73,7 +73,7 @@
 				
 				function doUpdate() {
 					var sequel = app.get('sequel'),
-						hyphenated = app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
+						hyphenated = wasLaunchedSinceOpen && !justRun && app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
 						part;
 					
 					(function go() {
