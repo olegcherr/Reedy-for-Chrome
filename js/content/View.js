@@ -26,7 +26,7 @@
 	
 	
 	
-	var CLS_MAIN = 'e-FastReader',
+	var CLS_MAIN = 'e-Reedy',
 		
 		CONTEXT_CHARS_LIMIT = 2000,
 		
@@ -629,4 +629,4 @@
 	};
 	
 	
-})(window.fastReader);
+})(window.reedy);

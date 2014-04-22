@@ -22,7 +22,7 @@ window = (function() {
 	};
 	
 	return {
-		fastReader: {
+		reedy: {
 			get: function(key) {
 				return settings[key];
 			}
@@ -38,7 +38,7 @@ require('../js/content/Parser.js');
 var str = "Странный всё-таки праздник Восьмое марта, очень странный. Вроде бы должен быть радостным, солнечным, ведь на календаре первый весенний месяц и сама мысль о скором тепле туманит голову, но… Но не туманит, потому что трудно припомнить, когда в последний раз восьмого марта не было снега." +
 	"\nA dynamical system is a concept in mathematics where a fixed rule describes the time dependence of a point in a geometrical space. Examples include the mathematical models that describe the swinging of a clock pendulum, the flow of water in a pipe, and the number of fish each springtime in a lake.";
 fn = function() {
-	window.fastReader.parse4(str);
+	window.reedy.parse4(str);
 }*/
 
 /*var str = 's/h.,h-df;`1%#@_+_@#%*()g[]g{g4}!?s df',

@@ -64,11 +64,11 @@ exports = (function() {
 	var assert = require('../assert.js');
 	
 	
-	var Sequencer = window.fastReader.Sequencer,
-		parser = window.fastReader.parse4,
+	var Sequencer = window.reedy.Sequencer,
+		parser = window.reedy.parse4,
 		wpm = 600, timing = 60000/wpm;
 	
-	window.fastReader.get = function(key) {
+	window.reedy.get = function(key) {
 		return ({
 			wpm: wpm,
 			fontSize: 4,

@@ -2,7 +2,7 @@
 
 (function() {
 	
-	var app = window.fastReader = {},
+	var app = window.reedy = {},
 		toString = Object.prototype.toString,
 		
 		/**

@@ -3,7 +3,7 @@
 exports = (function() {
 	
 	function test(raw, expected) {
-		var tokens = window.fastReader.parse3(raw),
+		var tokens = window.reedy.parse3(raw),
 			res = [], i;
 		
 		for (i = 0; i < tokens.length; i++) {

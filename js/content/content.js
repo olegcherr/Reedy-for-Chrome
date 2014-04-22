@@ -108,7 +108,7 @@
 	
 	app.isStartAllowed = function() {
 		try {
-			return !!window.top.fastReader;
+			return !!window.top.reedy;
 		}
 		catch(e) {
 			// If an iframe is not accessible, we don't try to launch on it
@@ -119,9 +119,9 @@
 	app.isReaderStarted = function(val) {
 		try {
 			if (typeof val === 'boolean')
-				window.top.fastReader._isReaderStarted = val;
+				window.top.reedy._isReaderStarted = val;
 			
-			return window.top.fastReader._isReaderStarted;
+			return window.top.reedy._isReaderStarted;
 		}
 		catch(e) {
 			return false;
@@ -149,7 +149,7 @@
 			for (i = 0; i < frames.length; i++) {
 				// Iframe's window might be inaccessible due to privacy policy
 				try {
-					frames[i].contentWindow.fastReader.startReader();
+					frames[i].contentWindow.reedy.startReader();
 				}
 				catch(e) { }
 			}
@@ -185,4 +185,4 @@
 	app.on(window, "keydown", onKeyDown);
 	
 	
-})(window.fastReader);
+})(window.reedy);

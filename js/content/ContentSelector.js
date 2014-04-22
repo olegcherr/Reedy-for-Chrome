@@ -134,7 +134,7 @@
 		isJustStarted = false,
 		$html = document.documentElement,
 		$body = document.body,
-		$hlighter = app.createElement('div', 'e-FastReader-hlighter'),
+		$hlighter = app.createElement('div', 'e-Reedy-hlighter'),
 		hlStyle = $hlighter.style,
 		$source, $current,
 		traverseOffset, timeout;
@@ -186,4 +186,4 @@
 	
 	
 	
-})(window.fastReader);
+})(window.reedy);

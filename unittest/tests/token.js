@@ -5,8 +5,8 @@ exports = (function() {
 	var assert = require('../assert.js');
 	
 	
-	var Token = window.fastReader.Token,
-		PlainToken = window.fastReader.PlainToken,
+	var Token = window.reedy.Token,
+		PlainToken = window.reedy.PlainToken,
 		token, token2, token3, token4, token5;
 	
 	assert.profile('Token');

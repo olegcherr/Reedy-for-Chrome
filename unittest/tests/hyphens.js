@@ -3,7 +3,7 @@
 exports = (function() {
 	
 	function test(raw, expected) {
-		var tokens = window.fastReader.advancedParser(raw);
+		var tokens = window.reedy.advancedParser(raw);
 		assert.equalArray(tokens[0].toHyphenated(), expected, raw);
 	}
 	

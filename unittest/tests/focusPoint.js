@@ -3,7 +3,7 @@
 exports = (function() {
 	
 	function test(raw, expected) {
-		assert.equal(window.fastReader.calcPivotPoint(raw), expected, raw);
+		assert.equal(window.reedy.calcPivotPoint(raw), expected, expected+': '+raw);
 	}
 	
 	

@@ -119,7 +119,7 @@
 	}
 	
 	function onClicked(data) {
-		if (data.menuItemId == 'fastReaderMenu') {
+		if (data.menuItemId == 'reedyMenu') {
 			app.sendMessageToSelectedTab({type: 'startReading', selectionText: data.selectionText});
 			app.event('Reader', 'Open', 'Context menu');
 		}
@@ -266,7 +266,7 @@
 	
 	
 	chrome.contextMenus.create({
-		id: "fastReaderMenu",
+		id: "reedyMenu",
 		title: chrome.i18n.getMessage("contextMenu"),
 		contexts: ["selection"]
 	});
@@ -278,4 +278,4 @@
 	
 	
 	
-})(window.fastReader);
+})(window.reedy);

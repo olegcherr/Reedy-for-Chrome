@@ -22,10 +22,17 @@ body {
 .l-header {
 	padding: 0 0 13px;
 }
-.l-header > h1 {
+.l-header-title {
 	margin: 12px 0 -4px;
 	font-size: 24px;
 	font-weight: normal;
+}
+.l-header-title > i {
+	display: inline-block;
+	margin: 0 0 0 4px;
+	width: 13px;
+	height: 17px;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_offline1.png");
 }
 .l-header > span {
 	color: #8a8a8a;

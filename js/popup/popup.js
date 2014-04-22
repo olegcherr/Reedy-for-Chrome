@@ -180,7 +180,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	
 	
-	var app = bgWindow.fastReader,
+	var app = bgWindow.reedy,
 		runShortcut, newShortcut,
 		
 		$body = querySelector('body'),

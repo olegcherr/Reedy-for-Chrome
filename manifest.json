@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 	
-	"name": "FastReader",
-	"description": "Read all you want faster with FastReader for Google Chrome!",
+	"name": "Reedy",
+	"description": "Read all you want faster with Reedy for Google Chrome!",
 	"version": "1.5.6",
 	
 	"default_locale": "en",
@@ -44,7 +44,7 @@
 			"19": "icons/icon19.png",
 			"38": "icons/icon38.png"
 		},
-		"default_title": "FastReader",
+		"default_title": "Reedy",
 		"default_popup": "popup.html"
 	},
 	"background": {

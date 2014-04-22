@@ -29,7 +29,7 @@ function onSaveTextBtn() {
 
 
 
-var app = window.fastReader,
+var app = window.reedy,
 	$textarea = document.querySelector('textarea'),
 	$startReadingBtn = document.querySelector('.j-startReadingBtn'),
 	$clearBtn = document.querySelector('.j-clearBtn'),

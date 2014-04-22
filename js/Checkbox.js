@@ -58,4 +58,4 @@
 	}
 	
 	
-})(window.fastReader);
+})(window.reedy);

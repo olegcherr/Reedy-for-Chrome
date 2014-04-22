@@ -278,4 +278,4 @@
 	}
 	
 	
-})(window.fastReader);
+})(window.reedy);

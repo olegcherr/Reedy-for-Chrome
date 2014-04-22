@@ -8,11 +8,11 @@
 	},
 	
 	"contextMenu": {
-		"message": "Запустить FastReader"
+		"message": "Запустить Reedy"
 	},
 	
 	"cantParse": {
-		"message": "FastReader не может обработать выделенный текст."
+		"message": "Reedy не может обработать выделенный текст."
 	},
 	"cantLaunchOnSystemPages": {
 		"message": "Расширения Google Chrome не могут быть запущены на системных страницах, а также в Chrome WebStore."
@@ -61,10 +61,10 @@
 	},
 	
 	"main_startReadingInfo": {
-		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите <b>Запустить FastReader</b>.<br/>Либо просто нажмите <b class='j-shortcut'>Alt+S</b>."
+		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите <b>Запустить Reedy</b>.<br/>Либо просто нажмите <b class='j-shortcut'>Alt+S</b>."
 	},
 	"main_startReadingBtn": {
-		"message": "Запустить FastReader"
+		"message": "Запустить Reedy"
 	},
 	"main_startContentSelectorBtn": {
 		"message": "Выбрать элемент на странице"
@@ -94,7 +94,7 @@
 		"message": "Автостарт"
 	},
 	"autostartDescr": {
-		"message": "Запускать чтение сразу после открытия FastReader."
+		"message": "Запускать чтение сразу после открытия Reedy."
 	},
 	
 	"focusMode": {
@@ -169,7 +169,7 @@
 	},
 	
 	"clickToStart": {
-		"message": "Кликните по экрану или нажмите пробел.<span>← клик вне области чтения закроет FastReader →</span>"
+		"message": "Кликните по экрану или нажмите пробел.<span>← клик вне области чтения закроет Reedy →</span>"
 	},
 	"ctrl_smallerFont": {
 		"message": "Уменьшить шрифт [ctrl+down]"
@@ -184,7 +184,7 @@
 		"message": "Увеличить скорость [up]"
 	},
 	"ctrl_close": {
-		"message": "Закрыть FastReader [esc]"
+		"message": "Закрыть Reedy [esc]"
 	},
 	"ctrl_switchTheme": {
 		"message": "Переключить тему"
@@ -255,7 +255,7 @@
 	},
 	
 	"offline_startReadingBtn": {
-		"message": "Запустить FastReader"
+		"message": "Запустить Reedy"
 	},
 	"offline_clearBtn": {
 		"message": "Очистить"

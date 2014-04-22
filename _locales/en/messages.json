@@ -8,11 +8,11 @@
 	},
 	
 	"contextMenu": {
-		"message": "Read this with FastReader"
+		"message": "Launch Reedy"
 	},
 	
 	"cantParse": {
-		"message": "FastReader cannot handle the text you selected."
+		"message": "Reedy cannot handle the text you selected."
 	},
 	"cantLaunchOnSystemPages": {
 		"message": "Google Chrome Extensions can't be launched on system pages and in the Chrome WebStore."
@@ -61,10 +61,10 @@
 	},
 	
 	"main_startReadingInfo": {
-		"message": "To start reading select the text on the page, click the right mouse button and choose <b>Launch FastReader</b>.<br/>You can also use the <b class='j-shortcut'>Alt+S</b> shortcut."
+		"message": "To start reading select the text on the page, click the right mouse button and choose <b>Launch Reedy</b>.<br/>You can also use the <b class='j-shortcut'>Alt+S</b> shortcut."
 	},
 	"main_startReadingBtn": {
-		"message": "Launch FastReader"
+		"message": "Launch Reedy"
 	},
 	"main_startContentSelectorBtn": {
 		"message": "Select an element on the page"
@@ -94,7 +94,7 @@
 		"message": "Autostart"
 	},
 	"autostartDescr": {
-		"message": "Start reading right after FastReading is launched."
+		"message": "Start reading right after Reedy is launched."
 	},
 	
 	"focusMode": {
@@ -156,10 +156,10 @@
 	},
 	
 	"sequel": {
-		"message": "Sequel"
+		"message": "Text continuation"
 	},
 	"sequelDescr": {
-		"message": "Show the text following the current word."
+		"message": "Show the text which follows the current word."
 	},
 	
 	
@@ -169,7 +169,7 @@
 	},
 	
 	"clickToStart": {
-		"message": "Click the screen or press the spacebar.<span>← the click outside the reading area closes FastReader →</span>"
+		"message": "Click the screen or press the spacebar.<span>← the click outside the reading area closes Reedy →</span>"
 	},
 	"ctrl_smallerFont": {
 		"message": "Smaller font [ctrl+down]"
@@ -184,7 +184,7 @@
 		"message": "Increase speed [up]"
 	},
 	"ctrl_close": {
-		"message": "Close FastReader [esc]"
+		"message": "Close Reedy [esc]"
 	},
 	"ctrl_switchTheme": {
 		"message": "Switch theme"
@@ -265,7 +265,7 @@
 	},
 	
 	"offline_startReadingBtn": {
-		"message": "Launch FastReader"
+		"message": "Launch Reedy"
 	},
 	"offline_clearBtn": {
 		"message": "Clear"
