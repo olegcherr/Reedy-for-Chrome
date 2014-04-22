@@ -4,7 +4,7 @@
 	"name": "Reedy",
 	"short_name": "Reedy",
 	"description": "Read all you want faster with Reedy for Google Chrome!",
-	"version": "1.5.6",
+	"version": "2.0",
 	
 	"default_locale": "en",
 	"offline_enabled": true,
