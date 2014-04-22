@@ -126,8 +126,7 @@
 	}
 	
 	function onInstalled(details) {
-		var isUpdate = details.reason === "update";
-		if (details.reason === "install" || isUpdate) {
+		if (details.reason === "install") {
 			// Let the UUID to be generated
 			setTimeout(function() {
 				chrome.tabs.query({}, function(tabs) {
@@ -136,7 +135,7 @@
 					}
 				});
 				
-				app.event('Extension', isUpdate ? 'Manually updated' : 'Installed', version);
+				app.event('Extension', 'Installed', version);
 			}, 500);
 		}
 	}
