@@ -194,7 +194,8 @@
 				console.log('Event: ' + [category, action, label].join(', '));
 			
 			ga('send', 'event', category, action, label, {
-				'dimension1': UUID
+				'dimension1': UUID,
+				'dimension2': version
 			});
 		});
 	}
