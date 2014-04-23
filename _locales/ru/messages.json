@@ -6,6 +6,9 @@
 	"developersHomePage": {
 		"message": "https://vk.com/olegcherr"
 	},
+	"appHomePage": {
+		"message": "http://reedy.azagroup.ru/"
+	},
 	
 	"contextMenu": {
 		"message": "Запустить Reedy"

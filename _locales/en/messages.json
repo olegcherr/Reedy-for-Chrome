@@ -6,6 +6,9 @@
 	"developersHomePage": {
 		"message": "https://www.facebook.com/olegcherr"
 	},
+	"appHomePage": {
+		"message": "http://reedy.azagroup.ru/en/"
+	},
 	
 	"contextMenu": {
 		"message": "Launch Reedy"
