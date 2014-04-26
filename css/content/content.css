@@ -34,6 +34,7 @@
 	background: rgba(31, 31, 31, .9);
 }
 .e-Reedy-wrapper * { /* fix for sites that apply styles directly on tags (i.e. lipsum.com) */
+	color: inherit;
 	font: inherit;
 	line-height: inherit;
 }
