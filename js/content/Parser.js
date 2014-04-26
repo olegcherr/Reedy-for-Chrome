@@ -230,11 +230,12 @@
 		return this.childs[index];
 	}
 	
-	Token.prototype.set = function(index, child) {
+	/**
+	 * Token.prototype.set = function(index, child) {
 		this.childs[index] = child;
 		this.update();
 		return child;
-	}
+	}*/
 	
 	Token.prototype.push = function(child) {
 		this.childs.push(child);

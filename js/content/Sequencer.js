@@ -72,8 +72,7 @@
 				token = api.getToken();
 				
 				function doUpdate() {
-					var sequel = app.get('sequel'),
-						hyphenated = wasLaunchedSinceOpen && !justRun && app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
+					var hyphenated = wasLaunchedSinceOpen && !justRun && app.get('hyphenation') ? token.toHyphenated() : [token.toString()],
 						part;
 					
 					(function go() {
