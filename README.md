@@ -38,6 +38,7 @@ Click to start reading.
 * Smart slowing – slow down the speed at a punctuation mark;
 * Focus mode – the focus point is shifted closer to the beginning of a word;
 * Scrollbar for the easy navigation through the text;
+* Showing the text which follows the current word;
 * Light and dark themes, background transparency;
 * Adjustable position of the reading area;
 * Automatical start of the reading;
@@ -58,8 +59,10 @@ Click to start reading.
 
 ### Contacts
 
-Join us on Facebook:
+Join us:
 * https://www.facebook.com/reedy.speedreading
+* https://twitter.com/reedy_speedread
+* https://vk.com/reedy_speedreading
 
 Contact developer:
 * https://www.facebook.com/olegcherr
@@ -69,4 +72,4 @@ Contact developer:
 
 **Reedy is fully open source and licensed under the GNU GPL v2.**
 
-Keywords: speedreading, spritz-like, RSVP reading, Rapid serial visual presentation
+Keywords: fast reader, spritz-like, spread, spreed, readline, jetzt, sprint, RSVP, Rapid serial visual presentation
