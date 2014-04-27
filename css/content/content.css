@@ -157,6 +157,7 @@
 	white-space: nowrap;
 }
 .e-Reedy-wordWrap2 {
+	padding: 14px 0 0;
 	height: 100%;
 	overflow: hidden;
 }
@@ -168,49 +169,48 @@
 }
 .e-Reedy-wrapper[font-size="7"] .e-Reedy-wordWrap {
 	margin: -105px 0 0 -513px;
-	padding: 62px 0 0;
+	padding: 48px 0 0;
 	width: 1027px;
 	height: 210px;
 	font-size: 74px;
 }
 .e-Reedy-wrapper[font-size="6"] .e-Reedy-wordWrap {
 	margin: -85px 0 0 -416px;
-	padding: 50px 0 0;
+	padding: 36px 0 0;
 	width: 833px;
 	height: 170px;
 	font-size: 60px;
 }
 .e-Reedy-wrapper[font-size="5"] .e-Reedy-wordWrap {
 	margin: -65px 0 0 -319px;
-	padding: 38px 0 0;
+	padding: 24px 0 0;
 	width: 639px;
 	height: 130px;
 	font-size: 46px;
 }
 .e-Reedy-wrapper[font-size="4"] .e-Reedy-wordWrap {
 	margin: -51px 0 0 -250px;
-	padding: 30px 0 0;
+	padding: 16px 0 0;
 	width: 500px;
 	height: 102px;
 	font-size: 36px;
 }
 .e-Reedy-wrapper[font-size="3"] .e-Reedy-wordWrap {
 	margin: -40px 0 0 -194px;
-	padding: 24px 0 0;
+	padding: 10px 0 0;
 	width: 389px;
 	height: 79px;
 	font-size: 28px;
 }
 .e-Reedy-wrapper[font-size="2"] .e-Reedy-wordWrap {
 	margin: -31px 0 0 -153px;
-	padding: 19px 0 0;
+	padding: 5px 0 0;
 	width: 306px;
 	height: 62px;
 	font-size: 22px;
 }
 .e-Reedy-wrapper[font-size="1"] .e-Reedy-wordWrap {
 	margin: -23px 0 0 -111px;
-	padding: 14px 0 0;
 	width: 223px;
 	height: 45px;
 	font-size: 16px;
