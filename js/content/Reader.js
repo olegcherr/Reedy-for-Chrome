@@ -63,6 +63,9 @@
 				
 				app.event('Config', 'Progress bar',         app.get('progressBar'));
 				app.event('Config', 'Time left',            app.get('timeLeft'));
+				app.event('Config', 'Sequel',               app.get('sequel'));
+				
+				app.event('Config', 'Run shortcut',         app.shortcutDataToString(app.get('runShortcut')));
 			}
 		}
 		
