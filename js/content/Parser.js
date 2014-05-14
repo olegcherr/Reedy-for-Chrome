@@ -3,7 +3,7 @@
 (function(app) {
 	
 	function splitWordIfNeeded(str) {
-		var dashIndex = str.indexOf("-"), uscoreIndex = str.indexOf("_"), slashIndex = str.indexOf("/");
+		var dashIndex = str.indexOf("-"), slashIndex = str.indexOf("/"), uscoreIndex = str.indexOf("_");
 		if (str.length > 13 || str.length > 9 && (dashIndex > -1 || uscoreIndex > -1 || slashIndex > -1)) {
 			var index = dashIndex > -1
 					? dashIndex // a dash is more important
@@ -40,19 +40,19 @@
 	}
 	
 	function isLetter(char) {
-		return isUpperLetter(char) || isLowerLetter(char);
+		return isLowerLetter(char) || isUpperLetter(char);
 	}
 	
 	function hasLetters(str) {
 		return str.toUpperCase() !== str.toLowerCase();
 	}
 	
-	function hasDigits(str) {
-		return /\d/.test(str);
-	}
-	
 	function isDigits(str) {
 		return /^\d+$/.test(str);
+	}
+	
+	function hasDigits(str) {
+		return /\d/.test(str);
 	}
 	
 	function isSentenceEnd(str) {
@@ -65,7 +65,7 @@
 		return array.indexOf(elem) > -1;
 	}
 	
-	function only(expect, actual) {
+	function only(expect, actual) { // TODO: make as in Kotlin
 		for (var i = 0; i < actual.length; i++) {
 			if (expect.indexOf(actual[i]) < 0) return false;
 		}
@@ -472,7 +472,7 @@
 			// olegcherr@yandex.ru
 			function(i, token, tokenStr, stack, stackStr) {
 				if (stackStr.length < 5) return RES_NEED_MORE;
-				if (!/\w/.test(stackStr)) return RES_FALSE;
+				if (!/^[\w/.:@?&#%]+$/.test(stackStr)) return RES_FALSE;
 				
 				var host, regexp;
 				
@@ -490,7 +490,7 @@
 				
 				return (new RegExp(regexp, 'i')).test(stackStr)
 					? RES_MATCH
-					: /^[\w/.:@?#%]+$/i.test(stackStr) ? RES_NEED_MORE : RES_FALSE;
+					: RES_NEED_MORE;
 			}
 		],
 		
@@ -563,7 +563,7 @@
 			isSpace = char === ' ';
 			isNewLine = char === '\n';
 			
-			if (!char || isSpace || isNewLine || !prevType || charType !== prevType) {
+			if (isSpace || isNewLine || charType !== prevType || !prevType || !char) {
 				prevType = null;
 				
 				if (token) {
@@ -574,7 +574,7 @@
 					token = null;
 				}
 				
-				if (char && !isSpace && !isNewLine) {
+				if (!isSpace && !isNewLine && char) {
 					token = new PlainToken();
 					token.value = char;
 					token.type = charType;
@@ -682,7 +682,7 @@
 		var timeStart = new Date(),
 			paragraphs = raw.split('\n'),
 			data = [], index = 0,
-			words, wlen, token, i, k;
+			words, token, i, k;
 		
 		for (i = 0; i < paragraphs.length; i++) {
 			i && index++; // nl
@@ -692,21 +692,22 @@
 				
 				for (k = 0; k < words.length; k++) {
 					k && index++; // space
-					wlen = words[k].length;
 					
-					token = new PlainToken();
-					
-					token.value = words[k];
-					token.type = CHAR_COMMON;
-					
-					token.startIndex = index;
-					token.endIndex = index+wlen;
-					
-					token.isSentenceEnd = k >= words.length-1 || isSentenceEnd(token.toString());
-					
-					data.push(token);
-					
-					index = token.endIndex;
+					if (words[k].length) { // unnecessary but recommended check
+						token = new PlainToken();
+						
+						token.value = words[k];
+						token.type = CHAR_COMMON;
+						
+						token.startIndex = index;
+						token.endIndex = index + token.value.length;
+						
+						token.isSentenceEnd = k >= words.length-1 || isSentenceEnd(token.value);
+						
+						data.push(token);
+						
+						index = token.endIndex;
+					}
 				}
 			}
 		}

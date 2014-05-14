@@ -106,7 +106,7 @@
 			normIndex();
 			
 			if (api.index !== indexBefore) {
-				complexityRemain = app.norm(complexityRemain + data[back ? api.index+1 : api.index].getComplexity() * (back ? 1 : -1), 0, complexityTotal-complexityFirstToren);
+				complexityRemain = app.norm(complexityRemain + data[back ? api.index+1 : api.index].getComplexity() * (back ? 1 : -1), 0, complexityTotal-complexityFirstToken);
 				return true;
 			}
 			
@@ -121,12 +121,12 @@
 			textLength = raw.length,
 			token = data[0],
 			wpm = 0, startWpm = 0,
-			complexityFirstToren = token.getComplexity(),
+			complexityFirstToken = token.getComplexity(),
 			complexityTotal = (function(length, i, res) {
 				for (; i < length && (res += data[i].getComplexity()); i++) {}
 				return res;
 			})(length, 0, 0),
-			complexityRemain = complexityTotal-complexityFirstToren,
+			complexityRemain = complexityTotal-complexityFirstToken,
 			timeout;
 		
 		
@@ -212,7 +212,7 @@
 			var startIndex = api.index;
 			
 			while (changeIndex(true)) {
-				if (data[api.index].isSentenceEnd && (startIndex - api.index > 1 || !data[api.index-1] || data[api.index-1].isSentenceEnd)) {
+				if (data[api.index].isSentenceEnd && (startIndex - api.index > 1 || api.index-1 < 0 || data[api.index-1].isSentenceEnd)) {
 					if (startIndex - api.index > 1) {
 						changeIndex();
 					}
@@ -233,7 +233,7 @@
 		
 		api.toFirstToken = function() {
 			api.index = 0;
-			complexityRemain = complexityTotal-complexityFirstToren;
+			complexityRemain = complexityTotal-complexityFirstToken;
 			
 			normIndex();
 			app.trigger(api, 'update');
