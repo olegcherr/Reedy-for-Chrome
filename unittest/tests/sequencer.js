@@ -12,12 +12,12 @@ exports = (function() {
 	}
 	
 	function checkSequencer(sequencer, raw, data, index) {
-		assert.equal(sequencer.index, index, '[Index] '+raw);
-		assert.equal(Math.round(sequencer.getTimeLeft()), getTimeLeft(data, index), '[Time left] '+raw);
+		assert.equal(sequencer.index, index, "[Index] "+raw);
+		assert.equal(Math.round(sequencer.getTimeLeft()), getTimeLeft(data, index), "[Time left] "+raw);
 	}
 	
 	
-	function test(raw, indexes) {
+	function check(raw, indexes) {
 		var data = parser(raw),
 			sequencer = new Sequencer(raw, data), i = -1;
 		
@@ -33,7 +33,7 @@ exports = (function() {
 		checkSequencer(sequencer, raw, data, indexes[++i]);
 	}
 	
-	function testSent(raw, indexes) {
+	function checkSent(raw, indexes) {
 		var data = parser(raw),
 			sequencer = new Sequencer(raw, data), i = -1;
 		
@@ -50,18 +50,18 @@ exports = (function() {
 		checkSequencer(sequencer, raw, data, indexes[++i]);
 	}
 	
-	function testTokenAtIndex(raw) {
+	function checkTokenAtIndex(raw) {
 		var data = parser(raw),
 			sequencer = new Sequencer(raw, data), i;
 		
 		for (i = 1; i < arguments.length; i++) {
 			sequencer.toTokenAtIndex(arguments[i][0]);
-			assert.equal(sequencer.index, arguments[i][1], i+': '+raw);
+			assert.equal(sequencer.index, arguments[i][1], i+": "+raw);
 		}
 	}
 	
 	
-	var assert = require('../assert.js');
+	var assert = require("../assert.js");
 	
 	
 	var Sequencer = window.reedy.Sequencer,
@@ -90,33 +90,33 @@ exports = (function() {
 		})[key];
 	}
 	
-	assert.profile('Sequencer');
+	assert.profile("Sequencer");
 	
 	/////////////////////////////////////////////////////
 	
-	console.log('==== Part 1');
+	console.log("==== Part 1");
 	
-	test('Hello',                                   [0, 0, 0]);
-	test('just a word',                             [1, 2, 0]);
-	test('Hello! How are you?',                     [1, 3, 0]);
-	test('Hello! How are you?\n- I\'m fine!',       [1, 5, 0]);
-	
-	/////////////////////////////////////////////////////
-	
-	console.log('==== Part 2');
-	
-	testSent('Hello',                               [0, 0, 0, 0]);
-	testSent('just a word',                         [2, 2, 0, 0]);
-	testSent('Hello! How are you?',                 [1, 3, 1, 0]);
-	testSent('Hello! How are you?\n- I\'m fine!',   [1, 4, 1, 0]);
-	testSent('Hello! How?\nFine!',                  [1, 2, 1, 0]);
+	check("Hello",                                      [0, 0, 0]);
+	check("just a word",                                [1, 2, 0]);
+	check("Hello! How are you?",                        [1, 3, 0]);
+	check("Hello! How are you?\n- I'm fine!",           [1, 5, 0]);
 	
 	/////////////////////////////////////////////////////
 	
-	console.log('==== Part 3');
+	console.log("==== Part 2");
 	
-	testTokenAtIndex('Hello',                                   [0,0], [1,0], [10,0]);
-	testTokenAtIndex('Hello! How are you?\n- I\'m fine!',       [0,0], [1,0], [6,0], [7,1], [21,4], [50,5]);
+	checkSent("Hello",                                  [0, 0, 0, 0]);
+	checkSent("just a word",                            [2, 2, 0, 0]);
+	checkSent("Hello! How are you?",                    [1, 3, 1, 0]);
+	checkSent("Hello! How are you?\n- I'm fine!",       [1, 4, 1, 0]);
+	checkSent("Hello! How?\nFine!",                     [1, 2, 1, 0]);
+	
+	/////////////////////////////////////////////////////
+	
+	console.log("==== Part 3");
+	
+	checkTokenAtIndex("Hello",                                  [0,0], [1,0], [10,0]);
+	checkTokenAtIndex("Hello! How are you?\n- I'm fine!",       [0,0], [1,0], [6,0], [7,1], [21,4], [50,5]);
 	
 	/////////////////////////////////////////////////////
 	

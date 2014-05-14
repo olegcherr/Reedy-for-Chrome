@@ -2,32 +2,32 @@
 
 exports = (function() {
 	
-	function test(raw, expected) {
-		assert.equal(window.reedy.calcPivotPoint(raw), expected, expected+': '+raw);
+	function check(raw, expected) {
+		assert.equal(window.reedy.calcPivotPoint(raw), expected, expected+": "+raw);
 	}
 	
 	
-	var assert = require('../assert.js');
+	var assert = require("../assert.js");
 	
 	
-	assert.profile('hypens');
+	assert.profile("hypens");
 	
-	test('1',               0);
-	test('Ну',              1);
-	test('как',             1);
-	test('дела',            1);
-	test('слова',           1);
-	test('первых',          2);
-	test('правило',         2);
-	test('контекст',        2);
-	test('наложения',       2);
+	check("1",              0);
+	check("Ну",             1);
+	check("как",            1);
+	check("дела",           1);
+	check("слова",          1);
+	check("первых",         2);
+	check("правило",        2);
+	check("контекст",       2);
+	check("наложения",      2);
 	
-	test('- Ну',            2);
-	test('- 14',            2);
-	test('1.',              0);
-	test('ым), -',          1);
-	test('25-ти',           1);
-	test('25-ти.',          1);
+	check("- Ну",           2);
+	check("- 14",           2);
+	check("1.",             0);
+	check("ым), -",         1);
+	check("25-ти",          1);
+	check("25-ти.",         1);
 	
 	return assert.profileEnd();
 	
