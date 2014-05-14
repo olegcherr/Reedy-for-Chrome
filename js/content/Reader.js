@@ -21,7 +21,7 @@
 			.replace(new RegExp('\\s*'+NL+'\\s*', 'g'), NL)                     // `      \n    `
 			.replace(/‐/g, '-')                                                 // short dash will be replaced with minus
 			.replace(/ \- /g, ' — ')                                            // replace minus between words with em dash
-			.replace(/–|―/g, '—')                                               // there are 4 dash types. after the cleaning only 2 will remain: minus and em dash
+			.replace(/–|−|―/g, '—')                                             // there are 5 dash types. after the cleaning only 2 will remain: minus and em dash
 			.replace(/[-|—]{2,}/g, '—')                                         // `--` | `------`
 			.replace(new RegExp('( |^|'+NL+')([([«]+) ', 'g'), '$1$2')          // `сюжет ( видео`
 			.replace(new RegExp(' ([)\\].,!?;»]+)( |$|'+NL+')', 'g'), '$1$2')   // `вставка ) отличный` | `конечно ...` | ` , ` | ` .\n`
