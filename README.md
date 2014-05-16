@@ -68,6 +68,8 @@ Contact developer:
 * https://www.facebook.com/olegcherr
 * https://vk.com/olegcherr
 
+Donate: http://reedy.azagroup.ru/en/donate
+
 ### License
 
 **Reedy is fully open source and licensed under the GNU GPL v2.**
