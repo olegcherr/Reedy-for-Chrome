@@ -6,8 +6,8 @@
 	"developersHomePage": {
 		"message": "https://www.facebook.com/olegcherr"
 	},
-	"appHomePage": {
-		"message": "http://reedy.azagroup.ru/en/"
+	"donatePage": {
+		"message": "http://reedy.azagroup.ru/en/donate/"
 	},
 	
 	"contextMenu": {
