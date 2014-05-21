@@ -81,11 +81,13 @@
 	function stateMachine(tokens, patterns) {
 		var data = [],
 			stack_pat_check = [], pat_check, lastCheck,
-			token1, token2 = new Token(), len, tokenStr, stackStr, index, i = 0, k;
+			token1, token2 = new Token(),
+			hasNotFalse, len, tokenStr, stackStr, index, chk, i = 0, k;
 		
 		while (true) {
 			token1 = tokens[i];
 			pat_check = [];
+			hasNotFalse = false;
 			
 			if (token1) {
 				token2.push(token1);
@@ -96,7 +98,11 @@
 				lastCheck = stack_pat_check[stack_pat_check.length-1];
 				for (k = 0; k < patterns.length; k++) {
 					if (!lastCheck || lastCheck[k] !== RES_FALSE) {
-						pat_check.push(patterns[k](index, token1, tokenStr, token2, stackStr));
+						chk = patterns[k](index, token1, tokenStr, token2, stackStr);
+						if (chk != RES_FALSE)
+							hasNotFalse = true;
+						
+						pat_check.push(chk);
 					}
 					else {
 						pat_check.push(RES_FALSE);
@@ -107,7 +113,7 @@
 			}
 			
 			
-			if (pat_check.indexOf(RES_MATCH) > -1 || pat_check.indexOf(RES_NEED_MORE) > -1) {
+			if (hasNotFalse) {
 				i++;
 			}
 			else {
