@@ -534,8 +534,12 @@
 	left: 0;
 	color: #8a8a8a;
 	background: #dbdbdb;
+	opacity: 0;
 	z-index: 4;
-	-webkit-transition: background-color 650ms;
+	-webkit-transition: background-color 650ms, opacity 350ms 500ms;
+}
+.e-Reedy-wrapper[is-closing=false] .e-Reedy-panel {
+	opacity: 1;
 }
 .e-Reedy-wrapper[dark-theme=true] .e-Reedy-panel {
 	background: #000;
