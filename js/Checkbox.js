@@ -14,29 +14,30 @@
 	var CLS_BG = "e-Checkbox-bg",
 		CLS_BAR = "e-Checkbox-bar",
 		
-		LNG_ON  = 'ON',
-		LNG_OFF = 'OFF';
+		LNG_ON  = "ON",
+		LNG_OFF = "OFF";
 	
 	
 	app.Checkbox = function($checkbox, onChange) {
 		
 		function updateState() {
-			var stateBefore = $checkbox.checked;
+			var checked = $checkbox.checked;
 			
-			$bg.setAttribute('checked', api.isChecked);
-			$bar.innerHTML = api.isChecked ? LNG_ON : LNG_OFF;
-			$checkbox.checked = api.isChecked;
+			$bg.setAttribute("checked", checked);
+			$bar.innerHTML = checked ? LNG_ON : LNG_OFF;
 			
-			stateBefore !== $checkbox.checked && onChange(api.isChecked, $checkbox, api);
+			savedState !== checked && onChange(checked, $checkbox, api);
+			savedState = checked;
 		}
 		
-		function toggle() {
-			api.isChecked = !api.isChecked;
+		function onMouseDown() {
+			$checkbox.checked = !$checkbox.checked;
 			updateState();
 		}
 		
 		
 		var api = this,
+			savedState = $checkbox.checked,
 			$bg  = createElement("span", CLS_BG, $checkbox.parentNode),
 			$bar = createElement("span", CLS_BAR, $bg);
 		
@@ -48,18 +49,16 @@
 		}
 		
 		api.setState = function(value) {
-			api.isChecked = !!value;
+			$checkbox.checked = !!value;
 			updateState();
 		}
 		
 		
-		api.isChecked = $checkbox.checked;
+		app.on($bg, "mousedown", onMouseDown);
+		
+		
+		$checkbox.style.display = "none";
 		updateState();
-		
-		$checkbox.style.display = 'none';
-		
-		
-		app.on($bg, 'mousedown', toggle);
 		
 	}
 	

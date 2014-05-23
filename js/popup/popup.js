@@ -147,8 +147,8 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	function initControls(settings) {
 		app.each(querySelectorAll('.j-checkbox'), function($elem) {
-			var api = new app.Checkbox($elem, onCheckbox);
-			api.setState(settings[$elem.name])
+			$elem.checked = settings[$elem.name];
+			new app.Checkbox($elem, onCheckbox);
 		});
 		
 		app.each(querySelectorAll('.j-range'), function($elem) {
