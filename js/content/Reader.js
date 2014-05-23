@@ -38,6 +38,10 @@
 				updateSequencer();
 		}
 		
+		function onPopupOpen() {
+			currentSeq.pause();
+		}
+		
 		function onViewClose() {
 			api.destroy();
 		}
@@ -134,7 +138,8 @@
 			}, 800);
 		
 		
-		app.on(app, 'settingsUpdate', onSettingsUpdate);
+		app.on(app, "settingsUpdate", onSettingsUpdate);
+		app.on(app, "onPopupOpen", onPopupOpen);
 		
 		app.on(view, 'close', onViewClose);
 		

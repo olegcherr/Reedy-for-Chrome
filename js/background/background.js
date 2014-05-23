@@ -115,6 +115,7 @@
 			port.onDisconnect.addListener(function() {
 				isPopupOpen = false;
 			});
+			app.sendMessageToSelectedTab({type: "onPopupOpen"});
 		}
 	}
 	

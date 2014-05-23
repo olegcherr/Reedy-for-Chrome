@@ -75,6 +75,10 @@
 				app.stopContentSelection();
 				callback();
 				break;
+			case "onPopupOpen":
+				app.trigger(app, "onPopupOpen");
+				callback();
+				break;
 		}
 	}
 	
