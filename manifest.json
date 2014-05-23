@@ -33,6 +33,7 @@
 		"storage",
 		"activeTab",
 		"contextMenus",
+		"fontSettings",
 		"<all_urls>"
 	],
 	"icons": {
@@ -51,8 +52,10 @@
 	"background": {
 		"scripts": [
 			"js/application.js",
+			"js/ColorPicker.js",
 			"js/Checkbox.js",
 			"js/Range.js",
+			"js/Tabs.js",
 			"js/background/analytics.js",
 			"js/background/background.js"
 		],

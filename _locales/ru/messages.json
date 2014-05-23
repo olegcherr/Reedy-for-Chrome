@@ -83,13 +83,16 @@
 	},
 	
 	"settings_reading": {
-		"message": "Чтение"
+		"message": "Настройки чтения"
 	},
 	"settings_parsing": {
-		"message": "Текст"
+		"message": "Обработка текста"
 	},
 	"settings_appearance": {
 		"message": "Отображение"
+	},
+	"settings_theme": {
+		"message": "Стилизация"
 	},
 	
 	
@@ -163,6 +166,30 @@
 	},
 	"sequelDescr": {
 		"message": "Показывать текст, следующий за текущим словом."
+	},
+	
+	
+	"color_word": {
+		"message": "Отображаемое слово"
+	},
+	"color_letter": {
+		"message": "Точка фокусировки"
+	},
+	"color_context": {
+		"message": "Контекст"
+	},
+	"color_background": {
+		"message": "Основной фон"
+	},
+	"font_family": {
+		"message": "Шрифт"
+	},
+	"font_bold": {
+		"message": "Полужирный"
+	},
+	
+	"defaultFont": {
+		"message": "- По умолчанию -"
 	},
 	
 	

@@ -36,7 +36,7 @@
 				isTopWindow && callback(app.isOfflinePage);
 				break;
 			case 'settingsUpdate':
-				settings && (settings[msg.key] = msg.value);
+				settings && app.setByPath(settings, msg.key, msg.value);
 				app.trigger(app, 'settingsUpdate', [msg.key, msg.value]);
 				
 				if (msg.key === 'runShortcut')
@@ -130,11 +130,11 @@
 	
 	
 	app.get = function(key) {
-		return settings[key];
+		return app.getByPath(settings, key);
 	}
 	
 	app.set = function(key, value) {
-		settings[key] = value;
+		app.setByPath(settings, key, value);
 		app.sendMessageToExtension({type: 'setSettings', key: key, value: value});
 	}
 	

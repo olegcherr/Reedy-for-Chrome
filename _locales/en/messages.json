@@ -91,6 +91,9 @@
 	"settings_appearance": {
 		"message": "Appearance"
 	},
+	"settings_theme": {
+		"message": "Styling"
+	},
 	
 	
 	"autostart": {
@@ -163,6 +166,30 @@
 	},
 	"sequelDescr": {
 		"message": "Show the text which follows the current word."
+	},
+	
+	
+	"color_word": {
+		"message": "Current word"
+	},
+	"color_letter": {
+		"message": "Focus point"
+	},
+	"color_context": {
+		"message": "Full text"
+	},
+	"color_background": {
+		"message": "Background"
+	},
+	"font_family": {
+		"message": "Font"
+	},
+	"font_bold": {
+		"message": "Use bold font"
+	},
+	
+	"defaultFont": {
+		"message": "- Default font -"
 	},
 	
 	

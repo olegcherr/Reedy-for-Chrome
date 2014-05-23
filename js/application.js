@@ -81,6 +81,38 @@
 		return res;
 	}
 	
+	app.getByPath = function(object, path) {
+		var index;
+		
+		while ((index = path.indexOf('.')) > -1) {
+			object = object[path.substring(0, index)];
+			path = path.substring(index+1);
+		}
+		
+		return object[path];
+	}
+	
+	app.setByPath = function(object, path, value) {
+		var obj = object,
+			temp, index, p;
+		
+		while ((index = path.indexOf('.')) > -1) {
+			p = path.substring(0, index);
+			
+			temp = obj[p];
+			if (typeof temp !== "object")
+				temp = obj[p] = {};
+			
+			obj = temp;
+			
+			path = path.substring(index+1);
+		}
+		
+		obj[path] = value;
+		
+		return object;
+	}
+	
 	
 	app.stopEvent = function(e) {
 		e.preventDefault();

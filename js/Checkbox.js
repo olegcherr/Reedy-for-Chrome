@@ -11,7 +11,10 @@
 	}
 	
 	
-	var LNG_ON  = 'ON',
+	var CLS_BG = "e-Checkbox-bg",
+		CLS_BAR = "e-Checkbox-bar",
+		
+		LNG_ON  = 'ON',
 		LNG_OFF = 'OFF';
 	
 	
@@ -34,12 +37,15 @@
 		
 		
 		var api = this,
-			
-			$bg     = createElement('span', 'e-Checkbox-bg', $checkbox.parentNode),
-			$bar    = createElement('span', 'e-Checkbox-bar', $bg);
+			$bg  = createElement("span", CLS_BG, $checkbox.parentNode),
+			$bar = createElement("span", CLS_BAR, $bg);
 		
 		
 		api.$checkbox = $checkbox;
+		
+		api.getState = function() {
+			return $checkbox.checked;
+		}
 		
 		api.setState = function(value) {
 			api.isChecked = !!value;

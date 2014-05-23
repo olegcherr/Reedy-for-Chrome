@@ -1,37 +1,51 @@
 
 
-.p-settings {
-	padding: 8px 0 0;
+.p-settingsLayout {
+	width: 100%;
 }
+.p-settingsLayout-tabsCell {
+	width: 42px;
+	background: #f7f7f7;
+	border-right: 1px solid #e8e8e8;
+}
+.p-settingsLayout-contentWrap {
+	max-height: 380px;
+	overflow: auto;
+}
+
 
 .p-settings-table {
 	display: none;
 	padding: 0 15px;
 	width: 100%;
+	border-collapse: separate;
 }
 .p-settings-table[active="true"] {
 	display: table;
 }
 
 .p-settings-cell {
+	padding: 9px 0 10px;
 	border-bottom: 1px solid #ededed;
+	vertical-align: middle;
 }
 .p-settings-table tr:last-child > .p-settings-cell {
 	border-bottom: 0;
 }
-
-.p-settings-cell_left {
-	padding: 7px 0 9px;
-	border-bottom: 1px solid #ededed;
+.p-settings-cell_right {
+	padding: 0 0 0 13px;
+	text-align: center;
+	width: 42px;
 }
+
 .p-settings-cell_left > span {
 	display: block;
 	padding: 0 0 0 1px;
 	color: #a3a3a3;
 	font-size: 11px;
 }
-.p-settings-cell_right {
-	padding: 0 0 0 13px;
-	text-align: center;
-	width: 42px;
+
+
+.p-settings-select {
+	margin: 4px 0 0;
 }

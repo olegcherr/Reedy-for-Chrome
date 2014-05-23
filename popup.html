@@ -40,113 +40,179 @@
 		<span i18n="view_settings"></span>
 	</div>
 	
-	<div class="j-tabs e-tabs g-clrfix" active-tab="1">
-		<div i18n="settings_reading" tab-id="1" active="true" class="j-tab e-tabs-tab"></div>
-		<div i18n="settings_parsing" tab-id="2" class="j-tab e-tabs-tab"></div>
-		<div i18n="settings_appearance" tab-id="3" class="j-tab e-tabs-tab"></div>
-		<i class="e-tabs-arrow"></i>
-	</div>
-	
-	<div class="p-settings">
-		<table tab-id="1" active="true" class="j-content p-settings-table" cellspacing="0">
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="autostart"></b>
-					<span i18n="autostartDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="autostart"/>
-				</td>
-			</tr>
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="focusMode"></b>
-					<span i18n="focusModeDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="focusMode"/>
-				</td>
-			</tr>
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="gradualAccel"></b>
-					<span i18n="gradualAccelDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="gradualAccel"/>
-				</td>
-			</tr>
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="smartSlowing"></b>
-					<span i18n="smartSlowingDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="smartSlowing"/>
-				</td>
-			</tr>
-		</table>
-		
-		<table tab-id="2" class="j-content p-settings-table" cellspacing="0">
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="entityAnalysis"></b>
-					<span i18n="entityAnalysisDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="entityAnalysis"/>
-				</td>
-			</tr>
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="hyphenation"></b>
-					<span i18n="hyphenationDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="hyphenation"/>
-				</td>
-			</tr>
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="emptySentenceEnd"></b>
-					<span i18n="emptySentenceEndDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
-				</td>
-			</tr>
-		</table>
-		
-		<table tab-id="3" class="j-content p-settings-table" cellspacing="0">
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="progressBar"></b>
-					<span i18n="progressBarDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="progressBar"/>
-				</td>
-			</tr>
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="timeLeft"></b>
-					<span i18n="timeLeftDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="timeLeft"/>
-				</td>
-			</tr>
-			<tr>
-				<td class="p-settings-cell p-settings-cell_left">
-					<b i18n="sequel"></b>
-					<span i18n="sequelDescr"></span>
-				</td>
-				<td class="p-settings-cell p-settings-cell_right">
-					<input class="j-checkbox" type="checkbox" name="sequel"/>
-				</td>
-			</tr>
-		</table>
-	</div>
+	<table class="p-settingsLayout">
+		<tr>
+			<td class="j-tabs e-vTabs p-settingsLayout-tabsCell" active-tab="1">
+				<div i18n-attr="title|settings_reading" tab-id="1" active="true" class="j-tab e-vTabs-tab e-vTabs-tab_reading"><i></i></div>
+				<div i18n-attr="title|settings_parsing" tab-id="2" class="j-tab e-vTabs-tab e-vTabs-tab_parsing"><i></i></div>
+				<div i18n-attr="title|settings_appearance" tab-id="3" class="j-tab e-vTabs-tab e-vTabs-tab_appearance"><i></i></div>
+				<div i18n-attr="title|settings_theme" tab-id="4" class="j-tab e-vTabs-tab e-vTabs-tab_theme"><i></i></div>
+			</td>
+			<td class="p-settingsLayout-contentCell">
+				<div class="p-settingsLayout-contentWrap">
+					<table tab-id="1" active="true" class="j-tabContent p-settings-table">
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="autostart"></b>
+								<span i18n="autostartDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="autostart"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="focusMode"></b>
+								<span i18n="focusModeDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="focusMode"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="gradualAccel"></b>
+								<span i18n="gradualAccelDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="gradualAccel"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="smartSlowing"></b>
+								<span i18n="smartSlowingDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="smartSlowing"/>
+							</td>
+						</tr>
+					</table>
+					
+					<table tab-id="2" class="j-tabContent p-settings-table">
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="entityAnalysis"></b>
+								<span i18n="entityAnalysisDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="entityAnalysis"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="hyphenation"></b>
+								<span i18n="hyphenationDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="hyphenation"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="emptySentenceEnd"></b>
+								<span i18n="emptySentenceEndDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="emptySentenceEnd"/>
+							</td>
+						</tr>
+					</table>
+					
+					<table tab-id="3" class="j-tabContent p-settings-table">
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="progressBar"></b>
+								<span i18n="progressBarDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="progressBar"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="timeLeft"></b>
+								<span i18n="timeLeftDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="timeLeft"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="sequel"></b>
+								<span i18n="sequelDescr"></span>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-checkbox" type="checkbox" name="sequel"/>
+							</td>
+						</tr>
+					</table>
+					
+					<table tab-id="4" class="j-tabContent p-settings-table">
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="color_letter"></b>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-iColorPicker" type="color" name="color_letter"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="color_word"></b>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-iColorPicker" type="color" name="color_word"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="color_context"></b>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-iColorPicker" type="color" name="color_context"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="color_background"></b>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-iColorPicker" type="color" name="color_background"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell" colspan="2">
+								<b i18n="font_family"></b>
+								<select class="j-iFont p-settings-select" name="font_family"></select>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell p-settings-cell_left">
+								<b i18n="font_bold"></b>
+							</td>
+							<td class="p-settings-cell p-settings-cell_right">
+								<input class="j-iThemeCheckbox" type="checkbox" name="font_bold"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-settings-cell" colspan="2">
+								<div lng="ru">
+									Настройки будут применены только для выбранной в данный момент темы.
+									<br/>Вы также можете <span class="j-resetThemeBtn e-pseudoLink">сбросить значения</span> на страндартные.
+								</div>
+								<div lng="en">
+									The settings will be applied only to the currently selected theme.
+									<br/>You can also <span class="j-resetThemeBtn e-pseudoLink">reset settings</span> to their original values.
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
 </div>
 
 <div class="l-view" view-name="shortcut">
@@ -161,7 +227,11 @@
 			<br/><br/>
 			Обратите внимание, что в сочетании обязательно должна присутствовать клавиша <b>Alt</b> и/или <b>Ctrl</b>.
 		</div>
-		<div lng="en"></div>
+		<div lng="en">
+			Reproduce the desired key combination and click <b>Save changes</b>.
+			<br/><br/>
+			Note that <b>Alt</b> or <b>Ctrl</b> key must be present in the combination.
+		</div>
 		
 		<input class="j-iShortcut p-shortcut-input" type="text" value=""/>
 		

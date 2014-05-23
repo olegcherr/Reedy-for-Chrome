@@ -54,9 +54,12 @@
 		function onSettingsUpdate(e, key, value) {
 			updateWrapper();
 			
-			if (key === 'focusMode') {
+			if (key === "focusMode") {
 				updateFocusPoint();
 				updateWord();
+			}
+			else if (key.substring(0, 5) === "theme") {
+				updateTheme();
 			}
 		}
 		
@@ -449,6 +452,30 @@
 				$scrollerBar.style.top = Math.round(sequencer.getProgress()*100)+'%';
 		}
 		
+		function updateTheme() {
+			function appendStyles(theme, sel, sel_running) {
+				styles += sel+".e-Reedy-background{background: "+theme.color_background+";}";
+				styles += sel_running+".e-Reedy-wordWrap{background: "+theme.color_background+";}";
+				
+				styles += sel+".e-Reedy-context{color: "+theme.color_context+";}";
+				styles += sel+".e-Reedy-word{color: "+theme.color_word+";}";
+				styles += sel+".e-Reedy-word>span{color: "+theme.color_letter+";}";
+				
+				if (theme.font_family)
+					styles += sel+".e-Reedy-word{font-family: '"+theme.font_family+"', sans-serif;}";
+				
+				if (theme.font_bold)
+					styles += sel+".e-Reedy-word{font-weight: bold;}";
+			}
+			
+			var styles = "";
+			
+			appendStyles(app.get("theme.light"), "", ".e-Reedy-wrapper[is-running=true] ");
+			appendStyles(app.get("theme.dark"), ".e-Reedy-wrapper[dark-theme=true] ", ".e-Reedy-wrapper[is-running=true][dark-theme=true] ");
+			
+			$styles.innerHTML = styles;
+		}
+		
 		
 		
 		var api = this,
@@ -461,6 +488,9 @@
 			
 			
 			$wrapper            = createElement('div', cls('wrapper'), $body),
+			$styles             = createElement('style', null, $wrapper),
+			
+			$background         = createElement('div', cls('background'), $wrapper),
 			
 			$pane               = createElement('div', cls('pane'), $wrapper),
 			
@@ -576,6 +606,7 @@
 		updateWrapper();
 		updateFocusPoint();
 		updatePanels();
+		updateTheme();
 		
 		$wrapper.setAttribute('autostart', app.get('autostart'));
 		$wrapper.setAttribute("is-closing", false);

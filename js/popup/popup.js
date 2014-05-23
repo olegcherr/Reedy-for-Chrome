@@ -17,10 +17,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	}
 	
 	
-	function onTabMousedown(e) {
-		setActiveTab(e.target.getAttribute('tab-id'));
-	}
-	
 	function onExternalLinkClick(e) {
 		app.event('External link', e.target.href);
 		window.open(e.target.href);
@@ -139,19 +135,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		window.close();
 	}
 	
-	function setActiveTab(id) {
-		$tabsWrap.setAttribute('active-tab', id);
-		
-		app.each($tabs, function($tab) {
-			$tab.setAttribute('active', $tab.getAttribute('tab-id') === id);
-		});
-		app.each($content, function($elem) {
-			$elem.setAttribute('active', $elem.getAttribute('tab-id') === id);
-		});
-		
-		localStorage["tabId"] = id;
-	}
-	
 	function switchToView(name) {
 		app.each($views, function($view) {
 			$view.setAttribute('active', $view.getAttribute('view-name') === name);
@@ -164,8 +147,8 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	function initControls(settings) {
 		app.each(querySelectorAll('.j-checkbox'), function($elem) {
-			$elem.checked = settings[$elem.name];
-			new app.Checkbox($elem, onCheckbox);
+			var api = new app.Checkbox($elem, onCheckbox);
+			api.setState(settings[$elem.name])
 		});
 		
 		app.each(querySelectorAll('.j-range'), function($elem) {
@@ -176,8 +159,89 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		runShortcut = settings.runShortcut;
 		$iShortcut.value = app.shortcutDataToString(runShortcut, true);
 		updateShortcutElems(runShortcut);
+		
+		
+		chrome.fontSettings.getFontList(function(fontList) {
+			initThemeControls(settings, fontList);
+		});
 	}
 	
+	function initThemeControls(settings, fontList) {
+		function updateThemeControls() {
+			app.each(colorPickerApis, function(api) {
+				api.setValue(theme[api.$input.name]);
+			});
+			
+			app.each(themeCheckboxApis, function(api) {
+				api.setState(theme[api.$checkbox.name]);
+			});
+			
+			$iFontFamily.value = "-";
+			if (theme.font_family != null)
+				app.each(fontList, function(item) {
+					if (theme.font_family === item.fontId) {
+						$iFontFamily.value = item.fontId;
+						return false;
+					}
+				});
+		}
+		
+		
+		var themeName = settings.darkTheme ? "dark" : "light",
+			theme = settings.theme[themeName],
+			colorPickerApis = [],
+			themeCheckboxApis = [],
+			$iFontFamily = querySelector(".j-iFont");
+		
+		
+		// Building fint list
+		(function(html, i) {
+			function append(value, text) {
+				html += "<option value='"+value+"'>"+text+"</option>";
+			}
+			
+			append("-", app.t("defaultFont"));
+			
+			for (i = 0; i < fontList.length; i++) {
+				append(fontList[i].fontId, fontList[i].fontId);
+			}
+			
+			$iFontFamily.innerHTML = html;
+		})("");
+		
+		
+		app.each(querySelectorAll(".j-iColorPicker"), function($elem) {
+			colorPickerApis.push(new app.ColorPicker($elem, function(value, $input) {
+				app.setThemeSettings(themeName, $input.name, value);
+				theme[$input.name] = value;
+			}));
+		});
+		
+		app.each(querySelectorAll(".j-iThemeCheckbox"), function($elem) {
+			themeCheckboxApis.push(new app.Checkbox($elem, function(value, $checkbox) {
+				app.setThemeSettings(themeName, $checkbox.name, value);
+				theme[$checkbox.name] = value;
+			}));
+		});
+		
+		app.on($iFontFamily, "change", function() {
+			app.setThemeSettings(themeName, $iFontFamily.name, $iFontFamily.value);
+			theme.font_family = $iFontFamily.value;
+		});
+		
+		app.on(querySelector(".j-resetThemeBtn"), "click", function() {
+			app.resetThemeSettings(themeName, function() {
+				app.getSettings("theme."+themeName, function(t) {
+					theme = t;
+					updateThemeControls();
+				});
+			});
+			app.event("Popup", "Reset theme");
+		});
+		
+		
+		updateThemeControls();
+	}
 	
 	
 	var app = bgWindow.reedy,
@@ -188,12 +252,17 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		$startSelectorBtn = querySelector('.j-startContentSelectorBtn'),
 		$closeReaderBtn = querySelector('.j-closeReaderBtn'),
 		$views = querySelectorAll('[view-name]'),
-		$tabsWrap = querySelector('.j-tabs'),
-		$tabs = querySelectorAll('.j-tab'),
-		$content = querySelectorAll('.j-content'),
+		
 		$iShortcut = querySelector('.j-iShortcut'),
 		$saveShotrcutBtn = querySelector('.j-saveShortcutBtn'),
-		$cancelShotrcutBtn = querySelector('.j-cancelShotrcutBtn');
+		$cancelShotrcutBtn = querySelector('.j-cancelShotrcutBtn'),
+		
+		tabs = app.Tabs(
+			"settings",
+			querySelector('.j-tabs'),
+			querySelectorAll('.j-tab'),
+			querySelectorAll('.j-tabContent')
+		);
 	
 	
 	chrome.runtime.connect({name: "Popup"});
@@ -224,8 +293,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	
 	app.getSettings(null, initControls);
 	
-	localStorage["tabId"] && setActiveTab(localStorage["tabId"]);
-	
 	
 	app.on(document, "keydown", onKeyDown);
 	
@@ -240,10 +307,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	});
 	app.each(querySelectorAll('[switch-to]'), function($elem) {
 		app.on($elem, 'click', onSwitchBtnClick);
-	});
-	
-	app.each($tabs, function($elem) {
-		app.on($elem, "click", onTabMousedown);
 	});
 	
 	app.on($iShortcut, "keydown", onShortcutInputKeydown);

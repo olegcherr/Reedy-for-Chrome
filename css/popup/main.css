@@ -28,6 +28,19 @@ body[active-view="help"],
 body[active-view="advices"] {
 	width: 500px;
 }
+body[active-view="settings"] {
+	width: 343px;
+}
+
+
+a, .e-pseudoLink {
+	color: #db5a78;
+	cursor: pointer;
+}
+a:hover, .e-pseudoLink:hover {
+	text-decoration: underline;
+}
+
 
 [lng] {
 	display: none;
@@ -38,7 +51,16 @@ body[locale="ru"] [lng="ru"] {
 }
 
 
-input[type="text"], input[type="password"], textarea {
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+td {
+	vertical-align: top;
+}
+
+
+input[type="text"], input[type="password"], textarea, select {
 	box-sizing: border-box;
 	width: 100%;
 	font-size: inherit;
@@ -48,13 +70,17 @@ input[type="text"], input[type="password"], textarea {
 	border-radius: 3px;
 	vertical-align: top;
 }
-input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
 	outline: 0;
 	border-color: #4dbd85;
 	box-shadow: 0 0 0 3px rgba(77, 189, 133, .1);
 }
 input[type="text"], input[type="password"] {
 	padding: 7px 7px 8px;
+	height: 31px;
+}
+select {
+	padding: 0 3px 1px;
 	height: 31px;
 }
 

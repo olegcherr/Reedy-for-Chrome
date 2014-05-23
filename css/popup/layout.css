@@ -31,7 +31,7 @@
 	width: 24px;
 	height: 24px;
 	cursor: pointer;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png") -36px -16px;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png") -34px -16px;
 	opacity: .35;
 }
 .l-view-backBtn:hover {

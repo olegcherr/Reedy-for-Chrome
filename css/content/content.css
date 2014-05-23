@@ -10,13 +10,12 @@
 	font-weight: normal;
 	font-style: normal;
 	color: #303030;
-	background: #e6e6e6;
 	z-index: 2147483647;
 	overflow: hidden;
 	outline: 0;
 	opacity: 0;
 	cursor: default;
-	-webkit-transition: background-color 1s, opacity 500ms;
+	-webkit-transition: opacity 500ms;
 }
 .e-Reedy-wrapper[is-closing=false] {
 	opacity: 1;
@@ -24,19 +23,35 @@
 .e-Reedy-wrapper[is-closing=true] {
 	opacity: 0;
 }
-.e-Reedy-wrapper[dark-theme=true] {
-	background: #1f1f1f;
-}
-.e-Reedy-wrapper[transparent-bg=true] {
-	background: rgba(230, 230, 230, .85);
-}
-.e-Reedy-wrapper[dark-theme=true][transparent-bg=true] {
-	background: rgba(31, 31, 31, .9);
-}
+
 .e-Reedy-wrapper * { /* fix for sites that apply styles directly on tags (i.e. lipsum.com) */
 	color: inherit;
 	font: inherit;
 	line-height: inherit;
+}
+
+
+
+/* === Background ===================== */
+
+.e-Reedy-background {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	/*background: #e6e6e6;*/ /*JS*/
+	z-index: 0;
+	-webkit-transition: all 650ms;
+}
+.e-Reedy-wrapper[dark-theme=true] .e-Reedy-background {
+	/*background: #1f1f1f;*/ /*JS*/
+}
+.e-Reedy-wrapper[transparent-bg=true] .e-Reedy-background {
+	opacity: .85;
+}
+.e-Reedy-wrapper[transparent-bg=true][dark-theme=true] .e-Reedy-background {
+	opacity: .9;
 }
 
 
@@ -79,20 +94,18 @@
 	margin: 0 0 0 -300px;
 	max-width: 600px;
 	left: 50%;
-	color: #8a8a8a;
+	color: #575757;
 	font-size: 16px;
 	text-align: justify;
+	opacity: .72;
 	z-index: 1; /* Places the context above the word wrapper */
-	-webkit-transition: color 1s;
-}
-.e-Reedy-wrapper[transparent-bg=true] .e-Reedy-context {
-	color: #575757;
+	-webkit-transition: all 650ms;
 }
 .e-Reedy-wrapper[dark-theme=true] .e-Reedy-context {
-	color: #6b6b6b;
-}
-.e-Reedy-wrapper[dark-theme=true][transparent-bg=true] .e-Reedy-context {
 	color: #8a8a8a;
+}
+.e-Reedy-wrapper[transparent-bg=true] .e-Reedy-context {
+	opacity: 1;
 }
 .e-Reedy-wrapper[is-running=true] .e-Reedy-context {
 	display: none;
@@ -162,10 +175,10 @@
 	overflow: hidden;
 }
 .e-Reedy-wrapper[is-running=true] .e-Reedy-wordWrap {
-	background: #e6e6e6;
+	/*background: #e6e6e6;*/ /*JS*/
 }
 .e-Reedy-wrapper[is-running=true][dark-theme=true] .e-Reedy-wordWrap {
-	background: #1f1f1f;
+	/*background: #1f1f1f;*/ /*JS*/
 }
 .e-Reedy-wrapper[font-size="7"] .e-Reedy-wordWrap {
 	margin: -105px 0 0 -513px;
@@ -522,7 +535,7 @@
 	color: #8a8a8a;
 	background: #dbdbdb;
 	z-index: 4;
-	-webkit-transition: background-color 1s;
+	-webkit-transition: background-color 650ms;
 }
 .e-Reedy-wrapper[dark-theme=true] .e-Reedy-panel {
 	background: #000;
@@ -550,7 +563,7 @@
 	left: 50%;
 	top: 0;
 	border-left: 1px solid #c5c5c5;
-	-webkit-transition: border-color 1s;
+	-webkit-transition: border-color 650ms;
 	-webkit-user-select: none;
 }
 .e-Reedy-wrapper[dark-theme=true] .e-Reedy-topPanelLeft {
@@ -594,7 +607,7 @@
 	float: left;
 	padding: 17px 45px 18px;
 	border-right: 1px solid #c5c5c5;
-	-webkit-transition: border-color 1s;
+	-webkit-transition: border-color 650ms;
 }
 .e-Reedy-wrapper[dark-theme=true] .e-Reedy-adjust {
 	border-right-color: #262626;
@@ -633,7 +646,7 @@
 	padding: 9px 0 9px 10px;
 	border: solid #c5c5c5;
 	border-width: 0 1px;
-	-webkit-transition: border-color 1s;
+	-webkit-transition: border-color 650ms;
 }
 .e-Reedy-wrapper[dark-theme=true] .e-Reedy-menuGroup {
 	border-color: #262626;

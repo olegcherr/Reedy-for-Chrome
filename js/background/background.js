@@ -180,6 +180,25 @@
 				ctrlKey: false,
 				altKey: true,
 				keyCode: 83
+			},
+			
+			theme: {
+				light: {
+					color_word: "#303030",
+					color_letter: "#ff0000",
+					color_context: "#8a8a8a",
+					color_background: "#e6e6e6",
+					font_family: null,
+					font_bold: false
+				},
+				dark: {
+					color_word: "#b8b8b8",
+					color_letter: "#ff5757",
+					color_context: "#8a8a8a",
+					color_background: "#1f1f1f",
+					font_family: null,
+					font_bold: false
+				}
 			}
 		};
 	
@@ -213,16 +232,42 @@
 	
 	app.getSettings = function(key, callback) {
 		chrome.storage.sync.get(defaults, function(items) {
-			callback(key != null ? items[key] : items);
+			callback(key != null ? app.getByPath(items, key) : items);
 		});
 	}
 	
 	app.setSettings = function(key, value, callback) {
-		var settings = {};
-		settings[key] = value;
-		chrome.storage.sync.set(settings, callback || noop);
-		
-		app.sendMessageToSelectedTab({type: 'settingsUpdate', key: key, value: value});
+		app.getSettings(null, function(settings) {
+			app.setByPath(settings, key, value);
+			
+			chrome.storage.sync.set(settings, function() {
+				callback && callback();
+				app.sendMessageToSelectedTab({type: "settingsUpdate", key: key, value: value});
+			});
+		});
+	}
+	
+	app.setThemeSettings = function(themeName, key, value, callback) {
+		app.getSettings(null, function(settings) {
+			app.setByPath(settings, "theme."+themeName+"."+key, value);
+			
+			chrome.storage.sync.set(settings, function() {
+				callback && callback();
+				app.sendMessageToSelectedTab({type: "settingsUpdate", key: "theme."+themeName+"."+key, value: value});
+			});
+		});
+	}
+	
+	app.resetThemeSettings = function(themeName, callback) {
+		app.getSettings(null, function(settings) {
+			var value = defaults.theme[themeName];
+			app.setByPath(settings, "theme."+themeName, value);
+			
+			chrome.storage.sync.set(settings, function() {
+				callback && callback();
+				app.sendMessageToSelectedTab({type: "settingsUpdate", key: "theme."+themeName, value: value});
+			});
+		});
 	}
 	
 	

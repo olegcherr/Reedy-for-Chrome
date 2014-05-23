@@ -103,6 +103,48 @@
 	left: 83.33%;
 }
 
+.e-vTabs-tab {
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	border-right: 2px solid transparent;
+}
+.e-vTabs-tab:hover {
+	border-right-color: #e8e8e8;
+}
+.e-vTabs-tab[active="true"] {
+	border-right-color: #4dbd85;
+}
+.e-vTabs-tab > i {
+	content: '';
+	display: block;
+	position: relative;
+	left: 8px;
+	top: 8px;
+	width: 24px;
+	height: 24px;
+	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
+	opacity: .25;
+}
+.e-vTabs-tab:hover > i {
+	opacity: .35;
+}
+.e-vTabs-tab[active="true"] > i {
+	opacity: .8;
+}
+.e-vTabs-tab_reading > i {
+	background-position: -58px -16px;
+}
+.e-vTabs-tab_parsing > i {
+	background-position: -82px -16px;
+}
+.e-vTabs-tab_appearance > i {
+	background-position: -106px -16px;
+}
+.e-vTabs-tab_theme > i {
+	background-position: -130px -16px;
+}
+
 
 .e-Checkbox-bg {
 	display: inline-block;
@@ -162,4 +204,21 @@
 	line-height: 16px;
 	font-weight: bold;
 	text-align: center;
+}
+
+
+.e-ColorPicker-wrapper {
+	display: inline-block;
+	width: 42px;
+	height: 20px;
+	border-radius: 3px;
+	box-shadow: inset 0 2px 0 rgba(0, 0, 0, .15);
+	overflow: hidden;
+	vertical-align: middle;
+}
+.e-ColorPicker-wrapper > input {
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
 }
