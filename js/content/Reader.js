@@ -114,6 +114,7 @@
 			isDestroyed = true;
 			
 			app.off(app, 'settingsUpdate', onSettingsUpdate);
+			app.off(app, "onPopupOpen", onPopupOpen);
 			app.off(view, 'close', onViewClose);
 			
 			view.close();
