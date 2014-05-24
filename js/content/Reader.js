@@ -50,10 +50,14 @@
 			if (!isConfigSent && currentSeq.index === Math.round(currentSeq.length / 3 * 2)) {
 				isConfigSent = true;
 				
+				var darkTheme = app.get("darkTheme"),
+					themeName = darkTheme ? "dark" : "light",
+					theme = app.get("theme."+themeName);
+				
 				app.event('Config', 'WPM',                  app.get('wpm'));
 				app.event('Config', 'Font size',            app.get('fontSize'));
 				app.event('Config', 'Vertical position',    app.get('vPosition'));
-				app.event('Config', 'Dark theme',           app.get('darkTheme'));
+				app.event('Config', 'Dark theme',           darkTheme);
 				app.event('Config', 'Transparent bg',       app.get('transparentBg'));
 				
 				app.event('Config', 'Autostart',            app.get('autostart'));
@@ -70,6 +74,19 @@
 				app.event('Config', 'Sequel',               app.get('sequel'));
 				
 				app.event('Config', 'Run shortcut',         app.shortcutDataToString(app.get('runShortcut')));
+				
+				app.event('Config', 'Font', [
+					theme.font_family || "-default-",
+					theme.font_bold ? "bold" : "normal"
+				].join(", ")+" ("+themeName+")");
+				
+				app.event('Config', 'Colors', [
+					themeName+":",
+					theme.color_letter,
+					theme.color_word,
+					theme.color_context,
+					theme.color_background
+				].join(" "));
 			}
 		}
 		
