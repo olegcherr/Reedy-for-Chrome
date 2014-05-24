@@ -28,6 +28,8 @@
 	
 	var CLS_MAIN = 'e-Reedy',
 		
+		ANI_OPEN = 500,
+		
 		CONTEXT_CHARS_LIMIT = 2000,
 		
 		MIN_WPM             = 50,
@@ -610,6 +612,10 @@
 		
 		$wrapper.setAttribute('autostart', app.get('autostart'));
 		$wrapper.setAttribute("is-closing", false);
+		$wrapper.setAttribute("is-opening", true);
+		setTimeout(function() {
+			$wrapper.setAttribute("is-opening", false);
+		}, ANI_OPEN);
 		$wrapper.focus();
 		
 		

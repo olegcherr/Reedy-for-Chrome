@@ -135,7 +135,7 @@
 		if (app.get('autostart'))
 			setTimeout(function() {
 				currentSeq.play();
-			}, 800);
+			}, 500);
 		
 		
 		app.on(app, "settingsUpdate", onSettingsUpdate);
