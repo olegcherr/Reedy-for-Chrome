@@ -176,7 +176,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 				api.setState(theme[api.$checkbox.name]);
 			});
 			
-			$iFontFamily.value = "-";
+			$iFontFamily.value = DEFAULT_FONT_VALUE;
 			if (theme.font_family != null)
 				app.each(fontList, function(item) {
 					if (theme.font_family === item.fontId) {
@@ -187,7 +187,8 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		}
 		
 		
-		var themeName = settings.darkTheme ? "dark" : "light",
+		var DEFAULT_FONT_VALUE = "-",
+			themeName = settings.darkTheme ? "dark" : "light",
 			theme = settings.theme[themeName],
 			colorPickerApis = [],
 			themeCheckboxApis = [],
@@ -200,7 +201,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 				html += "<option value='"+value+"'>"+text+"</option>";
 			}
 			
-			append("-", app.t("defaultFont"));
+			append(DEFAULT_FONT_VALUE, app.t("defaultFont"));
 			
 			for (i = 0; i < fontList.length; i++) {
 				append(fontList[i].fontId, fontList[i].fontId);
@@ -225,7 +226,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		});
 		
 		app.on($iFontFamily, "change", function() {
-			app.setThemeSettings(themeName, $iFontFamily.name, $iFontFamily.value);
+			app.setThemeSettings(themeName, $iFontFamily.name, $iFontFamily.value === DEFAULT_FONT_VALUE ? null : $iFontFamily.value);
 			theme.font_family = $iFontFamily.value;
 		});
 		
