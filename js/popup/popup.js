@@ -25,7 +25,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	function onSwitchBtnClick(e) {
 		var viewName = e.target.getAttribute('switch-to');
 		switchToView(viewName);
-		app.event('Popup', 'Switch to', viewName);
 	}
 	
 	
@@ -143,6 +142,8 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		
 		if (name === 'shortcut')
 			$iShortcut.focus();
+		
+		app.event('Popup', 'Switch to', name);
 	}
 	
 	function initControls(settings) {
