@@ -111,10 +111,23 @@
 	
 	function onConnect(port) {
 		if (port.name === "Popup") {
-			isPopupOpen = true;
+			/**
+			 * Since Chrome v35 onDisconnect-event happens immediately after popup is closed.
+			 * So if any other part of the system depends on isPopupOpen-message an error will be occured
+			 * (e.g. View asks if pop-up is open when user clicks on the pane; since v35 this click happens only when pop-up is already disconnected).
+			 */
+			var TIMEOUT = 100;
+			
+			setTimeout(function() {
+				isPopupOpen = true;
+			}, TIMEOUT);
+			
 			port.onDisconnect.addListener(function() {
-				isPopupOpen = false;
+				setTimeout(function() {
+					isPopupOpen = false;
+				}, TIMEOUT);
 			});
+			
 			app.sendMessageToSelectedTab({type: "onPopupOpen"});
 		}
 	}
