@@ -39,7 +39,7 @@ Click to start reading.
 * Focus mode – the focus point is shifted closer to the beginning of a word;
 * Scrollbar for the easy navigation through the text;
 * Showing the text which follows the current word;
-* Light and dark themes, background transparency;
+* Light and dark themes, background transparency, customizable colors and font styles;
 * Adjustable position of the reading area;
 * Automatical start of the reading;
 * Different font sizes;
