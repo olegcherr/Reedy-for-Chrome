@@ -11,7 +11,7 @@
 	font-style: normal;
 	color: #303030;
 	z-index: 2147483647;
-        text-shadow: none;
+	text-shadow: none;
 	overflow: hidden;
 	outline: 0;
 	opacity: 0;
@@ -856,7 +856,7 @@
 		margin: 0;
 		right: 0;
 	}
-	
+
 	.e-Reedy-control_nextWord {
 		margin: 0 -108px 0 0;
 	}
