@@ -248,7 +248,7 @@
 	},
 	
 	"timeLeft_h": {
-		"message": "$val$ <i>h/i>",
+		"message": "$val$ <i>h</i>",
 		"placeholders": {
 			"val": {
 				"content": "$1"
