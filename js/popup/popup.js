@@ -268,8 +268,8 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		$views = querySelectorAll('[view-name]'),
 
 		$iShortcut = querySelector('.j-iShortcut'),
-		$saveShotrcutBtn = querySelector('.j-saveShortcutBtn'),
-		$cancelShotrcutBtn = querySelector('.j-cancelShotrcutBtn'),
+		$saveShortcutBtn = querySelector('.j-saveShortcutBtn'),
+		$cancelShortcutBtn = querySelector('.j-cancelShortcutBtn'),
 
 		tabs = app.Tabs(
 			"settings",
@@ -285,7 +285,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 
 	/**
 	 * Preparing buttons
-	 * `getTextSelection` - is a pretty diffcult method, so we check for the reader state at first
+	 * `getTextSelection` - is a pretty difficult method, so we check for the reader state at first
 	 */
 	app.sendMessageToSelectedTab({type: 'isReaderStarted'}, function(isReaderStarted) {
 		if (isReaderStarted) {
@@ -324,8 +324,8 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	});
 
 	app.on($iShortcut, "keydown", onShortcutInputKeydown);
-	app.on($saveShotrcutBtn, "click", onSaveShortcutBtn);
-	app.on($cancelShotrcutBtn, "click", onCancelShortcutBtn);
+	app.on($saveShortcutBtn, "click", onSaveShortcutBtn);
+	app.on($cancelShortcutBtn, "click", onCancelShortcutBtn);
 
 
 });
