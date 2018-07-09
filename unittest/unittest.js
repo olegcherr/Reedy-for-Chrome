@@ -4,9 +4,9 @@ var fs              = require('fs'),
 	colors          = require('colors'),
 	argv            = process.argv,
 	test2run        = argv[2],
-	
+
 	tests           = fs.readdirSync('./tests'),
-	
+
 	noop = function(ret) {
 		if (ret)
 			return function() {
@@ -39,7 +39,7 @@ chrome = {
 		sendMessage: noop,
 		onMessage: {addListener: noop},
 		getURL: function(str) {
-			return 'chrome-extension://hkjeifcldmplecgaaehmbccbdbfmknpe/'+str;
+			return '/'+str;
 		}
 	}
 };

@@ -123,7 +123,7 @@
 	top: 8px;
 	width: 24px;
 	height: 24px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
+	background: url("/img/sprite_popup1.png");
 	opacity: .25;
 }
 .e-vTabs-tab:hover > i {
@@ -188,7 +188,7 @@
 	display: block;
 	width: 16px;
 	height: 13px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
+	background: url("/img/sprite_popup1.png");
 	cursor: pointer;
 }
 .e-Range-btn_up {
