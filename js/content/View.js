@@ -477,7 +477,7 @@
 			$wrapper            = createElement('div', cls('wrapper'), $body),
 			$styles             = createElement('style', null, $wrapper),
 
-			// $background         = createElement('div', cls('background'), $wrapper),
+			$background         = createElement('div', cls('background'), $wrapper),
 
 			$pane               = createElement('div', cls('pane'), $wrapper),
 
@@ -486,7 +486,7 @@
 			$wordWrap           = createElement('div', cls('wordWrap'), $pane),
 			$wordWrap2          = createElement('div', cls('wordWrap2'), $wordWrap),
 			$word               = createElement('div', cls('word'), $wordWrap2),
-			// $focusLines         = createElement('div', cls('focusLines'), $wordWrap),
+			$focusLines         = createElement('div', cls('focusLines'), $wordWrap),
 			$focusDashes        = createElement('div', cls('focusDashes'), $wordWrap),
 			$progressBg         = createElement('div', cls('progressBg'), $wordWrap),
 			$progressBar        = createElement('div', cls('progressBar'), $progressBg),
@@ -494,7 +494,7 @@
 
 			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
 
-			// $info               = createElement('div', cls('info'), $pane, app.t('clickToStart')),
+			$info               = createElement('div', cls('info'), $pane, app.t('clickToStart')),
 
 			$closingAreaLeft    = createElement('div', cls('closingArea','closingArea_left'), $wrapper),
 			$closingAreaRight   = createElement('div', cls('closingArea','closingArea_right'), $wrapper),
