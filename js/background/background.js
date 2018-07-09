@@ -208,7 +208,7 @@
 
 	app.getSettings = function(key, callback) {
 		chrome.storage.sync.get(defaults, function(items) {
-			callback(key != null ? app.getByPath(items, key) : items);
+			callback(key ? app.getByPath(items, key) : items);
 		});
 	};
 

@@ -9,7 +9,7 @@
 	function init(callback) {
 		if (!settings) {
 			settings = {};
-			app.sendMessageToExtension({type: 'getSettings'}, function(sett) {
+			app.sendMessageToExtension({type: 'getSettings', key: null}, function(sett) {
 				settings = sett;
 				callback();
 			});
@@ -46,7 +46,7 @@
 				break;
 			case 'getSelection':
 				// Since the content script is being installed in all the frames on the page,
-				// we shold give a priority to the one who have a text selection.
+				// we should give a priority to the one who have a text selection.
 				const sel = getSelection();
 				setTimeout(function() {
 					// Try-catch is needed because any second call of the callback throws an exception
