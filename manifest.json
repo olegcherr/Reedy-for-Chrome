@@ -60,7 +60,6 @@
 			"js/Checkbox.js",
 			"js/Range.js",
 			"js/Tabs.js",
-			"js/background/analytics.js",
 			"js/background/background.js"
 		]
 	}
