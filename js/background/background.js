@@ -254,7 +254,7 @@
 
 	app.isSystemTab = function(callback) {
 		getCurrentTab(function(tab) {
-			callback(/^chrome|chrome\.google\.com\/webstore/.test(tab.url), tab);
+			callback(/^about/.test(tab.url), tab);
 		});
 	};
 
