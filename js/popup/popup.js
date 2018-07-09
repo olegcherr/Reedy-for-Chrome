@@ -16,26 +16,23 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		});
 	}
 
-
 	function onExternalLinkClick(e) {
 		app.event('External link', e.target.href);
 		window.open(e.target.href);
 	}
 
 	function onSwitchBtnClick(e) {
-		var viewName = e.target.getAttribute('switch-to');
+		const viewName = e.target.getAttribute('switch-to');
 		switchToView(viewName);
 	}
 
-
-	function onCheckbox(value, $checkbox, api) {
+	function onCheckbox(value, $checkbox) {
 		app.setSettings($checkbox.name, value);
 	}
 
-	function onRange(value, $input, api) {
+	function onRange(value, $input) {
 		app.setSettings($input.name, value);
 	}
-
 
 	function onStartReadingClick() {
 		app.event('Reader', 'Open', 'Popup');
@@ -56,7 +53,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		app.event('Offline', 'Open');
 		window.open(app.offlineUrl);
 	}
-
 
 	function onShortcutInputKeydown(e) {
 		app.stopEvent(e);
@@ -94,7 +90,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		});
 	}
 
-
 	function onKeyDown(e) {
 		if (runShortcut && app.checkEventForShortcut(e, runShortcut)) {
 			app.stopEvent(e);
@@ -110,7 +105,6 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 			});
 		}
 	}
-
 
 	function startReading() {
 		app.sendMessageToSelectedTab({type: 'startReading'});
@@ -200,7 +194,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 		}
 
 
-		var DEFAULT_FONT_VALUE = "-",
+		let DEFAULT_FONT_VALUE = "-",
 			themeName = settings.darkTheme ? "dark" : "light",
 			theme = settings.theme[themeName],
 			colorPickerApis = [],
@@ -253,13 +247,11 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 			app.event("Popup", "Reset theme");
 		});
 
-
 		updateThemeControls();
 	}
 
 
-	var app = bgWindow.reedy,
-		runShortcut, newShortcut,
+	const app = bgWindow.reedy,
 
 		$body = querySelector('body'),
 		$startReadingBtn = querySelector('.j-startReadingBtn'),
@@ -269,15 +261,16 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 
 		$iShortcut = querySelector('.j-iShortcut'),
 		$saveShortcutBtn = querySelector('.j-saveShortcutBtn'),
-		$cancelShortcutBtn = querySelector('.j-cancelShortcutBtn'),
+		$cancelShortcutBtn = querySelector('.j-cancelShortcutBtn');
 
-		tabs = app.Tabs(
-			"settings",
-			querySelector('.j-tabs'),
-			querySelectorAll('.j-tab'),
-			querySelectorAll('.j-tabContent')
-		);
+	let runShortcut, newShortcut;
 
+	app.Tabs(
+		"settings",
+		querySelector('.j-tabs'),
+		querySelectorAll('.j-tab'),
+		querySelectorAll('.j-tabContent')
+	);
 
 	chrome.runtime.connect({name: "Popup"});
 
@@ -326,6 +319,5 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 	app.on($iShortcut, "keydown", onShortcutInputKeydown);
 	app.on($saveShortcutBtn, "click", onSaveShortcutBtn);
 	app.on($cancelShortcutBtn, "click", onCancelShortcutBtn);
-
 
 });

@@ -9,8 +9,8 @@
 (function(app) {
 
 	function install(tabId) {
-		var contentScripts = manifest.content_scripts['0'].js, i;
-		for (i = 0; i < contentScripts.length; i++) {
+		const contentScripts = manifest.content_scripts['0'].js;
+		for (let i = 0; i < contentScripts.length; i++) {
 			chrome.tabs.executeScript(tabId == null ? null : tabId, {file: contentScripts[i]});
 		}
 	}
@@ -34,7 +34,7 @@
 						install();
 						setTimeout(function() {
 							isTabAlive(function(res) {
-								var url = tab.url.substring(0, 12);
+								const url = tab.url.substring(0, 12);
 
 								if (res) {
 									callback(tabId);
@@ -50,13 +50,11 @@
 		});
 	}
 
-
 	function getCurrentTab(callback) {
 		chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
 			tabs[0] && callback(tabs[0]);
 		});
 	}
-
 
 	function onMessage(msg, sender, callback) {
 		switch (msg.type) {
@@ -88,10 +86,10 @@
 		if (port.name === "Popup") {
 			/**
 			 * Since Chrome v35 onDisconnect-event happens immediately after popup is closed.
-			 * So if any other part of the system depends on isPopupOpen-message an error will be occured
+			 * So if any other part of the system depends on isPopupOpen-message an error will occur
 			 * (e.g. View asks if pop-up is open when user clicks on the pane; since v35 this click happens only when pop-up is already disconnected).
 			 */
-			var TIMEOUT = 100;
+			const TIMEOUT = 100;
 
 			setTimeout(function() {
 				isPopupOpen = true;
@@ -108,7 +106,7 @@
 	}
 
 	function onClicked(data) {
-		if (data.menuItemId == 'reedyMenu') {
+		if (data.menuItemId === 'reedyMenu') {
 			app.sendMessageToSelectedTab({type: 'startReading', selectionText: data.selectionText});
 			app.event('Reader', 'Open', 'Context menu');
 		}
@@ -118,7 +116,7 @@
 		if (details.reason === "install") {
 			setTimeout(function() {
 				chrome.tabs.query({}, function(tabs) {
-					for (var i = 0; i < tabs.length; i++) {
+					for (let i = 0; i < tabs.length; i++) {
 						install(tabs[i].id);
 					}
 				});
@@ -129,17 +127,15 @@
 	}
 
 
-
 	window.addEventListener('error', function(e) {
 		app.trackJSError(e, 'JS Background');
 	});
 
-	var manifest = chrome.runtime.getManifest(),
+	const manifest = chrome.runtime.getManifest(),
 		version = manifest.version,
 		extensionId = chrome.i18n.getMessage("@@extension_id"),
 
 		isDevMode = !('update_url' in manifest),
-		isPopupOpen = false,
 
 		noop = function() {},
 		defaults = {
@@ -189,6 +185,7 @@
 			}
 		};
 
+	let isPopupOpen = false;
 
 
 	app.offlineUrl = chrome.runtime.getURL("offline.html");
@@ -196,24 +193,24 @@
 	app.event = function(category, action, label) {
 		if (isDevMode)
 			console.log('Event: ' + [category, action, label].join(', '));
-	}
+	};
 
 	app.trackJSError = function(e, context) {
-		var msg = e.message,
+		let msg = e.message,
 			filename = e.filename;
 		if (filename) {
 			filename = filename.replace(new RegExp('^.+'+extensionId+'/'), '');
 			msg += ' ('+filename+' -> '+e.lineno+':'+e.colno+')';
 		}
 		app.event('Error', context, msg);
-	}
+	};
 
 
 	app.getSettings = function(key, callback) {
 		chrome.storage.sync.get(defaults, function(items) {
 			callback(key != null ? app.getByPath(items, key) : items);
 		});
-	}
+	};
 
 	app.setSettings = function(key, value, callback) {
 		app.getSettings(null, function(settings) {
@@ -224,7 +221,7 @@
 				app.sendMessageToSelectedTab({type: "settingsUpdate", key: key, value: value});
 			});
 		});
-	}
+	};
 
 	app.setThemeSettings = function(themeName, key, value, callback) {
 		app.getSettings(null, function(settings) {
@@ -235,11 +232,11 @@
 				app.sendMessageToSelectedTab({type: "settingsUpdate", key: "theme."+themeName+"."+key, value: value});
 			});
 		});
-	}
+	};
 
 	app.resetThemeSettings = function(themeName, callback) {
 		app.getSettings(null, function(settings) {
-			var value = defaults.theme[themeName];
+			const value = defaults.theme[themeName];
 			app.setByPath(settings, "theme."+themeName, value);
 
 			chrome.storage.sync.set(settings, function() {
@@ -247,27 +244,24 @@
 				app.sendMessageToSelectedTab({type: "settingsUpdate", key: "theme."+themeName, value: value});
 			});
 		});
-	}
-
+	};
 
 	app.sendMessageToSelectedTab = function(data, callback) {
 		installAndRun(function(tabId) {
 			chrome.tabs.sendMessage(tabId, data, callback || noop);
 		});
-	}
+	};
 
 	app.isSystemTab = function(callback) {
 		getCurrentTab(function(tab) {
 			callback(/^chrome|chrome\.google\.com\/webstore/.test(tab.url), tab);
 		});
-	}
-
+	};
 
 
 	chrome.runtime.onMessage.addListener(onMessage);
 
 	chrome.runtime.onConnect.addListener(onConnect);
-
 
 	chrome.contextMenus.create({
 		id: "reedyMenu",
@@ -277,9 +271,7 @@
 
 	chrome.contextMenus.onClicked.addListener(onClicked);
 
-
 	chrome.runtime.onInstalled.addListener(onInstalled);
-
 
 
 })(window.reedy);
