@@ -41,7 +41,7 @@ Click to start reading.
 * Showing the text which follows the current word;
 * Light and dark themes, background transparency, customizable colors and font styles;
 * Adjustable position of the reading area;
-* Automatical start of the reading;
+* Automatic start of the reading;
 * Different font sizes;
 * Navigating through the words and sentences;
 * Simple and intuitive interface.
