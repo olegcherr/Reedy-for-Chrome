@@ -1,6 +1,6 @@
 # Reedy
 
-**Read all you want faster with Reedy for Google Chrome!**
+**Read all you want faster with Reedy for Mozilla Firefox!**
 
 Reedy is an advanced implementation of speed reading.
 Words are shown fast one after another on the same place of the screen which increases the speed of perception of every single word.
@@ -13,8 +13,8 @@ Reading from left to right, and up and down has become hopelessly outdated.
 Now you can read being entirely absorbed into the text.
 Rolling and moving along the lines won’t distract you anymore.
 
-Chrome Web Store:
-https://chrome.google.com/webstore/detail/reedy/ihbdojmggkmjbhfflnchljfkgdhokffj
+Firefox Add-Ons:
+https://addons.mozilla.org/en-US/firefox/extensions/
 
 ### How to use Reedy
 
