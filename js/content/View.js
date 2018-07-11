@@ -448,24 +448,26 @@
 
 		function updateTheme() {
 			function appendStyles(theme, sel, sel_running) {
-				styles += sel+".e-Reedy-wrapper .e-Reedy-background{background:"+theme.color_background+";}";
-				styles += sel_running+".e-Reedy-wrapper .e-Reedy-wordWrap{background:"+theme.color_background+";}";
+				styles += sel+".e-Reedy-background{background:"+theme.color_background+";}";
+				styles += sel_running+".e-Reedy-wordWrap{background:"+theme.color_background+";}";
 
 				styles += sel+".e-Reedy-wrapper .e-Reedy-context{color:"+theme.color_context+";}";
-				styles += sel+".e-Reedy-wrapper .e-Reedy-word{color:"+theme.color_word+";}";
-				styles += sel+".e-Reedy-wrapper .e-Reedy-word>span{color:"+theme.color_letter+";}";
+				styles += sel+".e-Reedy-word{color:"+theme.color_word+";}";
+				styles += sel+".e-Reedy-word>span{color:"+theme.color_letter+";}";
 
 				if (theme.font_family)
-					styles += sel+".e-Reedy-wrapper .e-Reedy-word{font-family:'"+theme.font_family+"',sans-serif;}";
+					styles += sel+".e-Reedy-word{font-family:'"+theme.font_family+"',sans-serif;}";
 
 				if (theme.font_bold)
-					styles += sel+".e-Reedy-wrapper .e-Reedy-word{font-weight:bold;}";
+					styles += sel+".e-Reedy-word{font-weight:bold;}";
 			}
 
 			let styles = "";
 
-			appendStyles(app.get("theme.light"), "", ".e-Reedy-wrapper[is-running=true] ");
-			appendStyles(app.get("theme.dark"), ".e-Reedy-wrapper[dark-theme=true] ", ".e-Reedy-wrapper[is-running=true][dark-theme=true] ");
+			appendStyles(app.get("theme.light"), ".e-Reedy-wrapper[dark-theme=false] ",
+					".e-Reedy-wrapper[is-running=true][dark-theme=false] ");
+			appendStyles(app.get("theme.dark"), ".e-Reedy-wrapper[dark-theme=true] ",
+					".e-Reedy-wrapper[is-running=true][dark-theme=true] ");
 
 			$styles.innerText = styles;
 		}
