@@ -2,6 +2,7 @@
 
 .e-markup {
 	padding: 15px 15px 20px;
+	margin-bottom: 20px;
 	max-height: 350px;
 	overflow: auto;
 }
