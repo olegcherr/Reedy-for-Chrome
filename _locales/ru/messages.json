@@ -18,7 +18,7 @@
 		"message": "Reedy не может обработать выделенный текст."
 	},
 	"cantLaunchOnSystemPages": {
-		"message": "Расширения Google Chrome не могут быть запущены на системных страницах, а также в Chrome WebStore."
+		"message": "Это расширение не может быть запущены на системных страницах."
 	},
 
 	"saveChanges": {

@@ -87,7 +87,8 @@
 			/**
 			 * Since Chrome v35 onDisconnect-event happens immediately after popup is closed.
 			 * So if any other part of the system depends on isPopupOpen-message an error will occur
-			 * (e.g. View asks if pop-up is open when user clicks on the pane; since v35 this click happens only when pop-up is already disconnected).
+			 * (e.g. View asks if pop-up is open when user clicks on the pane;
+			 * since v35 this click happens only when pop-up is already disconnected).
 			 */
 			const TIMEOUT = 100;
 
