@@ -349,8 +349,26 @@
 		function updateContext() {
 			if (sequencer && !sequencer.isRunning) {
 				const context = sequencer.getContext(CONTEXT_CHARS_LIMIT);
-				$contextBefore.innerText = app.htmlEncode(context.before).replace(/\n/g, "<br/>");
-				$contextAfter.innerText = app.htmlEncode(context.after).replace(/\n/g, "<br/>");
+				let lines = app.htmlEncode(context.before).split('\n');
+				$contextBefore.innerText = '';
+				let first = true;
+				for (let line of lines) {
+					if (first)
+						first = false;
+					else
+						$contextBefore.append(document.createElement('br'));
+					$contextBefore.append(line);
+				}
+				lines = app.htmlEncode(context.after).split('\n');
+				$contextAfter.innerText = '';
+				first = true;
+				for (let line of lines) {
+					if (first)
+						first = false;
+					else
+						$contextAfter.append(document.createElement('br'));
+					$contextAfter.append(line);
+				}
 			}
 		}
 
