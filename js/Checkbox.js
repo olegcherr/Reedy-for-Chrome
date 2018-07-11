@@ -2,11 +2,11 @@
 
 (function(app) {
 
-	function createElement(tagName, className, $appendTo, html) {
+	function createElement(tagName, className, $appendTo, text) {
 		const $elem = document.createElement(tagName);
 		className != null && ($elem.className = className);
 		$appendTo && $appendTo.appendChild($elem);
-		html != null && ($elem.innerHTML = html);
+		text != null && ($elem.innerText = text);
 		return $elem;
 	}
 
@@ -28,7 +28,7 @@
 			const checked = $checkbox.checked;
 
 			$bg.setAttribute("checked", checked);
-			$bar.innerHTML = checked ? LNG_ON : LNG_OFF;
+			$bar.innerText = checked ? LNG_ON : LNG_OFF;
 
 			savedState !== checked && onChange(checked, $checkbox, api);
 			savedState = checked;

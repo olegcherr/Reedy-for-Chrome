@@ -2,11 +2,11 @@
 
 (function(app) {
 
-	function createElement(tagName, className, $appendTo, html) {
+	function createElement(tagName, className, $appendTo, text) {
 		const $elem = document.createElement(tagName);
 		className != null && ($elem.className = className);
 		$appendTo && $appendTo.appendChild($elem);
-		html != null && ($elem.innerHTML = html);
+		text != null && ($elem.innerText = text);
 		return $elem;
 	}
 
@@ -32,7 +32,8 @@
 		let lastSendedValue;
 
 		function update(dontFireEvent) {
-			const value = $text.innerHTML = $input.value = Math.max(Math.min(+$input.value.replace(/\D+/g, ''), max), min);
+			const value = $text.innerText = $input.value =
+				Math.max(Math.min(+$input.value.replace(/\D+/g, ''), max), min) + '';
 			dontFireEvent || value !== lastSendedValue && onChange(value, $input, api);
 			lastSendedValue = value;
 		}

@@ -116,11 +116,11 @@
 		e.stopImmediatePropagation();
 	};
 
-	app.createElement = function(tagName, className, $appendTo, html, title) {
+	app.createElement = function(tagName, className, $appendTo, text, title) {
 		const $elem = document.createElement(tagName);
 		className != null && ($elem.className = className);
 		$appendTo && $appendTo.appendChild($elem);
-		html != null && ($elem.innerHTML = html);
+		text != null && ($elem.innerText = text);
 		title != null && ($elem.title = title);
 		return $elem;
 	};
@@ -193,8 +193,11 @@
 	};
 
 	app.localizeElements = function(document) {
+		const parser = new DOMParser();
 		app.each(document.querySelectorAll('[i18n]'), function($elem) {
-			$elem.innerHTML = app.t($elem.getAttribute('i18n'));
+			const content = app.t($elem.getAttribute('i18n'));
+			const nodes = parser.parseFromString(content, 'text/html').body.childNodes;
+			while (nodes.length) $elem.appendChild(nodes[0]);
 			$elem.removeAttribute('i18n');
 		});
 		app.each(document.querySelectorAll('[i18n-attr]'), function($elem) {

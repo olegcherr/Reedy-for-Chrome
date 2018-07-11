@@ -2,38 +2,38 @@
 	"locale": {
 		"message": "en"
 	},
-	
+
 	"developersHomePage": {
 		"message": "https://www.facebook.com/olegcherr"
 	},
 	"donatePage": {
 		"message": "http://reedy.azagroup.ru/en/donate/"
 	},
-	
+
 	"contextMenu": {
 		"message": "Launch Reedy"
 	},
-	
+
 	"cantParse": {
 		"message": "Reedy cannot handle the text you selected."
 	},
 	"cantLaunchOnSystemPages": {
 		"message": "Google Chrome Extensions can't be launched on system pages and in the Chrome WebStore."
 	},
-	
+
 	"saveChanges": {
 		"message": "Save changes"
 	},
 	"cancel": {
 		"message": "Cancel"
 	},
-	
-	
-	
+
+
+
 	"____POPUP_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"view_readability": {
 		"message": "Search the text automatically"
 	},
@@ -52,17 +52,17 @@
 	"view_advices": {
 		"message": "Recommendations"
 	},
-	
+
 	"wrongShortcut": {
 		"message": "Invalid combination"
 	},
-	
-	
-	
+
+
+
 	"____POPUP_MAIN_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"main_startReadingInfo": {
 		"message": "To start reading select the text on the page, click the right mouse button and choose <b>Launch Reedy</b>.<br/>You can also use the <b class='j-shortcut'>Alt+S</b> shortcut."
 	},
@@ -75,13 +75,13 @@
 	"main_closeReaderBtn": {
 		"message": "Finish reading"
 	},
-	
-	
-	
+
+
+
 	"____POPUP_SETTINGS_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"settings_reading": {
 		"message": "Reading"
 	},
@@ -94,81 +94,81 @@
 	"settings_theme": {
 		"message": "Styling"
 	},
-	
-	
+
+
 	"autostart": {
 		"message": "Autostart"
 	},
 	"autostartDescr": {
 		"message": "Start reading right after Reedy is launched."
 	},
-	
+
 	"focusMode": {
 		"message": "Focus mode"
 	},
 	"focusModeDescr": {
 		"message": "The focus point is shifted closer to the beginning of a word."
 	},
-	
+
 	"gradualAccel": {
 		"message": "Gradual acceleration"
 	},
 	"gradualAccelDescr": {
 		"message": "Start reading at a lower speed and gradually increase it."
 	},
-	
+
 	"smartSlowing": {
 		"message": "Smart slowing"
 	},
 	"smartSlowingDescr": {
 		"message": "Slow down the speed at a punctuation mark."
 	},
-	
-	
+
+
 	"entityAnalysis": {
 		"message": "Entity analysis"
 	},
 	"entityAnalysisDescr": {
 		"message": "Allows to display common entities as a single word. Performs the analysis of the punctuation. Corrects the basic design of the text."
 	},
-	
+
 	"hyphenation": {
 		"message": "Hyphenation"
 	},
 	"hyphenationDescr": {
 		"message": "Division of long words into smaller parts."
 	},
-	
+
 	"emptySentenceEnd": {
 		"message": "Gap between sentences"
 	},
 	"emptySentenceEndDescr": {
 		"message": "Insert an «empty word» before the beginning of the next sentence."
 	},
-	
-	
+
+
 	"progressBar": {
 		"message": "Progress bar"
 	},
 	"progressBarDescr": {
 		"message": "Display the current progress of reading."
 	},
-	
+
 	"timeLeft": {
 		"message": "Remaining time"
 	},
 	"timeLeftDescr": {
 		"message": "Show the time left till the end of reading."
 	},
-	
+
 	"sequel": {
 		"message": "Text continuation"
 	},
 	"sequelDescr": {
 		"message": "Show the text which follows the current word."
 	},
-	
-	
+
+
 	"color_word": {
 		"message": "Current word"
 	},
@@ -187,19 +187,22 @@
 	"font_bold": {
 		"message": "Use bold font"
 	},
-	
+
 	"defaultFont": {
 		"message": "- Default font -"
 	},
-	
-	
-	
+
+
+
 	"____READER_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"clickToStart": {
-		"message": "Click the screen or press the spacebar.<span>← the click outside the reading area closes Reedy →</span>"
+		"message": "Click the screen or press the spacebar"
+	},
+	"clickToClose": {
+		"message": "← the click outside the reading area closes Reedy →"
 	},
 	"ctrl_smallerFont": {
 		"message": "Smaller font [ctrl+down]"
@@ -246,7 +249,7 @@
 	"ctrl_firstWord": {
 		"message": "First word [home]"
 	},
-	
+
 	"timeLeft_h": {
 		"message": "$val$ <i>h/i>",
 		"placeholders": {
@@ -287,13 +290,13 @@
 			}
 		}
 	},
-	
-	
-	
+
+
+
 	"____OFFLINE_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"offline_startReadingBtn": {
 		"message": "Launch Reedy"
 	},

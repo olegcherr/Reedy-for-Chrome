@@ -86,7 +86,7 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 
 	function updateShortcutElems(data) {
 		app.each(querySelectorAll('.j-shortcut'), function($elem) {
-			$elem.innerHTML = app.shortcutDataToString(data);
+			$elem.textContent = app.shortcutDataToString(data);
 		});
 	}
 
@@ -203,20 +203,20 @@ chrome.runtime.getBackgroundPage(function(bgWindow) {
 
 
 		// Building font list
-		(function(html, i) {
+		(function() {
 			function append(value, text) {
-				html += "<option value='"+value+"'>"+text+"</option>";
+				const option = document.createElement('option');
+				option.value = value;
+				option.innerText = text;
+				$iFontFamily.appendChild(option);
 			}
 
 			append(DEFAULT_FONT_VALUE, app.t("defaultFont"));
 
-			for (i = 0; i < fontList.length; i++) {
+			for (let i = 0; i < fontList.length; i++) {
 				append(fontList[i], fontList[i]);
 			}
-
-			$iFontFamily.innerHTML = html;
-		})("");
-
+		})();
 
 		app.each(querySelectorAll(".j-iColorPicker"), function($elem) {
 			colorPickerApis.push(new app.ColorPicker($elem, function(value, $input) {

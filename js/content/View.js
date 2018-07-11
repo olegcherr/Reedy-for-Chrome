@@ -2,11 +2,11 @@
 
 (function(app) {
 
-	function createElement(tagName, className, $appendTo, html, title) {
+	function createElement(tagName, className, $appendTo, text, title) {
 		const $elem = document.createElement(tagName);
 		className != null && ($elem.className = className);
 		$appendTo && $appendTo.appendChild($elem);
-		html != null && ($elem.innerHTML = html);
+		text != null && ($elem.innerText = text);
 		title != null && ($elem.title = title);
 		return $elem;
 	}
@@ -255,14 +255,14 @@
 		function onVPosUpCtrl() {
 			const vPos = Math.min(app.get('vPosition')+1, MAX_VPOS);
 			app.set('vPosition', vPos);
-			$menuRangeText.innerHTML = vPos + '';
+			$menuRangeText.innerText = vPos + '';
 			updateWrapper();
 		}
 
 		function onVPosDnCtrl() {
 			const vPos = Math.max(app.get('vPosition')-1, MIN_VPOS);
 			app.set('vPosition', vPos);
-			$menuRangeText.innerHTML = vPos + '';
+			$menuRangeText.innerText = vPos + '';
 			updateWrapper();
 		}
 
@@ -343,57 +343,51 @@
 		}
 
 		function updatePanels() {
-			$wpmText.innerHTML = app.get('wpm')+'wpm';
+			$wpmText.innerText = app.get('wpm')+'wpm';
 		}
 
 		function updateContext() {
 			if (sequencer && !sequencer.isRunning) {
 				const context = sequencer.getContext(CONTEXT_CHARS_LIMIT);
-				$contextBefore.innerHTML = app.htmlEncode(context.before).replace(/\n/g, "<br/>");
-				$contextAfter.innerHTML = app.htmlEncode(context.after).replace(/\n/g, "<br/>");
+				$contextBefore.innerText = app.htmlEncode(context.before).replace(/\n/g, "<br/>");
+				$contextAfter.innerText = app.htmlEncode(context.after).replace(/\n/g, "<br/>");
 			}
 		}
 
 		function updateWord(str, hyphenated) {
 			if (!wasLaunchedSinceOpen) return;
 
+			$word.innerText = '';
+
 			if (str === false) {
-				$word.innerHTML = '';
 				return;
 			}
 
 			str = str || sequencer.getToken().toString();
 
-			let html;
 			const focusMode = app.get('focusMode');
 
 			if (focusMode) {
 				const pivot = app.calcPivotPoint(str);
-				html =
-					app.htmlEncode(str.substr(0, pivot))
-					+'<span>'+app.htmlEncode(str[pivot])+'</span>'
-					+app.htmlEncode(str.substr(pivot+1));
+				$word.append(app.htmlEncode(str.substr(0, pivot)));
+				createElement('span', null, $word, app.htmlEncode(str[pivot]));
+				$word.append(app.htmlEncode(str.substr(pivot+1)));
 			}
 			else {
-				html = app.htmlEncode(str);
+				$word.append(app.htmlEncode(str));
 			}
 
 			if (app.get('sequel')) {
-				html += '<i>';
-
+				let sequel = ' ' + sequencer.getSequel().join(' ');
 				if (hyphenated && hyphenated.length)
-					html += hyphenated.join('');
-
-				html += ' ';
-				html += sequencer.getSequel().join(' ');
-				html += '</i>';
+					sequel = hyphenated.join('') + sequel;
+				createElement('i', null, $word, sequel);
 			}
 			else if (hyphenated && hyphenated.length) {
-				html += '-';
+				$word.append('-');
 			}
 
 			$word.style.left = '';
-			$word.innerHTML = html;
 
 			if (focusMode) {
 				const letterRect = $word.querySelector('span').getBoundingClientRect();
@@ -438,7 +432,17 @@
 				text = app.t('timeLeft_left', [parts.join(' ')])
 			}
 
-			$timeLeft_word.innerHTML = $timeLeft_panel.innerHTML = text;
+			const parser = new DOMParser();
+			let nodes = parser.parseFromString(text, 'text/html').body.childNodes;
+			$timeLeft_word.innerText = '';
+			while (nodes.length) {
+				$timeLeft_word.appendChild(nodes[0]);
+			}
+			$timeLeft_panel.innerText = '';
+			nodes = parser.parseFromString(text, 'text/html').body.childNodes;
+			while (nodes.length) {
+				$timeLeft_panel.appendChild(nodes[0]);
+			}
 		}
 
 		function updateScrollBar() {
@@ -496,7 +500,8 @@
 
 			$contextAfter       = createElement('div', cls('context', 'context_after'), $pane),
 
-			$info               = createElement('div', cls('info'), $pane, app.t('clickToStart')),
+			$infoStart          = createElement('div', cls('info'), $pane, app.t('clickToStart')),
+			$infoClose          = createElement('span', null, $infoStart, app.t('clickToClose')),
 
 			$closingAreaLeft    = createElement('div', cls('closingArea','closingArea_left'), $wrapper),
 			$closingAreaRight   = createElement('div', cls('closingArea','closingArea_right'), $wrapper),
@@ -510,7 +515,8 @@
 			$topPanel           = createElement('div', cls('panel', 'panel_top'), $wrapper),
 
 			$topPanelLeft       = createElement('div', cls('topPanelLeft'), $topPanel),
-			$fontAdjust         = createElement('div', cls('adjust','adjust_font'), $topPanelLeft, '<span>aA</span>'),
+			$fontAdjust         = createElement('div', cls('adjust','adjust_font'), $topPanelLeft),
+			$fontAdjustText     = createElement('span', null, $fontAdjust, 'aA');
 			$ctrlDecFont        = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_minus'), $fontAdjust, null, app.t('ctrl_smallerFont')),
 			$ctrlIncFont        = createElement('i', cls('topPanelBtn','topPanelBtn_regular','adjustBtn','adjustBtn_plus'), $fontAdjust, null, app.t('ctrl_largerFont')),
 			$wpmAdjust          = createElement('div', cls('adjust','adjust_wpm'), $topPanelLeft),
