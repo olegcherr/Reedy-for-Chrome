@@ -2,28 +2,31 @@
 
 (function(app) {
 
-	const CLS_WRAPPER = "e-ColorPicker-wrapper";
-
 	app.ColorPicker = function($input, onChange) {
 
-		const api = this,
-			$wrapper = document.createElement("div");
+		const api = this;
 		let savedValue = $input.value;
 
 		function onInputChange() {
 			if ($input.value !== savedValue) {
 				savedValue = $input.value;
-				updateWrapper();
+				updateField();
 				onChange($input.value, $input, api);
 			}
 		}
 
-		function updateWrapper() {
-			$wrapper.style.backgroundColor = $input.value;
+		function updateField() {
+			$input.style.backgroundColor = $input.value;
+			// compute foreground color with highest contrast
+			let rgb = getComputedStyle($input).backgroundColor
+				.replace(/[^\d,]/g, '').split(',').slice(0, 3);
+			rgb = rgb.map(c => c/255.0).map(c =>
+				c > 0.03928 ? ((c+0.055)/1.055)**2.4 : c/12.92);
+			const lum = 0.2126*rgb[0] + 0.7152*rgb[1] + 0.0722*rgb[2];
+			$input.style.color = lum > 0.179 ? 'black' : 'white';
 		}
 
 		api.$input = $input;
-		api.$wrapper = $wrapper;
 
 		api.getValue = function() {
 			return $input.value;
@@ -31,16 +34,12 @@
 
 		api.setValue = function(value) {
 			$input.value = value;
-			updateWrapper();
+			updateField();
 		};
-
-		$wrapper.className = CLS_WRAPPER;
-		$input.parentNode.appendChild($wrapper);
-		$wrapper.appendChild($input);
 
 		app.on($input, "change", onInputChange);
 
-		updateWrapper();
+		updateField();
 	}
 
 })(window.reedy);
