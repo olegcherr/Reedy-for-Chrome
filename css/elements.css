@@ -2,6 +2,7 @@
 
 .e-markup {
 	padding: 15px 15px 20px;
+	margin-bottom: 20px;
 	max-height: 350px;
 	overflow: auto;
 }
@@ -123,7 +124,7 @@
 	top: 8px;
 	width: 24px;
 	height: 24px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
+	background: url("/img/sprite_popup1.png");
 	opacity: .25;
 }
 .e-vTabs-tab:hover > i {
@@ -188,7 +189,7 @@
 	display: block;
 	width: 16px;
 	height: 13px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
+	background: url("/img/sprite_popup1.png");
 	cursor: pointer;
 }
 .e-Range-btn_up {
@@ -207,18 +208,6 @@
 }
 
 
-.e-ColorPicker-wrapper {
-	display: inline-block;
-	width: 42px;
-	height: 20px;
-	border-radius: 3px;
-	box-shadow: inset 0 2px 0 rgba(0, 0, 0, .15);
-	overflow: hidden;
-	vertical-align: middle;
-}
-.e-ColorPicker-wrapper > input {
-	width: 100%;
-	height: 100%;
-	opacity: 0;
-	cursor: pointer;
+.j-iColorPicker {
+	min-width: 7em;
 }

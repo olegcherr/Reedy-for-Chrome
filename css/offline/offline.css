@@ -32,7 +32,7 @@ body {
 	margin: 0 0 0 4px;
 	width: 13px;
 	height: 17px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_offline1.png");
+	background: url("/img/sprite_offline1.png");
 }
 .l-header > span {
 	color: #8a8a8a;

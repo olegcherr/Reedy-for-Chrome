@@ -41,7 +41,7 @@
 	top: 12px;
 	width: 16px;
 	height: 16px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png");
+	background: url("/img/sprite_popup1.png");
 	opacity: .8;
 }
 .p-mainMenu-item_arrow:after {
@@ -51,7 +51,7 @@
 	top: 9px;
 	width: 9px;
 	height: 22px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_popup1.png") -25px 0;
+	background: url("/img/sprite_popup1.png") -25px 0;
 	opacity: .2;
 }
 .p-mainMenu-item_readability:before {

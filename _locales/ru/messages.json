@@ -2,38 +2,38 @@
 	"locale": {
 		"message": "ru"
 	},
-	
+
 	"developersHomePage": {
 		"message": "https://vk.com/olegcherr"
 	},
 	"donatePage": {
 		"message": "http://reedy.azagroup.ru/donate/"
 	},
-	
+
 	"contextMenu": {
 		"message": "Запустить Reedy"
 	},
-	
+
 	"cantParse": {
 		"message": "Reedy не может обработать выделенный текст."
 	},
 	"cantLaunchOnSystemPages": {
-		"message": "Расширения Google Chrome не могут быть запущены на системных страницах, а также в Chrome WebStore."
+		"message": "Это расширение не может быть запущены на системных страницах."
 	},
-	
+
 	"saveChanges": {
 		"message": "Сохранить изменения"
 	},
 	"cancel": {
 		"message": "Отмена"
 	},
-	
-	
-	
+
+
+
 	"____POPUP_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"view_readability": {
 		"message": "Автоматический поиск текста"
 	},
@@ -52,17 +52,17 @@
 	"view_advices": {
 		"message": "Рекомендации"
 	},
-	
+
 	"wrongShortcut": {
 		"message": "Недопустимое сочетание"
 	},
-	
-	
-	
+
+
+
 	"____POPUP_MAIN_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"main_startReadingInfo": {
 		"message": "Чтобы начать чтение выделите текст, кликните правой кнопкой и выберите <b>Запустить Reedy</b>.<br/>Либо просто нажмите <b class='j-shortcut'>Alt+S</b>."
 	},
@@ -75,13 +75,13 @@
 	"main_closeReaderBtn": {
 		"message": "Завершить чтение"
 	},
-	
-	
-	
+
+
+
 	"____POPUP_SETTINGS_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"settings_reading": {
 		"message": "Настройки чтения"
 	},
@@ -94,81 +94,81 @@
 	"settings_theme": {
 		"message": "Стилизация"
 	},
-	
-	
+
+
 	"autostart": {
 		"message": "Автостарт"
 	},
 	"autostartDescr": {
 		"message": "Запускать чтение сразу после открытия Reedy."
 	},
-	
+
 	"focusMode": {
 		"message": "Режим фокуса"
 	},
 	"focusModeDescr": {
 		"message": "Точка фокусировки будет смещена ближе к началу слова и выделена красным."
 	},
-	
+
 	"gradualAccel": {
 		"message": "Плавное ускорение"
 	},
 	"gradualAccelDescr": {
 		"message": "Начинать чтение с меньшей скоростью и плавно повышать до требуемой."
 	},
-	
+
 	"smartSlowing": {
 		"message": "Интеллектуальное замедление"
 	},
 	"smartSlowingDescr": {
 		"message": "Увеличивать время отображения на пунктуации и сложных словах."
 	},
-	
-	
+
+
 	"entityAnalysis": {
 		"message": "Анализатор сущностей"
 	},
 	"entityAnalysisDescr": {
 		"message": "Позволяет отображать распространённые конструкции слитно. Производит анализ пунктуации. Корректирует базовое оформление текста."
 	},
-	
+
 	"hyphenation": {
 		"message": "Переносы слов"
 	},
 	"hyphenationDescr": {
 		"message": "Разделять сложные слова на части."
 	},
-	
+
 	"emptySentenceEnd": {
 		"message": "Разрыв между предложениями"
 	},
 	"emptySentenceEndDescr": {
 		"message": "Добавлять «пустое слово» перед началом следующего предложения."
 	},
-	
-	
+
+
 	"progressBar": {
 		"message": "Прогресс бар"
 	},
 	"progressBarDescr": {
 		"message": "Отображать текущий прогресс чтения."
 	},
-	
+
 	"timeLeft": {
 		"message": "Оставшееся время"
 	},
 	"timeLeftDescr": {
 		"message": "Показывать расчётное время до конца чтения."
 	},
-	
+
 	"sequel": {
 		"message": "Продолжение текста"
 	},
 	"sequelDescr": {
 		"message": "Показывать текст, следующий за текущим словом."
 	},
-	
-	
+
+
 	"color_word": {
 		"message": "Отображаемое слово"
 	},
@@ -187,19 +187,22 @@
 	"font_bold": {
 		"message": "Полужирный"
 	},
-	
+
 	"defaultFont": {
 		"message": "- По умолчанию -"
 	},
-	
-	
-	
+
+
+
 	"____READER_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"clickToStart": {
-		"message": "Кликните по экрану или нажмите пробел.<span>← клик вне области чтения закроет Reedy →</span>"
+		"message": "Кликните по экрану или нажмите пробел."
+	},
+	"clickToClose": {
+		"message": "← клик вне области чтения закроет Reedy →"
 	},
 	"ctrl_smallerFont": {
 		"message": "Уменьшить шрифт [ctrl+down]"
@@ -246,7 +249,7 @@
 	"ctrl_firstWord": {
 		"message": "В начало [home]"
 	},
-	
+
 	"timeLeft_h": {
 		"message": "$val$ <i>ч</i>",
 		"placeholders": {
@@ -277,13 +280,13 @@
 			"str": { "content": "$1" }
 		}
 	},
-	
-	
-	
+
+
+
 	"____OFFLINE_________________________________________________________": {
 		"message": ""
 	},
-	
+
 	"offline_startReadingBtn": {
 		"message": "Запустить Reedy"
 	},

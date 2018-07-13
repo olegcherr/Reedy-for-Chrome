@@ -1,8 +1,8 @@
 
 
 function onStartReadingBtn() {
-	var text = $textarea.value.trim();
-	
+	const text = $textarea.value.trim();
+
 	if (text.length) {
 		app.startReader(text);
 		app.event('Reader', 'Open', 'Offline');
@@ -10,7 +10,7 @@ function onStartReadingBtn() {
 	else {
 		$textarea.focus();
 	}
-	
+
 	app.event('Offline', 'Start reading', app.roundExp(text.length));
 }
 
@@ -29,7 +29,7 @@ function onSaveTextBtn() {
 
 
 
-var app = window.reedy,
+const app = window.reedy,
 	$textarea = document.querySelector('textarea'),
 	$startReadingBtn = document.querySelector('.j-startReadingBtn'),
 	$clearBtn = document.querySelector('.j-clearBtn'),

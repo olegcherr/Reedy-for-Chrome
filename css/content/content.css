@@ -605,7 +605,7 @@
 .e-Reedy-topPanelBtn_regular {
 	width: 32px;
 	height: 32px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_content1.png");
+	background: url("/img/sprite_content1.png");
 }
 
 .e-Reedy-adjust {
@@ -710,7 +710,7 @@
 	left: 8px;
 	width: 16px;
 	height: 12px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_content1.png");
+	background: url("/img/sprite_content1.png");
 }
 .e-Reedy-rangeCtrl-btn_up:after {
 	top: 5px;
@@ -736,7 +736,7 @@
 	top: 0;
 	width: 72px;
 	height: 72px;
-	background: url("chrome-extension://__MSG_@@extension_id__/img/sprite_content1.png");
+	background: url("/img/sprite_content1.png");
 	opacity: .35;
 	cursor: pointer;
 }
@@ -855,7 +855,7 @@
 		margin: 0;
 		right: 0;
 	}
-	
+
 	.e-Reedy-control_nextWord {
 		margin: 0 -108px 0 0;
 	}
